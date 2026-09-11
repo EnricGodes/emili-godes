@@ -492,8 +492,8 @@ tr.is-hidden { display: none; }
   border-radius: 10px; background: var(--surface-container-lowest); color: var(--on-surface); width: 100%; }
 .eg-form textarea { min-height: 160px; resize: vertical; }
 .eg-form input:focus, .eg-form textarea:focus { outline: 2px solid var(--primary); outline-offset: 0; border-color: var(--primary); }
-.eg-form__consent { display: flex; gap: 10px; align-items: flex-start; font-size: .85rem; font-weight: 400; color: var(--on-surface-variant); }
-.eg-form__consent input { width: auto; margin-top: 3px; }
+.eg-form label.eg-form__consent { display: flex; gap: 10px; align-items: flex-start; font-size: .85rem; font-weight: 400; color: var(--on-surface-variant); }
+.eg-form label.eg-form__consent input { width: auto; margin-top: 3px; }
 .eg-form__status { font-size: .9rem; padding: 12px 14px; border-radius: 10px; }
 .eg-form__status.is-ok { background: #e6f1e8; color: var(--primary); }
 .eg-form__status.is-error { background: #f8e3e0; color: var(--eg-red); }
