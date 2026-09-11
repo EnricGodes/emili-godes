@@ -72,7 +72,7 @@ function hashFor(amb: string | null | undefined, slug: string | null, idx?: numb
   if (!amb || !st.data) return '';
   const a = st.data.ambitos[amb];
   const p = slug ? a.projects.find((x) => x.slug === slug) : null;
-  return a.uslug + (p ? '/' + p.uslug + (idx != null ? '/' + idx : '') : '');
+  return (a.uslug || amb) + (p ? '/' + (p.uslug || p.slug) + (idx != null ? '/' + idx : '') : '');
 }
 function setHash() {
   const h = hashFor(st.ambito, st.project);
@@ -163,7 +163,7 @@ function renderProjectPhotos(a: Ambito) {
   if (!p) { st.project = null; return renderProjects(a); }
   const q = norm(st.q);
   const photos = p.photos.filter((ph) => (st.decade === 'all' || ph.decada === st.decade) && (st.fondo === 'all' || ph.fondo === st.fondo) && (!q || norm(ph.desc + ' ' + ph.lugar).includes(q)));
-  const crumbs = `<div class="eg-crumbs"><a data-act="back" href="#${a.uslug}">${esc(a.label)}</a> ▸ <span>${esc(p.name)}</span></div>`;
+  const crumbs = `<div class="eg-crumbs"><a data-act="back" href="#${a.uslug || st.ambito}">${esc(a.label)}</a> ▸ <span>${esc(p.name)}</span></div>`;
   const meta = [p.lugar, p.fecha, p.count + ' ' + UI.photos].filter(Boolean).join(' · ');
   const head = `<h2 style="font-size:1.5rem;margin:.2rem 0 0">${esc(p.name)}</h2>${meta ? `<p class="eg-projcard__meta" style="margin-bottom:.5rem">${esc(meta)}</p>` : ''}` +
     `<div class="eg-obra-links"><a href="${esc(p.url)}">${esc(UI.projectPage)} →</a></div>` +

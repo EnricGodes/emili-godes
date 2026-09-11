@@ -12,6 +12,8 @@ const base = `/${lang}/`;
 const ct = useCatalogText(lang);
 const title = t('seo.obra.title');
 const description = t('seo.obra.description');
+// versión en la URL del JSON: cada build invalida la copia cacheada en navegador/CDN
+const dataVersion = Date.now().toString(36);
 ---
 <Base lang={lang} title={title} description={description} path={pagePath(lang, 'obra').slice(4)} alternates={pageAlternates('obra')} activeNav="obra" ogImage="/photos/obra/ACP-23-1.jpg"
   jsonLd={[breadcrumb([{ name: t('breadcrumb.home'), url: base }, { name: t('breadcrumb.obra'), url: pagePath(lang, 'obra') }])]}>
@@ -26,7 +28,7 @@ const description = t('seo.obra.description');
       </nav>
     </div>
   </section>
-  <div class="eg-obra" id="eg-obra" data-src={`/data/catalog.${lang}.json`}>
+  <div class="eg-obra" id="eg-obra" data-src={`/data/catalog.${lang}.json?v=${dataVersion}`}>
     <aside class="eg-obra-side" id="eg-obra-side"></aside>
     <div class="eg-obra-main" id="eg-obra-main"><p class="eg-empty">{t('obra.pick')}</p></div>
   </div>
