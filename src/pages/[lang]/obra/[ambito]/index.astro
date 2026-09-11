@@ -1,0 +1,70 @@
+---
+import Base from '../../../../layouts/Base.astro';
+import { LOCALES, useT, type Lang } from '../../../../i18n';
+import { catalog, useCatalogText, ambitoUrlSlug, ambitoPath, projectPath, thumbUrl } from '../../../../lib/catalog';
+import { breadcrumb, article } from '../../../../lib/schema';
+
+export function getStaticPaths() {
+  return LOCALES.flatMap((lang) => catalog.ambito_order.map((ambito) => ({ params: { lang, ambito: ambitoUrlSlug(ambito) }, props: { ambitoKey: ambito } })));
+}
+const lang = Astro.params.lang as Lang;
+const { ambitoKey } = Astro.props as { ambitoKey: string };
+const a = catalog.ambitos[ambitoKey];
+const t = useT(lang);
+const ct = useCatalogText(lang);
+const base = `/${lang}/`;
+const label = ct.ambitoLabel(ambitoKey);
+const path = `obra/${ambitoUrlSlug(ambitoKey)}/`;
+const title = t('seo.ambito.title', { name: label });
+const description = t('seo.ambito.description', { name: label, count: a.count, projects: a.projects.length });
+const projects = a.projects.slice().sort((x, y) => (x.year || 9999) - (y.year || 9999));
+const others = ct.orderedAmbitos().filter((k) => k !== ambitoKey);
+---
+<Base lang={lang} title={title} description={description} path={path} activeNav="obra" ogType="article" ogImage={'/photos/obra/' + projects[0].cover}
+  jsonLd={[
+    breadcrumb([{ name: t('breadcrumb.home'), url: base }, { name: t('breadcrumb.obra'), url: `${base}obra/` }, { name: label, url: base + path }]),
+    article(lang, { url: base + path, headline: title, description, image: '/photos/obra/' + projects[0].cover }),
+  ]}>
+  <section class="eg-section" style="padding-bottom:2rem">
+    <div class="eg-container">
+      <nav class="eg-breadcrumb" aria-label={t('ui.breadcrumb')}>
+        <ol><li><a href={base}>{t('breadcrumb.home')}</a></li><li><a href={`${base}obra/`}>{t('breadcrumb.obra')}</a></li><li aria-current="page">{label}</li></ol>
+      </nav>
+      <p class="eg-kicker">{t('breadcrumb.obra')}</p>
+      <h1 class="eg-page-title">{label}</h1>
+      <p class="eg-lead">{t('ambito.lead', { count: a.count.toLocaleString(lang), projects: a.projects.length })}</p>
+      <div class="eg-prose" style="margin-top:18px" set:html={t('obra.intro.' + ambitoKey).split('\n\n').map((p) => `<p>${p}</p>`).join('')}></div>
+      <div class="eg-projactions">
+        <a class="eg-btn eg-btn--solid eg-btn--sm" href={`${base}obra/#${ambitoKey}`}>{t('obra.openExplorer')}</a>
+      </div>
+    </div>
+  </section>
+  <section class="eg-section eg-section--tint" style="padding-top:2.4rem">
+    <div class="eg-container">
+      <h2 style="font-size:1.4rem;margin:0">{t('ambito.projects', { n: a.projects.length })}</h2>
+      <div class="eg-projgrid">
+        {projects.map((p) => {
+          const meta = [ct.placeLabel(p.lugar), p.fecha].filter(Boolean).join(' · ');
+          return (
+            <a class="eg-projcard" href={projectPath(lang, ambitoKey, p.slug)}>
+              <div class="eg-projcard__cover"><img loading="lazy" src={thumbUrl(p.cover)} alt="" width="480" height="360" /></div>
+              <div class="eg-projcard__body">
+                <div class="eg-projcard__name">{ct.projectName(p)}</div>
+                {meta && <div class="eg-projcard__meta">{meta}</div>}
+                <div class="eg-projcard__count">{p.count === 1 ? t('project.photoOne') : t('project.photosCount', { n: p.count })}</div>
+              </div>
+            </a>
+          );
+        })}
+      </div>
+    </div>
+  </section>
+  <section class="eg-section" style="padding-top:2.4rem">
+    <div class="eg-container">
+      <h2 style="font-size:1.2rem;margin:0 0 12px">{t('ambito.others')}</h2>
+      <nav class="eg-anchor-nav" style="margin-top:0">
+        {others.map((k) => <a href={ambitoPath(lang, k)}>{ct.ambitoLabel(k)} <small>({catalog.ambitos[k].count})</small></a>)}
+      </nav>
+    </div>
+  </section>
+</Base>

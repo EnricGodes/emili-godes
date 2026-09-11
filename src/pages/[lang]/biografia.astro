@@ -1,0 +1,155 @@
+---
+import Base from '../../layouts/Base.astro';
+import { useT, type Lang } from '../../i18n';
+import { langPaths } from '../../lib/paths';
+import { article, breadcrumb } from '../../lib/schema';
+export const getStaticPaths = langPaths;
+const lang = Astro.params.lang as Lang;
+const t = useT(lang);
+const base = `/${lang}/`;
+const title = t('seo.biografia.title');
+const description = t('seo.biografia.description');
+---
+<Base lang={lang} title={title} description={description} path="biografia/" activeNav="biografia" ogType="article" ogImage="/photos/bio/s1b.jpg"
+  jsonLd={[article(lang, { url: `${base}biografia/`, headline: title, description, image: "/photos/bio/s1b.jpg" }), breadcrumb([{ name: t('breadcrumb.home'), url: base }, { name: t('nav.biografia'), url: `${base}biografia/` }])]}>
+  <section class="eg-section">
+  <div class="eg-container eg-container--narrow">
+  <p class="eg-kicker">{t('biografia.041')}</p>
+  <h1 class="eg-page-title" set:html={t('biografia.075')}></h1>
+  <p class="eg-note">Barcelona, 1895 – 1970</p>
+  <div class="eg-lead" set:html={t('biografia.001')} style="margin-top:18px"></div>
+
+  </div>
+  </section>
+  <section class="eg-section eg-section--tint" style="padding-top:0">
+  <div class="eg-container eg-container--narrow">
+  <div class="eg-stage">
+  <div class="eg-stage__num">1</div>
+  <h3>{t('biografia.042')}</h3>
+  <div class="eg-prose" set:html={t('biografia.002')}></div>
+
+  <div class="eg-figs">
+  <figure class="eg-fig"><img alt={t('biografia.054')} height="832" loading="lazy" src="/photos/bio/s1a.jpg" width="1000"/><figcaption><span set:html={t('biografia.003')}></span></figcaption></figure>
+  <figure class="eg-fig"><img alt={t('biografia.055')} height="946" loading="lazy" src="/photos/bio/s1b.jpg" width="950"/><figcaption><span set:html={t('biografia.004')}></span></figcaption></figure>
+  </div>
+  </div>
+  <div class="eg-stage">
+  <div class="eg-stage__num">2</div>
+  <h3>{t('biografia.043')}</h3>
+  <div class="eg-prose" set:html={t('biografia.005')}></div>
+
+  <div class="eg-figs">
+  <figure class="eg-fig"><img alt={t('biografia.056')} height="955" loading="lazy" src="/photos/bio/s2a.jpg" width="955"/><figcaption><span set:html={t('biografia.006')}></span></figcaption></figure>
+  <figure class="eg-fig"><img alt={t('biografia.057')} height="955" loading="lazy" src="/photos/bio/s2b.jpg" width="960"/><figcaption><span set:html={t('biografia.007')}></span></figcaption></figure>
+  </div>
+  </div>
+  <div class="eg-stage">
+  <div class="eg-stage__num">3</div>
+  <h3>{t('biografia.044')}</h3>
+  <div class="eg-prose" set:html={t('biografia.008')}></div>
+
+  <div class="eg-figs">
+  <figure class="eg-fig"><img alt={t('biografia.058')} height="733" loading="lazy" src="/photos/bio/s3a.jpg" width="1000"/><figcaption><span set:html={t('biografia.009')}></span></figcaption></figure>
+  <figure class="eg-fig"><img alt={t('biografia.059')} height="437" loading="lazy" src="/photos/bio/s3b.jpg" width="600"/><figcaption><span set:html={t('biografia.010')}></span></figcaption></figure>
+  </div>
+  </div>
+  <div class="eg-stage">
+  <div class="eg-stage__num">4</div>
+  <h3>{t('biografia.045')}</h3>
+  <div class="eg-prose" set:html={t('biografia.011')}></div>
+
+  <div class="eg-figs">
+  <figure class="eg-fig"><img alt={t('biografia.060')} height="379" loading="lazy" src="/photos/bio/s4a.jpg" width="989"/><figcaption><span set:html={t('biografia.012')}></span></figcaption></figure>
+  <figure class="eg-fig"><img alt={t('biografia.061')} height="739" loading="lazy" src="/photos/bio/s4b.jpg" width="1000"/><figcaption><span set:html={t('biografia.013')}></span></figcaption></figure>
+  <figure class="eg-fig"><img alt={t('biografia.062')} height="640" loading="lazy" src="/photos/bio/s4c.jpg" width="440"/><figcaption><span set:html={t('biografia.014')}></span></figcaption></figure>
+  </div>
+  </div>
+  <div class="eg-stage">
+  <div class="eg-stage__num">5</div>
+  <h3>{t('biografia.046')}</h3>
+  <div class="eg-prose" set:html={t('biografia.015')}></div>
+
+  <div class="eg-figs">
+  <figure class="eg-fig"><img alt={t('biografia.063')} height="750" loading="lazy" src="/photos/bio/s5a.jpg" width="1000"/><figcaption><span set:html={t('biografia.016')}></span></figcaption></figure>
+  <figure class="eg-fig"><img alt={t('biografia.064')} height="720" loading="lazy" src="/photos/bio/s5b.jpg" width="960"/><figcaption><span set:html={t('biografia.017')}></span></figcaption></figure>
+  </div>
+  </div>
+  <div class="eg-stage">
+  <div class="eg-stage__num">6</div>
+  <h3>{t('biografia.047')}</h3>
+  <div class="eg-prose" set:html={t('biografia.018')}></div>
+
+  <div class="eg-figs">
+  <figure class="eg-fig"><img alt={t('biografia.065')} height="444" loading="lazy" src="/photos/bio/s6c.jpg" width="640"/><figcaption><span set:html={t('biografia.019')}></span></figcaption></figure>
+  <figure class="eg-fig"><img alt={t('biografia.066')} height="640" loading="lazy" src="/photos/bio/s6d.jpg" width="456"/><figcaption><span set:html={t('biografia.020')}></span></figcaption></figure>
+  </div>
+  </div>
+  </div>
+  </section>
+
+  <section class="eg-section">
+  <div class="eg-container eg-container--narrow">
+  <h2 style="font-size:1.8rem">{t('biografia.048')}</h2>
+  <div class="eg-timeline">
+  <div class="eg-tl-item"><div class="eg-tl-date">1895</div><div class="eg-tl-text"><span set:html={t('biografia.021')}></span></div></div>
+  <div class="eg-tl-item"><div class="eg-tl-date">c. 1910</div><div class="eg-tl-text"><span set:html={t('biografia.022')}></span></div></div>
+  <div class="eg-tl-item"><div class="eg-tl-date">1920–1928</div><div class="eg-tl-text"><span set:html={t('biografia.023')}></span></div></div>
+  <div class="eg-tl-item"><div class="eg-tl-date">1923</div><div class="eg-tl-text"><span set:html={t('biografia.024')}></span></div></div>
+  <div class="eg-tl-item"><div class="eg-tl-date">1927</div><div class="eg-tl-text"><span set:html={t('biografia.025')}></span></div></div>
+  <div class="eg-tl-item"><div class="eg-tl-date">1928</div><div class="eg-tl-text"><span set:html={t('biografia.026')}></span></div></div>
+  <div class="eg-tl-item"><div class="eg-tl-date">1929</div><div class="eg-tl-text"><span set:html={t('biografia.027')}></span></div></div>
+  <div class="eg-tl-item"><div class="eg-tl-date">1930–1935</div><div class="eg-tl-text"><span set:html={t('biografia.028')}></span></div></div>
+  <div class="eg-tl-item"><div class="eg-tl-date">1936–1939</div><div class="eg-tl-text"><span set:html={t('biografia.029')}></span></div></div>
+  <div class="eg-tl-item"><div class="eg-tl-date">1940–1960</div><div class="eg-tl-text"><span set:html={t('biografia.030')}></span></div></div>
+  <div class="eg-tl-item"><div class="eg-tl-date">1945–1953</div><div class="eg-tl-text"><span set:html={t('biografia.031')}></span></div></div>
+  <div class="eg-tl-item"><div class="eg-tl-date">1970</div><div class="eg-tl-text"><span set:html={t('biografia.032')}></span></div></div>
+  </div>
+  </div>
+  </section>
+
+  <section class="eg-section eg-section--tint">
+  <div class="eg-container">
+  <h2 style="font-size:1.8rem">{t('biografia.049')}</h2>
+  <p class="eg-note">{t('biografia.050')}</p>
+  <div class="eg-figs eg-figs--grid">
+  <figure class="eg-fig">
+  <img alt={t('biografia.067')} height="960" loading="lazy" src="/photos/obra/FCP-23-89.jpg" width="948"/>
+  <figcaption><span set:html={t('biografia.033')}></span></figcaption>
+  </figure>
+  <figure class="eg-fig">
+  <img alt={t('biografia.068')} height="986" loading="lazy" src="/photos/bio/p1920-emili.jpg" width="728"/>
+  <figcaption><span set:html={t('biografia.034')}></span></figcaption>
+  </figure>
+  <figure class="eg-fig">
+  <img alt={t('biografia.069')} height="958" loading="lazy" src="/photos/obra/FCP-23-3.jpg" width="947"/>
+  <figcaption><span set:html={t('biografia.035')}></span></figcaption>
+  </figure>
+  <figure class="eg-fig">
+  <img alt={t('biografia.070')} height="954" loading="lazy" src="/photos/obra/FCP-23-85.jpg" width="943"/>
+  <figcaption><span set:html={t('biografia.036')}></span></figcaption>
+  </figure>
+  <figure class="eg-fig">
+  <img alt={t('biografia.071')} height="960" loading="lazy" src="/photos/obra/FCP-23-81.jpg" width="956"/>
+  <figcaption><span set:html={t('biografia.037')}></span></figcaption>
+  </figure>
+  <figure class="eg-fig">
+  <img alt={t('biografia.072')} height="967" loading="lazy" src="/photos/obra/FCP-23-24.jpg" width="963"/>
+  <figcaption><span set:html={t('biografia.038')}></span></figcaption>
+  </figure>
+  <figure class="eg-fig">
+  <img alt={t('biografia.073')} height="1000" loading="lazy" src="/photos/bio/p1946-selfie.jpg" width="678"/>
+  <figcaption><span set:html={t('biografia.039')}></span></figcaption>
+  </figure>
+  <figure class="eg-fig">
+  <img alt={t('biografia.074')} height="1000" loading="lazy" src="/photos/bio/p1953-boda-mestre.jpg" width="780"/>
+  <figcaption><span set:html={t('biografia.040')}></span></figcaption>
+  </figure>
+  </div>
+  <div class="eg-related">
+  <a href={`${base}obra/`}>{t('biografia.051')}</a>
+  <a href={`${base}mirada-moderna/`}>{t('biografia.052')}</a>
+  <a href={`${base}destacadas/`}>{t('biografia.053')}</a>
+  </div>
+  </div>
+  </section>
+</Base>

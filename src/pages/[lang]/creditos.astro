@@ -1,0 +1,72 @@
+---
+import Base from '../../layouts/Base.astro';
+import { useT, type Lang } from '../../i18n';
+import { langPaths } from '../../lib/paths';
+import { article, breadcrumb } from '../../lib/schema';
+export const getStaticPaths = langPaths;
+const lang = Astro.params.lang as Lang;
+const t = useT(lang);
+const base = `/${lang}/`;
+const title = t('seo.creditos.title');
+const description = t('seo.creditos.description');
+---
+<Base lang={lang} title={title} description={description} path="creditos/" activeNav="creditos" ogType="article"
+  jsonLd={[article(lang, { url: `${base}creditos/`, headline: title, description }), breadcrumb([{ name: t('breadcrumb.home'), url: base }, { name: t('nav.creditos'), url: `${base}creditos/` }])]}>
+  <section class="eg-section">
+  <div class="eg-container eg-container--narrow">
+  <p class="eg-kicker">{t('creditos.009')}</p>
+  <h1 class="eg-page-title">{t('creditos.010')}</h1>
+  <div class="eg-lead" set:html={t('creditos.001')}></div>
+
+  </div>
+  </section>
+  <section class="eg-section eg-section--tint">
+  <div class="eg-container">
+  <div class="eg-grid">
+  <div>
+  <h2 style="font-size:1.4rem">{t('creditos.011')}</h2>
+  <div class="eg-prose">
+  <p set:html={t('creditos.019')}></p>
+  <p set:html={t('creditos.002')}></p>
+
+  <p set:html={t('creditos.003')}></p>
+
+  </div>
+  </div>
+  <div>
+  <h2 style="font-size:1.4rem">{t('creditos.012')}</h2>
+  <ul class="eg-prose">
+  <li set:html={t('creditos.020')}></li>
+  <li set:html={t('creditos.021')}></li>
+  <li set:html={t('creditos.022')}></li>
+  <li set:html={t('creditos.023')}></li>
+  <li set:html={t('creditos.024')}></li>
+  <li set:html={t('creditos.004')}></li>
+
+  <li set:html={t('creditos.005')}></li>
+
+  </ul>
+  </div>
+  </div>
+  </div>
+  </section>
+  <section class="eg-section">
+  <div class="eg-container eg-container--narrow">
+  <h2 style="font-size:1.4rem">{t('creditos.013')}</h2>
+  <div class="eg-prose" set:html={t('creditos.006')}></div>
+
+  <blockquote style="border-left:3px solid var(--secondary);padding:8px 16px;color:var(--on-surface-variant);font-style:italic">
+  <span set:html={t('creditos.007')}></span>
+
+  </blockquote>
+  <h2 style="font-size:1.4rem;margin-top:36px">{t('creditos.014')}</h2>
+  <p class="eg-prose" set:html={t('creditos.025')}></p>
+  <p class="eg-note">{t('creditos.015')}</p>
+  <h2 style="font-size:1.4rem;margin-top:36px">{t('creditos.016')}</h2>
+  <div class="eg-prose" set:html={t('creditos.008')}></div>
+
+  <h2 style="font-size:1.4rem;margin-top:36px">{t('creditos.017')}</h2>
+  <p class="eg-note">{t('creditos.018')}</p>
+  </div>
+  </section>
+</Base>

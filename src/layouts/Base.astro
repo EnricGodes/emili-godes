@@ -1,0 +1,107 @@
+---
+/**
+ * Plantilla base: <head> SEO completo (title, description, canonical, hreflang, OG/Twitter,
+ * JSON-LD), cabecera, pie, banner de cookies y GTM con Consent Mode v2.
+ */
+import '@fontsource-variable/manrope';
+import '@fontsource/noto-serif/400.css';
+import '@fontsource/noto-serif/400-italic.css';
+import '@fontsource/noto-serif/600.css';
+import '@fontsource/noto-serif/700.css';
+import '../styles/emili.css';
+import Header from '../components/Header.astro';
+import Footer from '../components/Footer.astro';
+import CookieConsent from '../components/CookieConsent.astro';
+import { LOCALES, OG_LOCALES, DEFAULT_LANG, useT, type Lang } from '../i18n';
+import { SITE_URL, SITE_NAME, GTM_ID, GSC_VERIFICATION } from '../lib/site';
+
+interface Props {
+  lang: Lang;
+  title: string;
+  description: string;
+  /** Ruta relativa a /{lang}/ (con barra final; '' = portada). */
+  path: string;
+  ogImage?: string;
+  ogType?: 'website' | 'article';
+  noindex?: boolean;
+  jsonLd?: object[];
+  bodyClass?: string;
+  /** Página con nav activa (id de PAGES). */
+  activeNav?: string;
+}
+const {
+  lang, title, description, path, ogImage = '/assets/og/default.jpg', ogType = 'website',
+  noindex = false, jsonLd = [], bodyClass = '', activeNav,
+} = Astro.props;
+const t = useT(lang);
+const canonical = `${SITE_URL}/${lang}/${path}`;
+const fullTitle = path === '' || title.includes(SITE_NAME) ? title : `${title} · ${SITE_NAME}`;
+const ogImageAbs = ogImage.startsWith('http') ? ogImage : SITE_URL + ogImage;
+const xDefault = path === '' ? `${SITE_URL}/` : `${SITE_URL}/${DEFAULT_LANG}/${path}`;
+const gtm = GTM_ID;
+---
+<!doctype html>
+<html lang={lang}>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>{fullTitle}</title>
+    <meta name="description" content={description} />
+    <link rel="canonical" href={canonical} />
+    {LOCALES.map((l) => <link rel="alternate" hreflang={l} href={`${SITE_URL}/${l}/${path}`} />)}
+    <link rel="alternate" hreflang="x-default" href={xDefault} />
+    {noindex ? <meta name="robots" content="noindex, follow" /> : <meta name="robots" content="index, follow, max-image-preview:large" />}
+    <meta property="og:site_name" content={SITE_NAME} />
+    <meta property="og:type" content={ogType} />
+    <meta property="og:title" content={fullTitle} />
+    <meta property="og:description" content={description} />
+    <meta property="og:url" content={canonical} />
+    <meta property="og:image" content={ogImageAbs} />
+    <meta property="og:locale" content={OG_LOCALES[lang]} />
+    {LOCALES.filter((l) => l !== lang).map((l) => <meta property="og:locale:alternate" content={OG_LOCALES[l]} />)}
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content={fullTitle} />
+    <meta name="twitter:description" content={description} />
+    <meta name="twitter:image" content={ogImageAbs} />
+    {GSC_VERIFICATION && path === '' && <meta name="google-site-verification" content={GSC_VERIFICATION} />}
+    <meta name="theme-color" content="#17341e" />
+    <link rel="icon" href="/favicon.ico" sizes="32x32" />
+    <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+    <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
+    <link rel="manifest" href="/manifest.webmanifest" />
+    <link rel="sitemap" href="/sitemap-index.xml" />
+    {jsonLd.map((obj) => <script type="application/ld+json" set:html={JSON.stringify(obj)} />)}
+    {gtm && (
+      <script is:inline define:vars={{ gtm }}>
+        // Consent Mode v2: todo denegado hasta que el visitante decida (ver CookieConsent).
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){ dataLayer.push(arguments); }
+        gtag('consent', 'default', {
+          ad_storage: 'denied', ad_user_data: 'denied', ad_personalization: 'denied',
+          analytics_storage: 'denied', functionality_storage: 'granted', security_storage: 'granted',
+          wait_for_update: 500,
+        });
+        try {
+          var m = document.cookie.match(/(?:^|; )eg_consent=([^;]*)/);
+          if (m && decodeURIComponent(m[1]) === 'analytics') gtag('consent', 'update', { analytics_storage: 'granted' });
+        } catch (e) {}
+        (function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':new Date().getTime(),event:'gtm.js'});
+          var f=d.getElementsByTagName(s)[0],j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';
+          j.async=true;j.src='https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
+        })(window,document,'script','dataLayer',gtm);
+      </script>
+    )}
+  </head>
+  <body class={bodyClass}>
+    {gtm && (
+      <noscript><iframe src={`https://www.googletagmanager.com/ns.html?id=${gtm}`} height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
+    )}
+    <a class="eg-skip" href="#main">{t('ui.skip')}</a>
+    <Header lang={lang} path={path} activeNav={activeNav} />
+    <main id="main">
+      <slot />
+    </main>
+    <Footer lang={lang} path={path} />
+    <CookieConsent lang={lang} enabled={!!gtm} />
+  </body>
+</html>

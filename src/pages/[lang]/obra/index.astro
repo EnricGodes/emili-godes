@@ -1,0 +1,35 @@
+---
+import Base from '../../../layouts/Base.astro';
+import UiJson from '../../../components/UiJson.astro';
+import { useT, type Lang } from '../../../i18n';
+import { langPaths } from '../../../lib/paths';
+import { catalog, useCatalogText, ambitoPath } from '../../../lib/catalog';
+import { breadcrumb } from '../../../lib/schema';
+export const getStaticPaths = langPaths;
+const lang = Astro.params.lang as Lang;
+const t = useT(lang);
+const base = `/${lang}/`;
+const ct = useCatalogText(lang);
+const title = t('seo.obra.title');
+const description = t('seo.obra.description');
+---
+<Base lang={lang} title={title} description={description} path="obra/" activeNav="obra" ogImage="/photos/obra/ACP-23-1.jpg"
+  jsonLd={[breadcrumb([{ name: t('breadcrumb.home'), url: base }, { name: t('breadcrumb.obra'), url: `${base}obra/` }])]}>
+  <section class="eg-section" style="padding-bottom:1.2rem">
+    <div class="eg-container">
+      <p class="eg-kicker">{t('obra.002')}</p>
+      <h1 class="eg-page-title">{t('obra.003')}</h1>
+      <div class="eg-lead" set:html={t('obra.001')}></div>
+      <!-- Enlaces estáticos a las temáticas (rastreables sin JS) -->
+      <nav class="eg-anchor-nav" aria-label={t('obra.themes')}>
+        {ct.orderedAmbitos().map((a) => <a href={ambitoPath(lang, a)}>{ct.ambitoLabel(a)} <small>({catalog.ambitos[a].count})</small></a>)}
+      </nav>
+    </div>
+  </section>
+  <div class="eg-obra" id="eg-obra" data-src={`/data/catalog.${lang}.json`}>
+    <aside class="eg-obra-side" id="eg-obra-side"></aside>
+    <div class="eg-obra-main" id="eg-obra-main"><p class="eg-empty">{t('obra.pick')}</p></div>
+  </div>
+  <UiJson lang={lang} />
+  <script src="../../../scripts/explorer.ts"></script>
+</Base>

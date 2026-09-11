@@ -1,0 +1,75 @@
+---
+import Base from '../../layouts/Base.astro';
+import { useT, type Lang } from '../../i18n';
+import { langPaths } from '../../lib/paths';
+import { article, breadcrumb } from '../../lib/schema';
+export const getStaticPaths = langPaths;
+const lang = Astro.params.lang as Lang;
+const t = useT(lang);
+const base = `/${lang}/`;
+const title = t('seo.investigacion.title');
+const description = t('seo.investigacion.description');
+---
+<Base lang={lang} title={title} description={description} path="investigacion/" activeNav="investigacion" ogType="article"
+  jsonLd={[article(lang, { url: `${base}investigacion/`, headline: title, description }), breadcrumb([{ name: t('breadcrumb.home'), url: base }, { name: t('nav.investigacion'), url: `${base}investigacion/` }])]}>
+  <section class="eg-section">
+  <div class="eg-container eg-container--narrow">
+  <p class="eg-kicker">{t('investigacion.010')}</p>
+  <h1 class="eg-page-title" set:html={t('investigacion.021')}></h1>
+  <p class="eg-note">{t('investigacion.011')}</p>
+  <div class="eg-lead" set:html={t('investigacion.001')} style="margin-top:18px"></div>
+
+  <div class="eg-pdfbox">
+  <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M14 3H7a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V8z"/><path d="M14 3v5h5"/><path d="M9 13h6M9 17h6"/></svg>
+  <div style="flex:1;min-width:220px">
+  <h3>{t('investigacion.012')}</h3>
+  <p set:html={t('investigacion.022')}></p>
+  </div>
+  <a class="eg-btn eg-btn--primary" href="/assets/tfg-laia-foix.pdf" rel="noopener" target="_blank">{t('investigacion.013')}</a>
+  <a class="eg-btn eg-btn--ghost" download href="/assets/tfg-laia-foix.pdf">{t('investigacion.014')}</a>
+  </div>
+  <object class="eg-pdf-viewer" data="/assets/tfg-laia-foix.pdf#view=FitH" type="application/pdf">
+  <p set:html={t('investigacion.002')} style="padding:18px"></p>
+
+  </object>
+  </div>
+  </section>
+  <section class="eg-section eg-section--tint">
+  <div class="eg-container">
+  <div class="eg-grid">
+  <div>
+  <h2 style="font-size:1.4rem">{t('investigacion.015')}</h2>
+  <div class="eg-prose" set:html={t('investigacion.003')}></div>
+
+  </div>
+  <div>
+  <h2 style="font-size:1.4rem">{t('investigacion.016')}</h2>
+  <div class="eg-prose" set:html={t('investigacion.004')}></div>
+
+  </div>
+  </div>
+  </div>
+  </section>
+  <section class="eg-section">
+  <div class="eg-container eg-container--narrow">
+  <h2 style="font-size:1.5rem">{t('investigacion.017')}</h2>
+  <ul class="eg-prose" style="margin-top:12px">
+  <li set:html={t('investigacion.005')}></li>
+
+  <li set:html={t('investigacion.006')}></li>
+
+  <li set:html={t('investigacion.007')}></li>
+
+  <li set:html={t('investigacion.008')}></li>
+
+  </ul>
+  <div class="eg-prose eg-mt-lg" set:html={t('investigacion.009')}></div>
+
+  <div class="eg-related">
+  <a href={`${base}biografia/`}>{t('investigacion.018')}</a>
+  <a href={`${base}mirada-moderna/`}>{t('investigacion.019')}</a>
+  <a href={`${base}creditos/`}>{t('investigacion.020')}</a>
+  </div>
+  </div>
+  </section>
+</Base>

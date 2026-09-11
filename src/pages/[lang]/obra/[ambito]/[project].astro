@@ -1,0 +1,114 @@
+---
+import Base from '../../../../layouts/Base.astro';
+import UiJson from '../../../../components/UiJson.astro';
+import { LOCALES, useT, type Lang } from '../../../../i18n';
+import { catalog, useCatalogText, ambitoUrlSlug, ambitoPath, projectPath, photoUrl, thumbUrl, type Project } from '../../../../lib/catalog';
+import { breadcrumb, imageGallery } from '../../../../lib/schema';
+
+export function getStaticPaths() {
+  const out: { params: Record<string, string>; props: Record<string, unknown> }[] = [];
+  for (const lang of LOCALES) {
+    for (const ambito of catalog.ambito_order) {
+      const projects = catalog.ambitos[ambito].projects.slice().sort((x, y) => (x.year || 9999) - (y.year || 9999));
+      projects.forEach((p, i) => out.push({
+        params: { lang, ambito: ambitoUrlSlug(ambito), project: p.slug },
+        props: { ambitoKey: ambito, project: p, prev: projects[i - 1] || null, next: projects[i + 1] || null },
+      }));
+    }
+  }
+  return out;
+}
+const lang = Astro.params.lang as Lang;
+const { ambitoKey, project: p, prev, next } = Astro.props as { ambitoKey: string; project: Project; prev: Project | null; next: Project | null };
+const t = useT(lang);
+const ct = useCatalogText(lang);
+const base = `/${lang}/`;
+const name = ct.projectName(p);
+const theme = ct.ambitoLabel(ambitoKey);
+const place = ct.placeLabel(p.lugar);
+const fondos = p.fondos.map(ct.fondoLabel);
+const path = `obra/${ambitoUrlSlug(ambitoKey)}/${p.slug}/`;
+const url = base + path;
+const metaBits = [place, p.fecha].filter(Boolean).join(', ');
+const title = t('seo.project.title', { name });
+const description = p.count === 1
+  ? t('seo.project.descriptionOne', { name, meta: metaBits || fondos.join(', '), theme })
+  : t('seo.project.description', { name, count: p.count, meta: metaBits || fondos.join(', '), theme });
+const photos = p.photos.map((ph, i) => {
+  const desc = ct.desc(ph);
+  return {
+    i, ph, desc,
+    title: ct.photoTitle(ph, p),
+    meta: [ph.fecha, ct.placeLabel(ph.lugar), ct.fondoLabel(ph.fondo)].filter(Boolean).join(' · '),
+  };
+});
+const viewerPhotos = photos.map(({ ph, desc, i }) => ({
+  image: photoUrl(ph.file), title: name, desc, fecha: ph.fecha, lugar: ct.placeLabel(ph.lugar),
+  categoria: ct.ambitoLabel(ph.categoria), fondo: ct.fondoLabel(ph.fondo), decada: ph.decada !== 'sf' ? ph.decada + 's' : '',
+  orig: ph.orig, theme, project: { name, url }, shareUrl: `${url}#foto-${i + 1}`,
+}));
+const gallery = imageGallery(lang, {
+  url, name, description,
+  images: photos.map(({ ph, title: ttl, desc }) => ({
+    url: photoUrl(ph.file), thumbnail: thumbUrl(ph.file), name: ttl, caption: desc || undefined, width: ph.w, height: ph.h,
+    dateCreated: (ph.fecha.match(/\d{4}/) || [])[0], credit: ct.fondoLabel(ph.fondo),
+  })),
+});
+const crumbs = breadcrumb([
+  { name: t('breadcrumb.home'), url: base }, { name: t('breadcrumb.obra'), url: `${base}obra/` },
+  { name: theme, url: ambitoPath(lang, ambitoKey) }, { name, url },
+]);
+---
+<Base lang={lang} title={title} description={description} path={path} activeNav="obra" ogType="article" ogImage={photoUrl(p.cover)} jsonLd={[crumbs, gallery]}>
+  <section class="eg-section" style="padding-bottom:2rem">
+    <div class="eg-container">
+      <nav class="eg-breadcrumb" aria-label={t('ui.breadcrumb')}>
+        <ol>
+          <li><a href={base}>{t('breadcrumb.home')}</a></li>
+          <li><a href={`${base}obra/`}>{t('breadcrumb.obra')}</a></li>
+          <li><a href={ambitoPath(lang, ambitoKey)}>{theme}</a></li>
+          <li aria-current="page">{name}</li>
+        </ol>
+      </nav>
+      <div class="eg-projhead">
+        <div>
+          <p class="eg-kicker">{theme}</p>
+          <h1 class="eg-page-title">{name}</h1>
+          <ul class="eg-meta">
+            {place && <li><span class="eg-meta__label">{t('project.place')}</span><span class="eg-meta__value">{place}</span></li>}
+            {p.fecha && <li><span class="eg-meta__label">{t('project.date')}</span><span class="eg-meta__value">{p.fecha}</span></li>}
+            <li><span class="eg-meta__label">{fondos.length > 1 ? t('project.fondos') : t('project.fondo')}</span><span class="eg-meta__value">{fondos.join(', ')}</span></li>
+            <li><span class="eg-meta__label">{t('project.theme')}</span><span class="eg-meta__value"><a href={ambitoPath(lang, ambitoKey)}>{theme}</a></span></li>
+          </ul>
+          <div class="eg-projactions">
+            <a class="eg-btn eg-btn--outline eg-btn--sm" href={`${base}obra/#${ambitoKey}/${p.slug}`}>{t('obra.openExplorer')}</a>
+          </div>
+        </div>
+        <div class="eg-stat"><strong>{p.count}</strong><span>{t('obra.photos')}</span></div>
+      </div>
+    </div>
+  </section>
+
+  <section class="eg-section eg-section--tint" style="padding-top:2rem">
+    <div class="eg-container">
+      <div class="eg-photolist">
+        {photos.map(({ ph, i, title: ttl, desc, meta }) => (
+          <figure id={`foto-${i + 1}`}>
+            <button type="button" data-photo-index={i} aria-label={t('project.open') + ': ' + ttl}>
+              <img src={thumbUrl(ph.file)} width={ph.w} height={ph.h} alt={ttl} loading={i < 6 ? 'eager' : 'lazy'} decoding="async" />
+            </button>
+            <figcaption>{desc || ttl}<small>{meta} · {ph.orig}</small></figcaption>
+          </figure>
+        ))}
+      </div>
+      <nav class="eg-pager" aria-label={t('project.others', { theme })}>
+        {prev ? <a href={projectPath(lang, ambitoKey, prev.slug)}><small>← {t('project.prev')}</small><span>{ct.projectName(prev)}</span></a> : <span></span>}
+        {next ? <a class="is-next" href={projectPath(lang, ambitoKey, next.slug)}><small>{t('project.next')} →</small><span>{ct.projectName(next)}</span></a> : <span></span>}
+      </nav>
+      <p style="margin-top:22px"><a class="eg-btn eg-btn--outline eg-btn--sm" href={ambitoPath(lang, ambitoKey)}>{t('project.allInTheme', { theme })}</a></p>
+    </div>
+  </section>
+  <UiJson lang={lang} />
+  <script is:inline type="application/json" id="eg-photos" set:html={JSON.stringify(viewerPhotos)} />
+  <script src="../../../../scripts/gallery.ts"></script>
+</Base>

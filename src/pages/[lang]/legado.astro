@@ -1,0 +1,177 @@
+---
+import Base from '../../layouts/Base.astro';
+import { useT, type Lang } from '../../i18n';
+import { langPaths } from '../../lib/paths';
+import { article, breadcrumb } from '../../lib/schema';
+export const getStaticPaths = langPaths;
+const lang = Astro.params.lang as Lang;
+const t = useT(lang);
+const base = `/${lang}/`;
+const title = t('seo.legado.title');
+const description = t('seo.legado.description');
+---
+<Base lang={lang} title={title} description={description} path="legado/" activeNav="legado" ogType="article"
+  jsonLd={[article(lang, { url: `${base}legado/`, headline: title, description }), breadcrumb([{ name: t('breadcrumb.home'), url: base }, { name: t('nav.legado'), url: `${base}legado/` }])]}>
+  <section class="eg-section">
+  <div class="eg-container">
+  <p class="eg-kicker">{t('legado.023')}</p>
+  <h1 class="eg-page-title">{t('legado.024')}</h1>
+  <div class="eg-lead" set:html={t('legado.001')}></div>
+
+  </div>
+  </section>
+
+  <section class="eg-section eg-section--tint">
+  <div class="eg-container">
+  <h2 style="font-size:1.7rem">{t('legado.025')}</h2>
+  <div class="eg-filterbar" data-decade-filter>
+  <span class="eg-chip is-active" data-decade="all">{t('legado.026')}</span>
+  <span class="eg-chip" data-decade="1910">1910s</span>
+  <span class="eg-chip" data-decade="1920">1920s</span>
+  <span class="eg-chip" data-decade="1930">1930s</span>
+  <span class="eg-chip" data-decade="1940">1940s</span>
+  <span class="eg-chip" data-decade="1950">1950s</span>
+  </div>
+  <div data-decades>
+  <h3 style="margin:24px 0 0;font-size:1.2rem">{t('legado.027')}</h3>
+  <div class="eg-tablewrap">
+  <table class="eg-table">
+  <thead><tr><th>{t('legado.028')}</th><th>{t('legado.029')}</th><th>{t('legado.030')}</th><th>{t('legado.031')}</th></tr></thead>
+  <tbody>
+  <tr data-decade="1910"><td>1915</td><td set:html={t('legado.050')}></td><td>Barcelona</td><td class="eg-note" set:html={t('legado.051')}></td></tr>
+  <tr data-decade="1920"><td>1921</td><td set:html={t('legado.052')}></td><td>Barcelona</td><td class="eg-note" set:html={t('legado.053')}></td></tr>
+  <tr data-decade="1920"><td>1922–1923</td><td set:html={t('legado.054')}></td><td>Dresde</td><td class="eg-note" set:html={t('legado.055')}></td></tr>
+  <tr data-decade="1920"><td>1924</td><td set:html={t('legado.056')}></td><td>Igualada</td><td class="eg-note" set:html={t('legado.057')}></td></tr>
+  <tr data-decade="1920"><td>1924</td><td set:html={t('legado.058')}></td><td>Córdoba</td><td class="eg-note" set:html={t('legado.059')}></td></tr>
+  <tr data-decade="1920"><td>1925</td><td set:html={t('legado.060')}></td><td>—</td><td class="eg-note" set:html={t('legado.061')}></td></tr>
+  <tr data-decade="1920"><td>1925</td><td set:html={t('legado.062')}></td><td>Gijón</td><td class="eg-note" set:html={t('legado.063')}></td></tr>
+  <tr data-decade="1920"><td>1926</td><td set:html={t('legado.064')}></td><td>Barcelona</td><td class="eg-note" set:html={t('legado.065')}></td></tr>
+  <tr data-decade="1920"><td>1926</td><td set:html={t('legado.066')}></td><td>Berlín</td><td class="eg-note" set:html={t('legado.067')}></td></tr>
+  <tr data-decade="1920"><td>1927</td><td set:html={t('legado.068')}></td><td>Barcelona</td><td class="eg-note" set:html={t('legado.069')}></td></tr>
+  <tr data-decade="1920"><td>1927</td><td set:html={t('legado.070')}></td><td>Córdoba</td><td class="eg-note" set:html={t('legado.071')}></td></tr>
+  <tr data-decade="1920"><td>1927</td><td set:html={t('legado.072')}></td><td>Madrid</td><td class="eg-note" set:html={t('legado.073')}></td></tr>
+  <tr data-decade="1920"><td>1929</td><td set:html={t('legado.074')}></td><td>—</td><td class="eg-note" set:html={t('legado.075')}></td></tr>
+  <tr data-decade="1940"><td>1941</td><td set:html={t('legado.076')}></td><td>Barcelona</td><td class="eg-note" set:html={t('legado.077')}></td></tr>
+  <tr data-decade="1940"><td>1945</td><td set:html={t('legado.078')}></td><td>—</td><td class="eg-note" set:html={t('legado.079')}></td></tr>
+  <tr data-decade="1940"><td>1946</td><td set:html={t('legado.080')}></td><td>Barcelona</td><td class="eg-note" set:html={t('legado.081')}></td></tr>
+  <tr data-decade="1940"><td>1948</td><td set:html={t('legado.082')}></td><td>Barcelona</td><td class="eg-note" set:html={t('legado.083')}></td></tr>
+  <tr data-decade="1940"><td>c. 1949</td><td set:html={t('legado.084')}></td><td>—</td><td class="eg-note" set:html={t('legado.085')}></td></tr>
+  <tr data-decade="1940 1950"><td set:html={t('legado.086')}></td><td set:html={t('legado.087')}></td><td>Salerno</td><td class="eg-note" set:html={t('legado.088')}></td></tr>
+  <tr data-decade="1950"><td>1951</td><td set:html={t('legado.089')}></td><td>Camprodon</td><td class="eg-note" set:html={t('legado.090')}></td></tr>
+  <tr data-decade="1950"><td>1952</td><td set:html={t('legado.091')}></td><td>Camprodon</td><td class="eg-note" set:html={t('legado.092')}></td></tr>
+  </tbody>
+  </table>
+  </div>
+  <h3 style="margin:30px 0 0;font-size:1.2rem">{t('legado.032')}</h3>
+  <div class="eg-tablewrap">
+  <table class="eg-table">
+  <thead><tr><th>{t('legado.033')}</th><th>{t('legado.034')}</th><th>{t('legado.035')}</th><th>{t('legado.036')}</th></tr></thead>
+  <tbody>
+  <tr data-decade="1920"><td>1927</td><td set:html={t('legado.093')}></td><td>Madrid</td><td set:html={t('legado.094')}></td></tr>
+  <tr data-decade="1930"><td>1930</td><td set:html={t('legado.095')}></td><td>Huelva</td><td set:html={t('legado.096')}></td></tr>
+  <tr data-decade="1930"><td>1932</td><td set:html={t('legado.097')}></td><td>Barcelona</td><td set:html={t('legado.098')}></td></tr>
+  <tr data-decade="1940"><td>1944–1945</td><td set:html={t('legado.099')}></td><td>Galería El Jardín, Barcelona</td><td set:html={t('legado.100')}></td></tr>
+  <tr data-decade="1940"><td>1945</td><td set:html={t('legado.101')}></td><td>Igualada</td><td set:html={t('legado.102')}></td></tr>
+  <tr data-decade="1940"><td>1946</td><td set:html={t('legado.103')}></td><td>Buenos Aires</td><td set:html={t('legado.104')}></td></tr>
+  <tr data-decade="1950"><td>1955</td><td set:html={t('legado.105')}></td><td>Salerno</td><td set:html={t('legado.106')}></td></tr>
+  </tbody>
+  </table>
+  </div>
+  </div>
+  <div class="eg-prose eg-mt-lg" set:html={t('legado.002')}></div>
+
+  </div>
+  </section>
+
+  <section class="eg-section">
+  <div class="eg-container eg-container--narrow">
+  <h2 style="font-size:1.7rem">{t('legado.037')}</h2>
+  <ul class="eg-prose" style="margin-top:12px">
+  <li><strong>Radium</strong> — <span set:html={t('legado.003')}></span></li>
+  <li><strong>Art</strong> — <span set:html={t('legado.004')}></span></li>
+  <li><strong>{t('legado.118')}</strong> — <span set:html={t('legado.005')}></span></li>
+  <li><strong>{t('legado.119')}</strong> — <span set:html={t('legado.006')}></span></li>
+  <li><strong>El Progreso Fotográfico</strong> — <span set:html={t('legado.007')}></span></li>
+  <li><strong>Meridià</strong> — <span set:html={t('legado.008')}></span></li>
+  <li><strong>El Español</strong> — <span set:html={t('legado.009')}></span></li>
+  <li><strong>{t('legado.120')}</strong> — <span set:html={t('legado.010')}></span></li>
+  <li><strong>San Jorge</strong> — <span set:html={t('legado.011')}></span></li>
+  <li><strong>{t('legado.121')}</strong> — <span set:html={t('legado.012')}></span></li>
+  </ul>
+  </div>
+  </section>
+
+  <section class="eg-section eg-section--tint">
+  <div class="eg-container eg-container--narrow">
+  <h2 style="font-size:1.7rem">{t('legado.038')}</h2>
+  <div class="eg-tablewrap">
+  <table class="eg-table">
+  <thead><tr><th>{t('legado.039')}</th><th>{t('legado.040')}</th><th>{t('legado.041')}</th></tr></thead>
+  <tbody>
+  <tr><td>1927</td><td>Agrupación Excursionista Júpiter</td><td set:html={t('legado.107')}></td></tr>
+  <tr><td>1932</td><td set:html={t('legado.108')}></td><td set:html={t('legado.109')}></td></tr>
+  <tr><td>1935</td><td>Agrupación Fotográfica Saint Victor</td><td set:html={t('legado.110')}></td></tr>
+  </tbody>
+  </table>
+  </div>
+  </div>
+  </section>
+
+  <section class="eg-section">
+  <div class="eg-container">
+  <h2 style="font-size:1.7rem">{t('legado.042')}</h2>
+  <div class="eg-grid" style="margin-top:16px">
+  <div class="eg-card"><h3>{t('legado.043')}</h3><p>Antoni Arissa · Narcís Ricart · Pere Català Pic · Josep Sala · Josep Masana · Josep Maria Lladó · Gabriel Casas · Claudi Carbonell · Joaquim Pla Janini · Sebastià Gasch · Carlos Sindreu</p></div>
+  <div class="eg-card"><h3>{t('legado.044')}</h3><p set:html={t('legado.111')}></p></div>
+  <div class="eg-card"><h3>{t('legado.045')}</h3><p set:html={t('legado.112')}></p></div>
+  </div>
+  </div>
+  </section>
+
+  <section class="eg-section eg-section--tint">
+  <div class="eg-container">
+  <h2 style="font-size:1.7rem">{t('legado.046')}</h2>
+  <div class="eg-inst"><h3 set:html={t('legado.113')}></h3><p set:html={t('legado.013')}></p></div>
+  <div class="eg-inst"><h3 set:html={t('legado.114')}></h3><p set:html={t('legado.014')}></p></div>
+  <div class="eg-inst"><h3 set:html={t('legado.115')}></h3><p set:html={t('legado.015')}></p></div>
+  <div class="eg-inst"><h3 set:html={t('legado.116')}></h3><p set:html={t('legado.016')}></p></div>
+  <div class="eg-inst"><h3 set:html={t('legado.117')}></h3><p set:html={t('legado.017')}></p></div>
+  </div>
+  </section>
+
+  <section class="eg-section">
+  <div class="eg-container eg-container--narrow">
+  <h2 style="font-size:1.7rem">{t('legado.047')}</h2>
+  <ul class="eg-prose" style="margin-top:12px">
+  <li set:html={t('legado.018')}></li>
+
+  <li set:html={t('legado.019')}></li>
+
+  <li set:html={t('legado.020')}></li>
+
+  <li set:html={t('legado.021')}></li>
+
+  <li set:html={t('legado.022')}></li>
+
+  </ul>
+  <p class="eg-note" style="margin-top:18px">{t('legado.048')}</p>
+  <div class="eg-related">
+  <a href={`${base}investigacion/`}>{t('legado.049')}</a>
+  </div>
+  </div>
+  </section>
+  <script>
+    // Filtro por década de las tablas de premios y exposiciones
+    const bar = document.querySelector('[data-decade-filter]');
+    bar?.addEventListener('click', (e) => {
+      const chip = (e.target as HTMLElement).closest<HTMLElement>('.eg-chip');
+      if (!chip) return;
+      const dec = chip.dataset.decade;
+      bar.querySelectorAll('.eg-chip').forEach((c) => c.classList.toggle('is-active', c === chip));
+      document.querySelectorAll<HTMLElement>('[data-decades] tbody tr').forEach((row) => {
+        const ds = (row.getAttribute('data-decade') || '').split(' ');
+        row.classList.toggle('is-hidden', dec !== 'all' && !ds.includes(dec!));
+      });
+    });
+  </script>
+</Base>

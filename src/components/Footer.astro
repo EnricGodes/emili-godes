@@ -1,0 +1,33 @@
+---
+import { useT, type Lang } from '../i18n';
+import { PAGES } from '../lib/site';
+import LangSwitch from './LangSwitch.astro';
+interface Props { lang: Lang; path: string }
+const { lang, path } = Astro.props;
+const t = useT(lang);
+const base = `/${lang}/`;
+const links = PAGES.filter((p) => p.id !== 'home');
+---
+<footer class="eg-footer">
+  <div class="eg-container eg-footer__grid">
+    <div class="eg-footer__about">
+      <div class="eg-brand">Emili Godes</div>
+      <p>{t('footer.note')}</p>
+    </div>
+    <nav class="eg-footer__nav" aria-label={t('ui.menu')}>
+      {links.map((p) => <a href={base + p.path}>{t('nav.' + p.id)}</a>)}
+    </nav>
+    <div class="eg-footer__lang">
+      <LangSwitch lang={lang} path={path} variant="list" />
+    </div>
+  </div>
+  <div class="eg-container eg-footer__bottom">
+    <small>{t('footer.copyright')}</small>
+    <nav class="eg-footer__legal" aria-label={t('footer.legal')}>
+      <a href={`${base}legal/aviso-legal/`}>{t('footer.legal')}</a>
+      <a href={`${base}legal/privacidad/`}>{t('footer.privacy')}</a>
+      <a href={`${base}legal/cookies/`}>{t('footer.cookies')}</a>
+      <button type="button" data-cookie-settings>{t('footer.cookieSettings')}</button>
+    </nav>
+  </div>
+</footer>

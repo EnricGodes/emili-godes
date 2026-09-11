@@ -1,0 +1,57 @@
+---
+import Base from '../../layouts/Base.astro';
+import UiJson from '../../components/UiJson.astro';
+import { useT, type Lang } from '../../i18n';
+import { langPaths } from '../../lib/paths';
+import { destacadas, useCatalogText, projectPath, photoUrl, thumbUrl } from '../../lib/catalog';
+import { breadcrumb, imageGallery } from '../../lib/schema';
+export const getStaticPaths = langPaths;
+const lang = Astro.params.lang as Lang;
+const t = useT(lang);
+const base = `/${lang}/`;
+const ct = useCatalogText(lang);
+const title = t('seo.destacadas.title');
+const description = t('seo.destacadas.description');
+const items = destacadas.slice().sort((a, b) => a.orden - b.orden).map((d) => ({
+  d, name: t(d.name), desc: ct.desc(d), place: ct.placeLabel(d.lugar), fondo: ct.fondoLabel(d.fondo),
+  url: projectPath(lang, d.ambito, d.project), theme: ct.ambitoLabel(d.ambito),
+}));
+const viewerPhotos = items.map(({ d, name, desc, place, fondo, url, theme }) => ({
+  image: photoUrl(d.file), title: name, desc, fecha: d.fecha, lugar: place, categoria: theme, fondo,
+  decada: d.decada !== 'sf' ? d.decada + 's' : '', orig: d.orig, theme, project: { name, url },
+}));
+const gallery = imageGallery(lang, { url: `${base}destacadas/`, name: title, description,
+  images: items.map(({ d, name, desc, fondo }) => ({ url: photoUrl(d.file), thumbnail: thumbUrl(d.file), name, caption: desc || undefined, width: d.w, height: d.h, credit: fondo, dateCreated: (d.fecha.match(/\d{4}/) || [])[0] })) });
+---
+<Base lang={lang} title={title} description={description} path="destacadas/" activeNav="destacadas" ogImage={photoUrl(items[0].d.file)}
+  jsonLd={[breadcrumb([{ name: t('breadcrumb.home'), url: base }, { name: t('nav.destacadas'), url: `${base}destacadas/` }]), gallery]}>
+  <section class="eg-section">
+    <div class="eg-container">
+      <p class="eg-kicker">{t('destacadas.002')}</p>
+      <h1 class="eg-page-title">{t('destacadas.003')}</h1>
+      <div class="eg-lead" set:html={t('destacadas.001')}></div>
+      <p class="eg-note" style="margin-top:14px">{t('destacadas.004')}</p>
+      <div class="eg-featgrid">
+        {items.map(({ d, name, place, fondo, url }, i) => (
+          <article class="eg-feat">
+            <button type="button" class="eg-feat__img" data-photo-index={i} aria-label={name} style="width:100%;border:0;padding:0;cursor:pointer">
+              <img src={thumbUrl(d.file)} width={d.w} height={d.h} alt={name} loading={i < 4 ? 'eager' : 'lazy'} decoding="async" />
+            </button>
+            <div class="eg-feat__body">
+              <div class="eg-feat__title">{name}</div>
+              <div class="eg-feat__meta">{[d.fecha, place, fondo].filter(Boolean).join(' · ')}</div>
+              <a class="eg-feat__src" href={url}>{t('obra.projectPage')} →</a>
+            </div>
+          </article>
+        ))}
+      </div>
+      <div class="eg-related">
+        <a href={`${base}obra/`}>{t('destacadas.005')}</a>
+        <a href={`${base}mirada-moderna/`}>{t('destacadas.006')}</a>
+      </div>
+    </div>
+  </section>
+  <UiJson lang={lang} />
+  <script is:inline type="application/json" id="eg-photos" set:html={JSON.stringify(viewerPhotos)} />
+  <script src="../../scripts/gallery.ts"></script>
+</Base>

@@ -1,0 +1,42 @@
+---
+import { LOCALES, LANG_NAMES, useT, type Lang } from '../i18n';
+interface Props { lang: Lang; path: string; variant?: 'menu' | 'list' }
+const { lang, path, variant = 'menu' } = Astro.props;
+const t = useT(lang);
+---
+{variant === 'list' ? (
+  <ul class="eg-langlist" aria-label={t('ui.language')}>
+    {LOCALES.map((l) => (
+      <li><a href={`/${l}/${path}`} hreflang={l} lang={l} data-setlang={l} class:list={[{ 'is-active': l === lang }]} aria-current={l === lang ? 'true' : undefined}>{LANG_NAMES[l]}</a></li>
+    ))}
+  </ul>
+) : (
+  <div class="eg-langsw">
+    <button type="button" class="eg-langsw__btn" aria-haspopup="true" aria-expanded="false" aria-label={t('ui.language')}>
+      <span>{lang.toUpperCase()}</span>
+      <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><path d="M6 9l6 6 6-6"/></svg>
+    </button>
+    <ul class="eg-langsw__menu">
+      {LOCALES.map((l) => (
+        <li><a href={`/${l}/${path}`} hreflang={l} lang={l} data-setlang={l} class:list={[{ 'is-active': l === lang }]}>{LANG_NAMES[l]}</a></li>
+      ))}
+    </ul>
+  </div>
+)}
+<script>
+  // Recordar el idioma elegido: la raíz "/" redirige según esta cookie antes que por Accept-Language.
+  document.addEventListener('click', (e) => {
+    const a = (e.target as HTMLElement).closest<HTMLAnchorElement>('a[data-setlang]');
+    if (a) document.cookie = `eg_lang=${a.dataset.setlang}; path=/; max-age=31536000; SameSite=Lax`;
+  });
+  document.querySelectorAll<HTMLElement>('.eg-langsw').forEach((sw) => {
+    const btn = sw.querySelector<HTMLButtonElement>('.eg-langsw__btn')!;
+    const toggle = (open?: boolean) => {
+      const o = open ?? !sw.classList.contains('open');
+      sw.classList.toggle('open', o); btn.setAttribute('aria-expanded', String(o));
+    };
+    btn.addEventListener('click', () => toggle());
+    document.addEventListener('click', (e) => { if (!sw.contains(e.target as Node)) toggle(false); });
+    document.addEventListener('keydown', (e) => { if (e.key === 'Escape') toggle(false); });
+  });
+</script>

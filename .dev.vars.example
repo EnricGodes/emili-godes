@@ -1,0 +1,5 @@
+# Variables para `npx wrangler pages dev dist` (copiar a .dev.vars, que está gitignored)
+RESEND_API_KEY=re_xxx
+RESEND_FROM=Emili Godes <no-reply@godes.org>
+CONTACT_TO=tu@email.com
+TURNSTILE_SECRET=

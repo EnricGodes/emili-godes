@@ -1,0 +1,13 @@
+---
+/** Cadenas de UI para los scripts cliente (explorador, visor), en JSON dentro de la página. */
+import { useT, type Lang } from '../i18n';
+interface Props { lang: Lang }
+const { lang } = Astro.props;
+const t = useT(lang);
+const pick = (prefix: string, keys: string[]) => Object.fromEntries(keys.map((k) => [k, t(`${prefix}.${k}`)]));
+const ui = {
+  obra: pick('obra', ['themes', 'allThemes', 'decades', 'funds', 'all', 'search', 'sortCount', 'sortName', 'sortDate', 'photos', 'pick', 'noresults', 'backAll', 'sf', 'loadError', 'projectPage', 'themePage']),
+  viewer: pick('viewer', ['category', 'date', 'place', 'decade', 'fondo', 'signature', 'album', 'description', 'prev', 'next', 'panel', 'share', 'download', 'zoom', 'close', 'downloadError', 'linkCopied']),
+};
+---
+<script is:inline type="application/json" id="eg-ui" set:html={JSON.stringify(ui)} />

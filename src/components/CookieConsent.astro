@@ -1,0 +1,69 @@
+---
+/**
+ * Banner de cookies propio (sin librerías) con Consent Mode v2.
+ * Solo se muestra si hay GTM configurado (sin analítica no hay cookies que consentir).
+ * Elección en cookie `eg_consent` = 'analytics' | 'none' (180 días).
+ */
+import { useT, type Lang } from '../i18n';
+interface Props { lang: Lang; enabled: boolean }
+const { lang, enabled } = Astro.props;
+const t = useT(lang);
+const base = `/${lang}/`;
+---
+{enabled && (
+  <div class="eg-cookie" id="eg-cookie" role="dialog" aria-live="polite" aria-label={t('cookies.title')} hidden>
+    <div class="eg-cookie__box">
+      <h2 class="eg-cookie__title">{t('cookies.title')}</h2>
+      <p class="eg-cookie__text">{t('cookies.text')} <a href={`${base}legal/cookies/`}>{t('cookies.more')}</a></p>
+      <div class="eg-cookie__opts" id="eg-cookie-opts" hidden>
+        <label class="eg-cookie__opt">
+          <input type="checkbox" checked disabled />
+          <span><strong>{t('cookies.necessary')}</strong><br /><small>{t('cookies.necessaryDesc')}</small></span>
+        </label>
+        <label class="eg-cookie__opt">
+          <input type="checkbox" id="eg-cookie-analytics" />
+          <span><strong>{t('cookies.analytics')}</strong><br /><small>{t('cookies.analyticsDesc')}</small></span>
+        </label>
+      </div>
+      <div class="eg-cookie__actions">
+        <button type="button" class="eg-btn eg-btn--solid" data-consent="accept">{t('cookies.accept')}</button>
+        <button type="button" class="eg-btn eg-btn--outline" data-consent="reject">{t('cookies.reject')}</button>
+        <button type="button" class="eg-btn eg-btn--ghostdark" data-consent="settings">{t('cookies.settings')}</button>
+        <button type="button" class="eg-btn eg-btn--solid" data-consent="save" hidden>{t('cookies.save')}</button>
+      </div>
+    </div>
+  </div>
+)}
+<script>
+  const box = document.getElementById('eg-cookie');
+  if (box) {
+    const opts = document.getElementById('eg-cookie-opts')!;
+    const chk = document.getElementById('eg-cookie-analytics') as HTMLInputElement;
+    const btn = (n: string) => box.querySelector<HTMLButtonElement>(`[data-consent="${n}"]`)!;
+    const read = () => document.cookie.match(/(?:^|; )eg_consent=([^;]*)/)?.[1];
+    const w = window as any;
+    function apply(analytics: boolean) {
+      document.cookie = `eg_consent=${analytics ? 'analytics' : 'none'}; path=/; max-age=${180 * 86400}; SameSite=Lax`;
+      w.dataLayer = w.dataLayer || [];
+      w.dataLayer.push({ event: 'consent_update', analytics_storage: analytics ? 'granted' : 'denied' });
+      if (typeof w.gtag === 'function') w.gtag('consent', 'update', { analytics_storage: analytics ? 'granted' : 'denied' });
+      else w.dataLayer.push(['consent', 'update', { analytics_storage: analytics ? 'granted' : 'denied' }]);
+      box!.hidden = true;
+    }
+    function open(settings = false) {
+      box!.hidden = false;
+      opts.hidden = !settings;
+      btn('save').hidden = !settings;
+      btn('settings').hidden = settings;
+      chk.checked = read() === 'analytics';
+    }
+    btn('accept').addEventListener('click', () => apply(true));
+    btn('reject').addEventListener('click', () => apply(false));
+    btn('settings').addEventListener('click', () => open(true));
+    btn('save').addEventListener('click', () => apply(chk.checked));
+    document.querySelectorAll('[data-cookie-settings]').forEach((b) => b.addEventListener('click', () => open(true)));
+    if (!read()) open(false);
+  } else {
+    document.querySelectorAll<HTMLElement>('[data-cookie-settings]').forEach((b) => (b.hidden = true));
+  }
+</script>

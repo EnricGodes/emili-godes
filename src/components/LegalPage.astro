@@ -1,0 +1,27 @@
+---
+import Base from '../layouts/Base.astro';
+import { useT, type Lang } from '../i18n';
+interface Props { lang: Lang; id: 'aviso' | 'privacy' | 'cookies'; slug: string; seo: string }
+const { lang, id, slug, seo } = Astro.props;
+const t = useT(lang);
+const base = `/${lang}/`;
+const title = t(`legal.${id}.title`);
+const body = t(`legal.${id}.body`).replace(/\{\{contactVia\}\}/g, t('legal.contactVia'));
+const path = `legal/${slug}/`;
+const description = title + ' · ' + t('legal.holder') + ' · emili.godes.org';
+---
+<Base lang={lang} title={t(seo)} description={description} path={path} noindex>
+  <section class="eg-section">
+    <div class="eg-container eg-container--narrow">
+      <nav class="eg-breadcrumb" aria-label={t('ui.breadcrumb')}><ol><li><a href={base}>{t('breadcrumb.home')}</a></li><li aria-current="page">{title}</li></ol></nav>
+      <h1 class="eg-page-title">{title}</h1>
+      <p class="eg-note">{t('legal.updated')}</p>
+      <div class="eg-prose eg-legal" set:html={body}></div>
+      <nav class="eg-related" aria-label="Legal">
+        {slug !== 'aviso-legal' && <a href={`${base}legal/aviso-legal/`}>{t('legal.nav.legal')}</a>}
+        {slug !== 'privacidad' && <a href={`${base}legal/privacidad/`}>{t('legal.nav.privacy')}</a>}
+        {slug !== 'cookies' && <a href={`${base}legal/cookies/`}>{t('legal.nav.cookies')}</a>}
+      </nav>
+    </div>
+  </section>
+</Base>

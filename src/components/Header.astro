@@ -1,0 +1,52 @@
+---
+import { useT, type Lang } from '../i18n';
+import { PAGES } from '../lib/site';
+import LangSwitch from './LangSwitch.astro';
+
+interface Props { lang: Lang; path: string; activeNav?: string }
+const { lang, path, activeNav } = Astro.props;
+const t = useT(lang);
+const base = `/${lang}/`;
+const nav = PAGES.filter((p) => p.nav);
+const drawerExtra = PAGES.filter((p) => ['creditos', 'contacto'].includes(p.id));
+---
+<header class="eg-header">
+  <div class="eg-header__inner">
+    <a class="eg-brand" href={base}>Emili Godes</a>
+    <nav class="eg-nav" aria-label={t('ui.menu')}>
+      {nav.map((p) => (
+        <a href={base + p.path} class:list={[{ 'is-active': activeNav === p.id }]} aria-current={activeNav === p.id ? 'page' : undefined}>{t('nav.' + p.id)}</a>
+      ))}
+    </nav>
+    <div class="eg-tools">
+      <LangSwitch lang={lang} path={path} />
+    </div>
+    <button class="eg-burger" type="button" aria-label={t('ui.menu')} aria-expanded="false" aria-controls="eg-drawer">
+      <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M4 7h16M4 12h16M4 17h16"/></svg>
+    </button>
+  </div>
+</header>
+<div class="eg-drawer-backdrop" id="eg-drawer-backdrop"></div>
+<nav class="eg-drawer" id="eg-drawer" aria-label={t('ui.menu')}>
+  <button class="eg-drawer__close" type="button" aria-label={t('ui.close')}>
+    <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M6 6l12 12M18 6L6 18"/></svg>
+  </button>
+  <a href={base}>{t('nav.home')}</a>
+  {nav.concat(drawerExtra).map((p) => (
+    <a href={base + p.path} class:list={[{ 'is-active': activeNav === p.id }]}>{t('nav.' + p.id)}</a>
+  ))}
+  <div class="eg-drawer__lang">
+    <LangSwitch lang={lang} path={path} variant="list" />
+  </div>
+</nav>
+<script>
+  const header = document.querySelector('.eg-header');
+  const drawer = document.getElementById('eg-drawer');
+  const backdrop = document.getElementById('eg-drawer-backdrop');
+  const burger = header?.querySelector<HTMLButtonElement>('.eg-burger');
+  function close() { drawer?.classList.remove('open'); backdrop?.classList.remove('open'); burger?.setAttribute('aria-expanded', 'false'); }
+  burger?.addEventListener('click', () => { drawer?.classList.add('open'); backdrop?.classList.add('open'); burger.setAttribute('aria-expanded', 'true'); });
+  drawer?.querySelector('.eg-drawer__close')?.addEventListener('click', close);
+  backdrop?.addEventListener('click', close);
+  document.addEventListener('keydown', (e) => { if (e.key === 'Escape') close(); });
+</script>

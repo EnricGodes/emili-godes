@@ -1,0 +1,68 @@
+---
+import Base from '../../layouts/Base.astro';
+import { useT, type Lang } from '../../i18n';
+import { langPaths } from '../../lib/paths';
+import { breadcrumb } from '../../lib/schema';
+import { TURNSTILE_SITE_KEY, CONTACT_FALLBACK_EMAIL } from '../../lib/site';
+export const getStaticPaths = langPaths;
+const lang = Astro.params.lang as Lang;
+const t = useT(lang);
+const base = `/${lang}/`;
+const title = t('seo.contacto.title');
+const description = t('seo.contacto.description');
+const strings = { sending: t('contact.sending'), sent: t('contact.sent'), error: t('contact.error'), send: t('contact.send') };
+---
+<Base lang={lang} title={title} description={description} path="contacto/" activeNav="contacto"
+  jsonLd={[breadcrumb([{ name: t('breadcrumb.home'), url: base }, { name: t('nav.contacto'), url: `${base}contacto/` }])]}>
+  <section class="eg-section">
+    <div class="eg-container eg-container--narrow">
+      <p class="eg-kicker">{t('contact.kicker')}</p>
+      <h1 class="eg-page-title">{t('contact.title')}</h1>
+      <p class="eg-lead">{t('contact.lead')}</p>
+
+      <form class="eg-form" id="eg-contact" method="post" action="/api/contact" novalidate data-strings={JSON.stringify(strings)}>
+        <input type="hidden" name="lang" value={lang} />
+        <label>{t('contact.name')} <input type="text" name="name" required maxlength="120" autocomplete="name" /></label>
+        <label>{t('contact.email')} <input type="email" name="email" required maxlength="200" autocomplete="email" /></label>
+        <label>{t('contact.message')} <textarea name="message" required maxlength="5000"></textarea></label>
+        <label class="eg-hp" aria-hidden="true">Website <input type="text" name="website" tabindex="-1" autocomplete="off" /></label>
+        <label class="eg-form__consent"><input type="checkbox" name="consent" required /><span set:html={t('contact.consent')}></span></label>
+        {TURNSTILE_SITE_KEY && <div class="cf-turnstile" data-sitekey={TURNSTILE_SITE_KEY} data-language={lang}></div>}
+        <div><button class="eg-btn eg-btn--solid" type="submit">{t('contact.send')}</button></div>
+        <p class="eg-form__status" id="eg-contact-status" hidden></p>
+      </form>
+      <p class="eg-note" style="margin-top:22px">{t('contact.note')}</p>
+      {CONTACT_FALLBACK_EMAIL && <p class="eg-note"><a href={`mailto:${CONTACT_FALLBACK_EMAIL}`}>{CONTACT_FALLBACK_EMAIL}</a></p>}
+      <div class="eg-related">
+        <a href={`${base}creditos/`}>{t('nav.creditos')} →</a>
+      </div>
+    </div>
+  </section>
+  {TURNSTILE_SITE_KEY && <script is:inline src="https://challenges.cloudflare.com/turnstile/v0/api.js" async defer></script>}
+  <script>
+    const form = document.getElementById('eg-contact') as HTMLFormElement | null;
+    if (form) {
+      const S = JSON.parse(form.dataset.strings!);
+      const status = document.getElementById('eg-contact-status')!;
+      const btn = form.querySelector<HTMLButtonElement>('button[type=submit]')!;
+      form.addEventListener('submit', async (e) => {
+        e.preventDefault();
+        if (!form.reportValidity()) return;
+        btn.disabled = true; btn.textContent = S.sending; status.hidden = true;
+        try {
+          const fd = new FormData(form);
+          const r = await fetch(form.action, { method: 'POST', body: fd, headers: { Accept: 'application/json' } });
+          const j = await r.json().catch(() => ({}));
+          if (!r.ok || !j.ok) throw new Error(j.error || String(r.status));
+          status.textContent = S.sent; status.className = 'eg-form__status is-ok'; status.hidden = false;
+          form.reset();
+        } catch {
+          status.textContent = S.error; status.className = 'eg-form__status is-error'; status.hidden = false;
+        } finally {
+          btn.disabled = false; btn.textContent = S.send;
+          (window as any).turnstile?.reset?.();
+        }
+      });
+    }
+  </script>
+</Base>
