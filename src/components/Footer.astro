@@ -2,8 +2,8 @@
 import { useT, type Lang } from '../i18n';
 import { PAGES } from '../lib/site';
 import LangSwitch from './LangSwitch.astro';
-interface Props { lang: Lang; path: string }
-const { lang, path } = Astro.props;
+interface Props { lang: Lang; path: string; alternates?: Record<Lang, string> }
+const { lang, path, alternates } = Astro.props;
 const t = useT(lang);
 const base = `/${lang}/`;
 const links = PAGES.filter((p) => p.id !== 'home');
@@ -18,7 +18,7 @@ const links = PAGES.filter((p) => p.id !== 'home');
       {links.map((p) => <a href={base + p.path}>{t('nav.' + p.id)}</a>)}
     </nav>
     <div class="eg-footer__lang">
-      <LangSwitch lang={lang} path={path} variant="list" />
+      <LangSwitch lang={lang} path={path} alternates={alternates} variant="list" />
     </div>
   </div>
   <div class="eg-container eg-footer__bottom">

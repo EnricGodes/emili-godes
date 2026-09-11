@@ -4,7 +4,7 @@
  */
 import catalogJson from '../data/catalog.json';
 import destacadasJson from '../data/destacadas.json';
-import { photoDesc, useT, type Lang } from '../i18n';
+import { LOCALES, photoDesc, useT, type Lang } from '../i18n';
 
 export interface Photo {
   orig: string;
@@ -59,10 +59,6 @@ export const THUMB_URL = '/photos/obra/thumbs/';
 export const photoUrl = (file: string) => PHOTO_URL + file;
 export const thumbUrl = (file: string) => THUMB_URL + file;
 
-/** Slug de URL de un ámbito: guiones en vez de guiones bajos. */
-export const ambitoUrlSlug = (ambito: string) => ambito.replace(/_/g, '-');
-export const ambitoFromUrlSlug = (slug: string) => slug.replace(/-/g, '_');
-
 export const projectCount = () =>
   Object.values(catalog.ambitos).reduce((n, a) => n + a.projects.length, 0);
 
@@ -107,10 +103,53 @@ export function useCatalogText(lang: Lang) {
   return { t, ambitoLabel, fondoLabel, placeLabel, projectName, desc, photoTitle, decadeLabel, orderedAmbitos };
 }
 
-/** Rutas de las fichas estáticas. */
-export const ambitoPath = (lang: Lang, ambito: string) => `/${lang}/obra/${ambitoUrlSlug(ambito)}/`;
+/** Slug de URL a partir de un texto (misma regla que scripts/import_inventory.py). */
+export function slugify(text: string): string {
+  const t = (text || '').normalize('NFD').replace(/[\u0300-\u036f]/g, '').replace(/[^a-zA-Z0-9]+/g, '-').replace(/^-+|-+$/g, '').toLowerCase();
+  return t || 'sin-titulo';
+}
+
+/**
+ * Slugs de URL por idioma: la temática y el proyecto se nombran con su etiqueta traducida
+ * (/ca/obra/ciencia-i-medicina/…, /en/obra/science-and-medicine/…). Sin traducción → castellano.
+ * Las colisiones dentro de una temática se resuelven con sufijo -2, -3… en orden estable (slug ES).
+ */
+interface LangSlugs { ambito: Record<string, string>; ambitoByUrl: Record<string, string>; project: Record<string, Record<string, string>>; projectByUrl: Record<string, Record<string, string>> }
+const slugCache = new Map<Lang, LangSlugs>();
+function langSlugs(lang: Lang): LangSlugs {
+  let ls = slugCache.get(lang);
+  if (ls) return ls;
+  const t = useT(lang);
+  ls = { ambito: {}, ambitoByUrl: {}, project: {}, projectByUrl: {} };
+  const usedA = new Set<string>();
+  for (const amb of catalog.ambito_order) {
+    let s = slugify(t('category.' + amb)), n = 2;
+    while (usedA.has(s)) s = slugify(t('category.' + amb)) + '-' + n++;
+    usedA.add(s); ls.ambito[amb] = s; ls.ambitoByUrl[s] = amb;
+    const used = new Set<string>();
+    ls.project[amb] = {}; ls.projectByUrl[amb] = {};
+    for (const p of catalog.ambitos[amb].projects.slice().sort((a, b) => a.slug.localeCompare(b.slug))) {
+      const base = slugify(t(p.name));
+      let ps = base, k = 2;
+      while (used.has(ps)) ps = base + '-' + k++;
+      used.add(ps); ls.project[amb][p.slug] = ps; ls.projectByUrl[amb][ps] = p.slug;
+    }
+  }
+  slugCache.set(lang, ls);
+  return ls;
+}
+export const ambitoUrlSlug = (lang: Lang, ambito: string) => langSlugs(lang).ambito[ambito];
+export const projectUrlSlug = (lang: Lang, ambito: string, slug: string) => langSlugs(lang).project[ambito][slug];
+
+/** Rutas de las fichas estáticas (relativas a la raíz, con idioma). */
+export const ambitoPath = (lang: Lang, ambito: string) => `/${lang}/obra/${ambitoUrlSlug(lang, ambito)}/`;
 export const projectPath = (lang: Lang, ambito: string, slug: string) =>
-  `/${lang}/obra/${ambitoUrlSlug(ambito)}/${slug}/`;
+  `/${lang}/obra/${ambitoUrlSlug(lang, ambito)}/${projectUrlSlug(lang, ambito, slug)}/`;
+/** Mismas rutas en todos los idiomas (para hreflang), relativas a /{lang}/. */
+export const ambitoAlternates = (ambito: string) =>
+  Object.fromEntries(LOCALES.map((l) => [l, ambitoPath(l, ambito).slice(4)])) as Record<Lang, string>;
+export const projectAlternates = (ambito: string, slug: string) =>
+  Object.fromEntries(LOCALES.map((l) => [l, projectPath(l, ambito, slug).slice(4)])) as Record<Lang, string>;
 export const explorerHash = (ambito: string, slug?: string, idx?: number) =>
   '#' + ambito + (slug ? '/' + slug + (idx != null ? '/' + idx : '') : '');
 

@@ -3,5 +3,5 @@ Allow: /
 Disallow: /api/
 Disallow: /data/
 
-Sitemap: https://emili.godes.org/sitemap-index.xml
+Sitemap: https://emili.godes.org/sitemap.xml
 Sitemap: https://emili.godes.org/sitemap-images.xml

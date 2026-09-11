@@ -1,13 +1,14 @@
 ---
 import { LOCALES, LANG_NAMES, useT, type Lang } from '../i18n';
-interface Props { lang: Lang; path: string; variant?: 'menu' | 'list' }
-const { lang, path, variant = 'menu' } = Astro.props;
+interface Props { lang: Lang; path: string; alternates?: Record<Lang, string>; variant?: 'menu' | 'list' }
+const { lang, path, alternates, variant = 'menu' } = Astro.props;
+const hrefOf = (l: Lang) => `/${l}/${alternates ? alternates[l] : path}`;
 const t = useT(lang);
 ---
 {variant === 'list' ? (
   <ul class="eg-langlist" aria-label={t('ui.language')}>
     {LOCALES.map((l) => (
-      <li><a href={`/${l}/${path}`} hreflang={l} lang={l} data-setlang={l} class:list={[{ 'is-active': l === lang }]} aria-current={l === lang ? 'true' : undefined}>{LANG_NAMES[l]}</a></li>
+      <li><a href={hrefOf(l)} hreflang={l} lang={l} data-setlang={l} class:list={[{ 'is-active': l === lang }]} aria-current={l === lang ? 'true' : undefined}>{LANG_NAMES[l]}</a></li>
     ))}
   </ul>
 ) : (
@@ -18,7 +19,7 @@ const t = useT(lang);
     </button>
     <ul class="eg-langsw__menu">
       {LOCALES.map((l) => (
-        <li><a href={`/${l}/${path}`} hreflang={l} lang={l} data-setlang={l} class:list={[{ 'is-active': l === lang }]}>{LANG_NAMES[l]}</a></li>
+        <li><a href={hrefOf(l)} hreflang={l} lang={l} data-setlang={l} class:list={[{ 'is-active': l === lang }]}>{LANG_NAMES[l]}</a></li>
       ))}
     </ul>
   </div>

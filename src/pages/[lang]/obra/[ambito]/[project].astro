@@ -2,7 +2,7 @@
 import Base from '../../../../layouts/Base.astro';
 import UiJson from '../../../../components/UiJson.astro';
 import { LOCALES, useT, type Lang } from '../../../../i18n';
-import { catalog, useCatalogText, ambitoUrlSlug, ambitoPath, projectPath, photoUrl, thumbUrl, type Project } from '../../../../lib/catalog';
+import { catalog, useCatalogText, ambitoUrlSlug, projectUrlSlug, ambitoPath, projectPath, projectAlternates, photoUrl, thumbUrl, type Project } from '../../../../lib/catalog';
 import { breadcrumb, imageGallery } from '../../../../lib/schema';
 
 export function getStaticPaths() {
@@ -11,7 +11,7 @@ export function getStaticPaths() {
     for (const ambito of catalog.ambito_order) {
       const projects = catalog.ambitos[ambito].projects.slice().sort((x, y) => (x.year || 9999) - (y.year || 9999));
       projects.forEach((p, i) => out.push({
-        params: { lang, ambito: ambitoUrlSlug(ambito), project: p.slug },
+        params: { lang, ambito: ambitoUrlSlug(lang, ambito), project: projectUrlSlug(lang, ambito, p.slug) },
         props: { ambitoKey: ambito, project: p, prev: projects[i - 1] || null, next: projects[i + 1] || null },
       }));
     }
@@ -27,7 +27,8 @@ const name = ct.projectName(p);
 const theme = ct.ambitoLabel(ambitoKey);
 const place = ct.placeLabel(p.lugar);
 const fondos = p.fondos.map(ct.fondoLabel);
-const path = `obra/${ambitoUrlSlug(ambitoKey)}/${p.slug}/`;
+const path = projectPath(lang, ambitoKey, p.slug).slice(4);
+const alternates = projectAlternates(ambitoKey, p.slug);
 const url = base + path;
 const metaBits = [place, p.fecha].filter(Boolean).join(', ');
 const title = t('seo.project.title', { name });
@@ -58,7 +59,7 @@ const crumbs = breadcrumb([
   { name: theme, url: ambitoPath(lang, ambitoKey) }, { name, url },
 ]);
 ---
-<Base lang={lang} title={title} description={description} path={path} activeNav="obra" ogType="article" ogImage={photoUrl(p.cover)} jsonLd={[crumbs, gallery]}>
+<Base lang={lang} title={title} description={description} path={path} alternates={alternates} activeNav="obra" ogType="article" ogImage={photoUrl(p.cover)} jsonLd={[crumbs, gallery]}>
   <section class="eg-section" style="padding-bottom:2rem">
     <div class="eg-container">
       <nav class="eg-breadcrumb" aria-label={t('ui.breadcrumb')}>

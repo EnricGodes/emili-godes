@@ -51,7 +51,7 @@ registro `send.godes.org` (MX de rebotes de Resend, en subdominio aparte: no int
 
 ## 8. Checklist tras el primer deploy
 - [ ] `https://emili.godes.org/es/` 200 y `https://emili.godes.org/` 302
-- [ ] `https://emili.godes.org/sitemap-index.xml`, `/sitemap-images.xml`, `/robots.txt`
+- [ ] `https://emili.godes.org/sitemap.xml`, `/sitemap-images.xml`, `/robots.txt`
 - [ ] Search Console: propiedad `emili.godes.org` (dominio, por DNS TXT en Namecheap) → Sitemaps → enviar los dos
 - [ ] Bing Webmaster Tools → Import from Google Search Console
 - [ ] Formulario de contacto: enviar una prueba

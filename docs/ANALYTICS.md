@@ -25,7 +25,7 @@ Eventos útiles que se pueden añadir en GTM (opcional): clic en `[data-vw="down
 1. https://search.google.com/search-console → Añadir propiedad → **Dominio** `emili.godes.org` → verificación por registro DNS TXT
    (Namecheap → Advanced DNS → TXT Record · Host `emili` · Value `google-site-verification=…`).
    Alternativa: propiedad *Prefijo de URL* `https://emili.godes.org/` con meta tag → `PUBLIC_GSC_VERIFICATION=<token>` y re-desplegar.
-2. Sitemaps → enviar `https://emili.godes.org/sitemap-index.xml` y `https://emili.godes.org/sitemap-images.xml`.
+2. Sitemaps → enviar `https://emili.godes.org/sitemap.xml` y `https://emili.godes.org/sitemap-images.xml`.
 3. Al cabo de unos días: *Páginas* (cobertura), *Rendimiento* (consultas: emili godes, nova objectivitat, plácido fotos rodaje, laboratoris esteve…), *Mejoras → Rutas de exploración / Vídeos*.
 4. Inspección de URL de una ficha de proyecto para comprobar hreflang y datos estructurados (ImageGallery, BreadcrumbList).
 

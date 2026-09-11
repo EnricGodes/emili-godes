@@ -28,16 +28,19 @@ interface Props {
   bodyClass?: string;
   /** Página con nav activa (id de PAGES). */
   activeNav?: string;
+  /** Ruta de esta página en cada idioma (relativa a /{lang}/) cuando los slugs cambian por idioma. */
+  alternates?: Record<Lang, string>;
 }
 const {
   lang, title, description, path, ogImage = '/assets/og/default.jpg', ogType = 'website',
-  noindex = false, jsonLd = [], bodyClass = '', activeNav,
+  noindex = false, jsonLd = [], bodyClass = '', activeNav, alternates,
 } = Astro.props;
+const altPath = (l: Lang) => (alternates ? alternates[l] : path);
 const t = useT(lang);
 const canonical = `${SITE_URL}/${lang}/${path}`;
 const fullTitle = path === '' || title.includes(SITE_NAME) ? title : `${title} · ${SITE_NAME}`;
 const ogImageAbs = ogImage.startsWith('http') ? ogImage : SITE_URL + ogImage;
-const xDefault = path === '' ? `${SITE_URL}/` : `${SITE_URL}/${DEFAULT_LANG}/${path}`;
+const xDefault = path === '' ? `${SITE_URL}/` : `${SITE_URL}/${DEFAULT_LANG}/${altPath(DEFAULT_LANG)}`;
 const gtm = GTM_ID;
 ---
 <!doctype html>
@@ -48,7 +51,7 @@ const gtm = GTM_ID;
     <title>{fullTitle}</title>
     <meta name="description" content={description} />
     <link rel="canonical" href={canonical} />
-    {LOCALES.map((l) => <link rel="alternate" hreflang={l} href={`${SITE_URL}/${l}/${path}`} />)}
+    {LOCALES.map((l) => <link rel="alternate" hreflang={l} href={`${SITE_URL}/${l}/${altPath(l)}`} />)}
     <link rel="alternate" hreflang="x-default" href={xDefault} />
     {noindex ? <meta name="robots" content="noindex, follow" /> : <meta name="robots" content="index, follow, max-image-preview:large" />}
     <meta property="og:site_name" content={SITE_NAME} />
@@ -69,7 +72,7 @@ const gtm = GTM_ID;
     <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
     <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
     <link rel="manifest" href="/manifest.webmanifest" />
-    <link rel="sitemap" href="/sitemap-index.xml" />
+    <link rel="sitemap" href="/sitemap.xml" />
     {jsonLd.map((obj) => <script type="application/ld+json" set:html={JSON.stringify(obj)} />)}
     {gtm && (
       <script is:inline define:vars={{ gtm }}>
@@ -101,7 +104,7 @@ const gtm = GTM_ID;
     <main id="main">
       <slot />
     </main>
-    <Footer lang={lang} path={path} />
+    <Footer lang={lang} path={path} alternates={alternates} />
     <CookieConsent lang={lang} enabled={!!gtm} />
   </body>
 </html>

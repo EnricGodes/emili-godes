@@ -1,11 +1,11 @@
 ---
 import Base from '../../../../layouts/Base.astro';
 import { LOCALES, useT, type Lang } from '../../../../i18n';
-import { catalog, useCatalogText, ambitoUrlSlug, ambitoPath, projectPath, thumbUrl } from '../../../../lib/catalog';
+import { catalog, useCatalogText, ambitoUrlSlug, ambitoPath, ambitoAlternates, projectPath, thumbUrl } from '../../../../lib/catalog';
 import { breadcrumb, article } from '../../../../lib/schema';
 
 export function getStaticPaths() {
-  return LOCALES.flatMap((lang) => catalog.ambito_order.map((ambito) => ({ params: { lang, ambito: ambitoUrlSlug(ambito) }, props: { ambitoKey: ambito } })));
+  return LOCALES.flatMap((lang) => catalog.ambito_order.map((ambito) => ({ params: { lang, ambito: ambitoUrlSlug(lang, ambito) }, props: { ambitoKey: ambito } })));
 }
 const lang = Astro.params.lang as Lang;
 const { ambitoKey } = Astro.props as { ambitoKey: string };
@@ -14,13 +14,14 @@ const t = useT(lang);
 const ct = useCatalogText(lang);
 const base = `/${lang}/`;
 const label = ct.ambitoLabel(ambitoKey);
-const path = `obra/${ambitoUrlSlug(ambitoKey)}/`;
+const path = `obra/${ambitoUrlSlug(lang, ambitoKey)}/`;
+const alternates = ambitoAlternates(ambitoKey);
 const title = t('seo.ambito.title', { name: label });
 const description = t('seo.ambito.description', { name: label, count: a.count, projects: a.projects.length });
 const projects = a.projects.slice().sort((x, y) => (x.year || 9999) - (y.year || 9999));
 const others = ct.orderedAmbitos().filter((k) => k !== ambitoKey);
 ---
-<Base lang={lang} title={title} description={description} path={path} activeNav="obra" ogType="article" ogImage={'/photos/obra/' + projects[0].cover}
+<Base lang={lang} title={title} description={description} path={path} alternates={alternates} activeNav="obra" ogType="article" ogImage={'/photos/obra/' + projects[0].cover}
   jsonLd={[
     breadcrumb([{ name: t('breadcrumb.home'), url: base }, { name: t('breadcrumb.obra'), url: `${base}obra/` }, { name: label, url: base + path }]),
     article(lang, { url: base + path, headline: title, description, image: '/photos/obra/' + projects[0].cover }),
