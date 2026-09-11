@@ -70,10 +70,10 @@ const crumbs = breadcrumb([
         </ol>
       </nav>
       <div class="eg-projhead">
-        <div>
           <p class="eg-kicker">{theme}</p>
-          <h1 class="eg-page-title">{name}</h1>
+          <h1 class="eg-page-title eg-page-title--project">{name}</h1>
           <ul class="eg-meta">
+            <li><span class="eg-meta__label">{t('obra.photos')}</span><span class="eg-meta__value">{p.count}</span></li>
             {place && <li><span class="eg-meta__label">{t('project.place')}</span><span class="eg-meta__value">{place}</span></li>}
             {p.fecha && <li><span class="eg-meta__label">{t('project.date')}</span><span class="eg-meta__value">{p.fecha}</span></li>}
             <li><span class="eg-meta__label">{fondos.length > 1 ? t('project.fondos') : t('project.fondo')}</span><span class="eg-meta__value">{fondos.join(', ')}</span></li>
@@ -82,8 +82,6 @@ const crumbs = breadcrumb([
           <div class="eg-projactions">
             <a class="eg-btn eg-btn--outline eg-btn--sm" href={`${base}obra/#${ambitoKey}/${p.slug}`}>{t('obra.openExplorer')}</a>
           </div>
-        </div>
-        <div class="eg-stat"><strong>{p.count}</strong><span>{t('obra.photos')}</span></div>
       </div>
     </div>
   </section>

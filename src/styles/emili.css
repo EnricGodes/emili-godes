@@ -444,9 +444,7 @@ tr.is-hidden { display: none; }
 .eg-breadcrumb a:hover { text-decoration: underline; }
 
 /* ── Ficha de proyecto / temática ──────────────────────────────────────── */
-.eg-projhead { display: grid; grid-template-columns: minmax(0, 1fr) auto; gap: 24px; align-items: start; }
-@media (max-width: 720px) { .eg-projhead { grid-template-columns: 1fr; } }
-.eg-projhead .eg-page-title { font-size: clamp(1.7rem, 4vw, 2.6rem); }
+.eg-page-title--project { font-size: clamp(1.7rem, 4vw, 2.6rem); }
 .eg-meta { display: flex; flex-wrap: wrap; gap: 8px 22px; margin: 12px 0 0; padding: 0; list-style: none; font-size: .9rem; }
 .eg-meta li { display: flex; flex-direction: column; }
 .eg-meta dt, .eg-meta__label { font-size: .7rem; text-transform: uppercase; letter-spacing: .12em; color: var(--secondary); font-weight: 700; }
