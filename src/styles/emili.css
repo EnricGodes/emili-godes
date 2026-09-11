@@ -427,7 +427,7 @@ tr.is-hidden { display: none; }
 .eg-cookie__text { margin: 0; font-size: .9rem; color: var(--on-surface-variant); }
 .eg-cookie__opts { margin: 14px 0 0; display: grid; gap: 10px; }
 .eg-cookie__opt { display: flex; gap: 10px; align-items: flex-start; font-size: .88rem; }
-.eg-cookie__opt input { margin-top: 4px; }
+.eg-cookie__opt input { margin-top: 4px; accent-color: var(--primary); }
 .eg-cookie__actions { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 16px; }
 .eg-cookie__actions .eg-btn { padding: 9px 18px; font-size: .88rem; }
 .eg-btn--ghostdark { background: transparent; color: var(--on-surface-variant); }
@@ -477,7 +477,7 @@ tr.is-hidden { display: none; }
 .eg-form__hint { font-weight: 400; color: var(--on-surface-variant); font-size: .78rem; }
 .eg-form input:focus, .eg-form textarea:focus { outline: 2px solid var(--primary); outline-offset: 0; border-color: var(--primary); }
 .eg-form label.eg-form__consent { display: flex; gap: 10px; align-items: flex-start; font-size: .85rem; font-weight: 400; color: var(--on-surface-variant); }
-.eg-form label.eg-form__consent input { width: auto; margin-top: 3px; }
+.eg-form label.eg-form__consent input { width: auto; margin-top: 3px; accent-color: var(--primary); }
 .eg-form__status { font-size: .9rem; padding: 12px 14px; border-radius: 10px; }
 .eg-form__status.is-ok { background: #e6f1e8; color: var(--primary); }
 .eg-form__status.is-error { background: #f8e3e0; color: var(--eg-red); }

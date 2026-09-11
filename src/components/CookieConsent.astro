@@ -21,7 +21,7 @@ const base = `/${lang}/`;
           <span><strong>{t('cookies.necessary')}</strong><br /><small>{t('cookies.necessaryDesc')}</small></span>
         </label>
         <label class="eg-cookie__opt">
-          <input type="checkbox" id="eg-cookie-analytics" />
+          <input type="checkbox" id="eg-cookie-analytics" checked />
           <span><strong>{t('cookies.analytics')}</strong><br /><small>{t('cookies.analyticsDesc')}</small></span>
         </label>
       </div>
@@ -55,7 +55,8 @@ const base = `/${lang}/`;
       opts.hidden = !settings;
       btn('save').hidden = !settings;
       btn('settings').hidden = settings;
-      chk.checked = read() === 'analytics';
+      const prev = read();
+      chk.checked = prev ? prev === 'analytics' : true; // sin elección previa: marcada
     }
     btn('accept').addEventListener('click', () => apply(true));
     btn('reject').addEventListener('click', () => apply(false));
