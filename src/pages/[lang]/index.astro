@@ -2,17 +2,11 @@
 import Base from '../../layouts/Base.astro';
 import { useT, type Lang } from '../../i18n';
 import { langPaths } from '../../lib/paths';
-import { catalog, findProject, projectCount, projectPath, thumbUrl, useCatalogText } from '../../lib/catalog';
-import featured from '../../data/featured-series.json';
 import { person, website } from '../../lib/schema';
-import { PAGES } from '../../lib/site';
 export const getStaticPaths = langPaths;
 const lang = Astro.params.lang as Lang;
 const t = useT(lang);
 const base = `/${lang}/`;
-const ct = useCatalogText(lang);
-const series = featured.map((f) => ({ ...f, p: findProject(f.ambito, f.slug)! })).filter((f) => f.p);
-const cards = ['biografia', 'obra', 'mirada', 'destacadas', 'legado', 'investigacion'];
 const description = t('seo.home.description');
 ---
 <Base lang={lang} title={t('seo.home.title')} description={description} path="" activeNav="home"
@@ -27,49 +21,10 @@ const description = t('seo.home.description');
         <a class="eg-btn eg-btn--solid" href={`${base}obra/`}>{t('index.003')}</a>
         <a class="eg-btn eg-btn--outline" href={`${base}biografia/`}>{t('index.004')}</a>
       </div>
-      <div class="eg-stats">
-        <div class="eg-stat"><strong>{catalog.total.toLocaleString(lang)}</strong><span>{t('home.statPhotos')}</span></div>
-        <div class="eg-stat"><strong>{projectCount()}</strong><span>{t('home.statProjects')}</span></div>
-        <div class="eg-stat"><strong>{catalog.fondos.length}</strong><span>{t('home.statFonds')}</span></div>
-      </div>
     </div>
     <div class="eg-hero__media">
       <img alt={t('index.005')} height="1024" width="1024" src="/assets/emili-godes-laboratorio.jpg" fetchpriority="high" />
     </div>
   </section>
 
-  <section class="eg-section eg-section--tint">
-    <div class="eg-container">
-      <p class="eg-kicker">{t('home.seriesKicker')}</p>
-      <h2 class="eg-page-title" style="font-size:clamp(1.6rem,4vw,2.4rem)">{t('home.seriesTitle')}</h2>
-      <p class="eg-lead">{t('home.seriesLead')}</p>
-      <div class="eg-series">
-        {series.map(({ ambito, slug, p }) => (
-          <a href={projectPath(lang, ambito, slug)}>
-            <img src={thumbUrl(p.cover)} alt={ct.projectName(p)} loading="lazy" width="480" height="360" />
-            <div class="eg-series__body">
-              <div class="eg-series__name">{ct.projectName(p)}</div>
-              <div class="eg-series__meta">{[ct.ambitoLabel(ambito), p.fecha, p.count === 1 ? t('project.photoOne') : t('project.photosCount', { n: p.count })].filter(Boolean).join(' · ')}</div>
-            </div>
-          </a>
-        ))}
-      </div>
-    </div>
-  </section>
-
-  <section class="eg-section">
-    <div class="eg-container">
-      <p class="eg-kicker">{t('home.sectionsKicker')}</p>
-      <h2 class="eg-page-title" style="font-size:clamp(1.6rem,4vw,2.4rem)">{t('home.sectionsTitle')}</h2>
-      <div class="eg-grid" style="margin-top:24px">
-        {cards.map((id, i) => (
-          <a class="eg-card" href={base + PAGES.find((p) => p.id === id)!.path}>
-            <div class="eg-card__idx">0{i + 1}</div>
-            <h3>{t('nav.' + id)}</h3>
-            <p>{t('home.card.' + id)}</p>
-          </a>
-        ))}
-      </div>
-    </div>
-  </section>
 </Base>

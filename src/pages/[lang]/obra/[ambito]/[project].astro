@@ -39,7 +39,6 @@ const photos = p.photos.map((ph, i) => {
   return {
     i, ph, desc,
     title: ct.photoTitle(ph, p),
-    meta: [ph.fecha, ct.placeLabel(ph.lugar), ct.fondoLabel(ph.fondo)].filter(Boolean).join(' · '),
   };
 });
 const viewerPhotos = photos.map(({ ph, desc, i }) => ({
@@ -91,16 +90,21 @@ const crumbs = breadcrumb([
 
   <section class="eg-section eg-section--tint" style="padding-top:2rem">
     <div class="eg-container">
-      <div class="eg-photolist">
-        {photos.map(({ ph, i, title: ttl, desc, meta }) => (
-          <figure id={`foto-${i + 1}`}>
-            <button type="button" data-photo-index={i} aria-label={t('project.open') + ': ' + ttl}>
-              <img src={thumbUrl(ph.file)} width={ph.w} height={ph.h} alt={ttl} loading={i < 6 ? 'eager' : 'lazy'} decoding="async" />
+      {photos.length === 1 ? (
+        <div class="eg-single">
+          <button type="button" data-photo-index="0" aria-label={t('project.open') + ': ' + photos[0].title}>
+            <img src={photoUrl(photos[0].ph.file)} width={photos[0].ph.w} height={photos[0].ph.h} alt={photos[0].title} decoding="async" />
+          </button>
+        </div>
+      ) : (
+        <div class="eg-photogrid">
+          {photos.map(({ ph, i, title: ttl }) => (
+            <button type="button" class="eg-photocell" data-photo-index={i} aria-label={t('project.open') + ': ' + ttl}>
+              <img src={thumbUrl(ph.file)} width={ph.w} height={ph.h} alt={ttl} loading={i < 8 ? 'eager' : 'lazy'} decoding="async" />
             </button>
-            <figcaption>{desc || ttl}<small>{meta} · {ph.orig}</small></figcaption>
-          </figure>
-        ))}
-      </div>
+          ))}
+        </div>
+      )}
       <nav class="eg-pager" aria-label={t('project.others', { theme })}>
         {prev ? <a href={projectPath(lang, ambitoKey, prev.slug)}><small>← {t('project.prev')}</small><span>{ct.projectName(prev)}</span></a> : <span></span>}
         {next ? <a class="is-next" href={projectPath(lang, ambitoKey, next.slug)}><small>{t('project.next')} →</small><span>{ct.projectName(next)}</span></a> : <span></span>}

@@ -1,7 +1,6 @@
 ---
 import { useT, type Lang } from '../i18n';
 import { PAGES } from '../lib/site';
-import LangSwitch from './LangSwitch.astro';
 
 interface Props { lang: Lang; path: string; activeNav?: string }
 const { lang, path, activeNav } = Astro.props;
@@ -18,9 +17,6 @@ const drawerExtra = PAGES.filter((p) => ['creditos', 'contacto'].includes(p.id))
         <a href={base + p.path} class:list={[{ 'is-active': activeNav === p.id }]} aria-current={activeNav === p.id ? 'page' : undefined}>{t('nav.' + p.id)}</a>
       ))}
     </nav>
-    <div class="eg-tools">
-      <LangSwitch lang={lang} path={path} />
-    </div>
     <button class="eg-burger" type="button" aria-label={t('ui.menu')} aria-expanded="false" aria-controls="eg-drawer">
       <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M4 7h16M4 12h16M4 17h16"/></svg>
     </button>
@@ -35,9 +31,6 @@ const drawerExtra = PAGES.filter((p) => ['creditos', 'contacto'].includes(p.id))
   {nav.concat(drawerExtra).map((p) => (
     <a href={base + p.path} class:list={[{ 'is-active': activeNav === p.id }]}>{t('nav.' + p.id)}</a>
   ))}
-  <div class="eg-drawer__lang">
-    <LangSwitch lang={lang} path={path} variant="list" />
-  </div>
 </nav>
 <script>
   const header = document.querySelector('.eg-header');

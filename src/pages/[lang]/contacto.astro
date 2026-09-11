@@ -10,7 +10,7 @@ const t = useT(lang);
 const base = `/${lang}/`;
 const title = t('seo.contacto.title');
 const description = t('seo.contacto.description');
-const strings = { sending: t('contact.sending'), sent: t('contact.sent'), error: t('contact.error'), send: t('contact.send') };
+const strings = { sending: t('contact.sending'), sent: t('contact.sent'), error: t('contact.error'), send: t('contact.send'), tooBig: t('contact.fileTooBig') };
 ---
 <Base lang={lang} title={title} description={description} path="contacto/" activeNav="contacto"
   jsonLd={[breadcrumb([{ name: t('breadcrumb.home'), url: base }, { name: t('nav.contacto'), url: `${base}contacto/` }])]}>
@@ -20,11 +20,12 @@ const strings = { sending: t('contact.sending'), sent: t('contact.sent'), error:
       <h1 class="eg-page-title">{t('contact.title')}</h1>
       <p class="eg-lead">{t('contact.lead')}</p>
 
-      <form class="eg-form" id="eg-contact" method="post" action="/api/contact" novalidate data-strings={JSON.stringify(strings)}>
+      <form class="eg-form" id="eg-contact" method="post" action="/api/contact" enctype="multipart/form-data" novalidate data-strings={JSON.stringify(strings)}>
         <input type="hidden" name="lang" value={lang} />
         <label>{t('contact.name')} <input type="text" name="name" required maxlength="120" autocomplete="name" /></label>
         <label>{t('contact.email')} <input type="email" name="email" required maxlength="200" autocomplete="email" /></label>
         <label>{t('contact.message')} <textarea name="message" required maxlength="5000"></textarea></label>
+        <label>{t('contact.file')} <input type="file" name="file" accept="image/*,.pdf,application/pdf" /><small class="eg-form__hint">{t('contact.fileHint')}</small></label>
         <label class="eg-hp" aria-hidden="true">Website <input type="text" name="website" tabindex="-1" autocomplete="off" /></label>
         <label class="eg-form__consent"><input type="checkbox" name="consent" required /><span set:html={t('contact.consent')}></span></label>
         {TURNSTILE_SITE_KEY && <div class="cf-turnstile" data-sitekey={TURNSTILE_SITE_KEY} data-language={lang}></div>}
@@ -48,6 +49,10 @@ const strings = { sending: t('contact.sending'), sent: t('contact.sent'), error:
       form.addEventListener('submit', async (e) => {
         e.preventDefault();
         if (!form.reportValidity()) return;
+        const file = form.querySelector<HTMLInputElement>('input[name=file]')?.files?.[0];
+        if (file && file.size > 10 * 1024 * 1024) {
+          status.textContent = S.tooBig; status.className = 'eg-form__status is-error'; status.hidden = false; return;
+        }
         btn.disabled = true; btn.textContent = S.sending; status.hidden = true;
         try {
           const fd = new FormData(form);

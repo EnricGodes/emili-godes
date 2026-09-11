@@ -364,7 +364,7 @@ tr.is-hidden { display: none; }
 .eg-projcard__count { font-size: .72rem; color: var(--secondary); margin-top: 6px; }
 
 .eg-photogrid { display: grid; gap: 12px; grid-template-columns: repeat(auto-fill, minmax(180px, 1fr)); margin-top: 18px; }
-.eg-photocell { aspect-ratio: 1/1; border-radius: 10px; overflow: hidden; cursor: pointer;
+.eg-photocell { aspect-ratio: 1/1; padding: 0; width: 100%; border-radius: 10px; overflow: hidden; cursor: pointer;
   background: var(--surface-container-high); border: 1px solid var(--outline-variant); position: relative; }
 .eg-photocell img { width: 100%; height: 100%; object-fit: cover; display: block; transition: transform .2s; }
 .eg-photocell:hover img { transform: scale(1.04); }
@@ -454,15 +454,6 @@ tr.is-hidden { display: none; }
 .eg-meta__value a { color: var(--primary); }
 .eg-projactions { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 18px; }
 
-/* Rejilla de fotos con pie (fichas estáticas): proporciones naturales */
-.eg-photolist { display: grid; gap: 22px; grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)); margin-top: 28px; }
-.eg-photolist figure { margin: 0; }
-.eg-photolist button { display: block; width: 100%; padding: 0; border: 1px solid var(--outline-variant); border-radius: 12px;
-  overflow: hidden; background: var(--surface-container-high); cursor: zoom-in; }
-.eg-photolist img { width: 100%; height: auto; display: block; transition: transform .2s; }
-.eg-photolist button:hover img { transform: scale(1.02); }
-.eg-photolist figcaption { font-size: .82rem; color: var(--on-surface-variant); margin-top: 8px; line-height: 1.45; white-space: pre-line; }
-.eg-photolist figcaption small { display: block; color: var(--secondary); margin-top: 3px; white-space: normal; }
 .eg-pager { display: flex; justify-content: space-between; gap: 16px; margin-top: 40px; flex-wrap: wrap; }
 .eg-pager a { flex: 1 1 220px; border: 1px solid var(--outline-variant); border-radius: 14px; padding: 14px 16px;
   text-decoration: none; background: var(--surface-container-lowest); transition: background .15s; }
@@ -472,18 +463,11 @@ tr.is-hidden { display: none; }
 .eg-pager a.is-next { text-align: right; }
 .eg-projgrid a.eg-projcard { text-decoration: none; color: inherit; }
 
-/* ── Portada: series y tarjetas ────────────────────────────────────────── */
-.eg-stats { display: flex; flex-wrap: wrap; gap: 26px 48px; margin-top: 28px; }
-.eg-stat strong { display: block; font-family: var(--font-serif); font-size: 2rem; color: var(--primary); line-height: 1; }
-.eg-stat span { font-size: .82rem; color: var(--on-surface-variant); text-transform: uppercase; letter-spacing: .12em; }
-.eg-series { display: grid; gap: 18px; grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); margin-top: 26px; }
-.eg-series a { display: block; text-decoration: none; color: inherit; border-radius: 14px; overflow: hidden;
-  background: var(--surface-container-lowest); border: 1px solid var(--outline-variant); transition: transform .15s, box-shadow .15s; }
-.eg-series a:hover { transform: translateY(-2px); box-shadow: 0 10px 28px rgba(28,28,23,.1); }
-.eg-series img { width: 100%; aspect-ratio: 4/3; object-fit: cover; display: block; background: var(--surface-container-high); }
-.eg-series__body { padding: 12px 14px 14px; }
-.eg-series__name { font-family: var(--font-serif); color: var(--primary); font-size: 1.02rem; line-height: 1.25; }
-.eg-series__meta { font-size: .78rem; color: var(--on-surface-variant); margin-top: 4px; }
+/* Ficha de proyecto de una sola foto: la imagen grande, clic → visor */
+.eg-single { margin-top: 24px; max-width: 900px; }
+.eg-single button { display: block; width: 100%; padding: 0; border: 1px solid var(--outline-variant); border-radius: 12px;
+  overflow: hidden; background: var(--surface-container-high); cursor: zoom-in; }
+.eg-single img { width: 100%; height: auto; display: block; }
 
 /* ── Formulario de contacto ────────────────────────────────────────────── */
 .eg-form { display: grid; gap: 16px; max-width: 640px; margin-top: 26px; }
@@ -491,6 +475,8 @@ tr.is-hidden { display: none; }
 .eg-form input, .eg-form textarea { font: inherit; font-weight: 400; padding: 11px 14px; border: 1px solid var(--outline-variant);
   border-radius: 10px; background: var(--surface-container-lowest); color: var(--on-surface); width: 100%; }
 .eg-form textarea { min-height: 160px; resize: vertical; }
+.eg-form input[type=file] { padding: 8px; font-size: .85rem; }
+.eg-form__hint { font-weight: 400; color: var(--on-surface-variant); font-size: .78rem; }
 .eg-form input:focus, .eg-form textarea:focus { outline: 2px solid var(--primary); outline-offset: 0; border-color: var(--primary); }
 .eg-form label.eg-form__consent { display: flex; gap: 10px; align-items: flex-start; font-size: .85rem; font-weight: 400; color: var(--on-surface-variant); }
 .eg-form label.eg-form__consent input { width: auto; margin-top: 3px; }
