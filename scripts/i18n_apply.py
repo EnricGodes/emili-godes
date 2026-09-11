@@ -1,8 +1,11 @@
 """Valida y aplica las traducciones devueltas por ChatGPT.
 
 Uso:
+  python3 scripts/i18n_apply.py --intake      # desempaqueta los .zip de translations/incoming/ y normaliza
+                                              # nombres (01-ui-en.json → incoming/en/01-ui.json)
   python3 scripts/i18n_apply.py en            # valida translations/incoming/en/*.json y las aplica a src/i18n/en/
   python3 scripts/i18n_apply.py en --check    # solo valida, no escribe
+  python3 scripts/i18n_apply.py ca --only-missing  # no pisa lo que ya existe (catalán curado a mano)
   python3 scripts/i18n_apply.py --status      # cobertura de cada idioma respecto al castellano
 
 Validaciones por fichero: JSON válido, mismas claves que el fichero fuente (translations/source/
@@ -14,7 +17,9 @@ el fichero fuente en que viven en castellano.
 import argparse
 import json
 import re
+import shutil
 import sys
+import zipfile
 from collections import Counter
 from pathlib import Path
 
@@ -89,7 +94,40 @@ def validate(lang, data, name, idx):
     return errors, warns, out
 
 
-def apply(lang, check=False):
+def intake():
+    """Desempaqueta los zip de incoming/ (en cualquier estructura) y deja incoming/<lang>/<fichero>.json.
+    El idioma se deduce del sufijo del nombre (-en.json) o de la carpeta contenedora (en/)."""
+    zips = sorted(INCOMING.glob("*.zip"))
+    done = INCOMING / "_procesados"
+    n = 0
+    for z in zips:
+        with zipfile.ZipFile(z) as zf:
+            for info in zf.infolist():
+                if info.is_dir() or not info.filename.endswith(".json") or "__MACOSX" in info.filename:
+                    continue
+                parts = info.filename.split("/")
+                name = parts[-1]
+                m = re.match(r"^(.*?)-([a-z]{2})\.json$", name)
+                lang = None
+                if m and m.group(2) in LANGS:
+                    name, lang = m.group(1) + ".json", m.group(2)
+                else:
+                    for seg in reversed(parts[:-1]):
+                        if seg in LANGS:
+                            lang = seg; break
+                if not lang:
+                    print(f"  ? {z.name}:{info.filename}: no sé el idioma, lo salto"); continue
+                dst = INCOMING / lang / name
+                dst.parent.mkdir(parents=True, exist_ok=True)
+                dst.write_bytes(zf.read(info))
+                n += 1
+                print(f"  {z.name}:{info.filename} → incoming/{lang}/{name}")
+        done.mkdir(exist_ok=True)
+        shutil.move(str(z), done / z.name)
+    print(f"{n} ficheros extraídos de {len(zips)} zip(s); zips movidos a incoming/_procesados/.")
+
+
+def apply(lang, check=False, only_missing=False):
     if lang not in LANGS:
         sys.exit(f"Idioma no soportado: {lang} (usa {', '.join(LANGS)})")
     d = INCOMING / lang
@@ -126,7 +164,12 @@ def apply(lang, check=False):
             continue
         target = I18N / lang / f"{f}.json"
         cur = load(target)
-        cur.update(merged[f])
+        if only_missing:
+            new = {k: v for k, v in merged[f].items() if k not in cur}
+            print(f"  {f}: {len(new)} claves nuevas, {len(merged[f]) - len(new)} ya existían (se conservan)")
+            cur.update(new)
+        else:
+            cur.update(merged[f])
         target.parent.mkdir(parents=True, exist_ok=True)
         target.write_text(json.dumps(dict(sorted(cur.items())), ensure_ascii=False, indent=1) + "\n", encoding="utf-8")
         print(f"  → {target.relative_to(BASE)}: {len(cur)} claves")
@@ -139,10 +182,14 @@ def main():
     ap.add_argument("lang", nargs="?")
     ap.add_argument("--check", action="store_true")
     ap.add_argument("--status", action="store_true")
+    ap.add_argument("--intake", action="store_true")
+    ap.add_argument("--only-missing", action="store_true", help="no sobrescribir claves ya traducidas")
     a = ap.parse_args()
+    if a.intake:
+        intake(); return
     if a.status or not a.lang:
         status(); return
-    apply(a.lang, check=a.check)
+    apply(a.lang, check=a.check, only_missing=a.only_missing)
 
 
 if __name__ == "__main__":
