@@ -1,9 +1,9 @@
 ---
 import Base from '../../layouts/Base.astro';
-import { useT, type Lang } from '../../i18n';
-import { langPaths } from '../../lib/paths';
+import { LOCALES, useT, type Lang } from '../../i18n';
 import { person, website } from '../../lib/schema';
-export const getStaticPaths = langPaths;
+import { pagePath } from '../../lib/site';
+export const getStaticPaths = () => LOCALES.map((lang) => ({ params: { lang } }));
 const lang = Astro.params.lang as Lang;
 const t = useT(lang);
 const base = `/${lang}/`;
@@ -18,8 +18,8 @@ const description = t('seo.home.description');
       <p class="eg-hero__desc">{t('index.002')}</p>
       <div class="eg-hero__intro" set:html={t('index.001')}></div>
       <div class="eg-hero__cta">
-        <a class="eg-btn eg-btn--solid" href={`${base}obra/`}>{t('index.003')}</a>
-        <a class="eg-btn eg-btn--outline" href={`${base}biografia/`}>{t('index.004')}</a>
+        <a class="eg-btn eg-btn--solid" href={pagePath(lang, 'obra')}>{t('index.003')}</a>
+        <a class="eg-btn eg-btn--outline" href={pagePath(lang, 'biografia')}>{t('index.004')}</a>
       </div>
     </div>
     <div class="eg-hero__media">

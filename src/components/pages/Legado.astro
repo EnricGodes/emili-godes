@@ -1,17 +1,17 @@
 ---
 import Base from '../../layouts/Base.astro';
+import { pagePath, pageAlternates } from '../../lib/site';
 import { useT, type Lang } from '../../i18n';
-import { langPaths } from '../../lib/paths';
 import { article, breadcrumb } from '../../lib/schema';
-export const getStaticPaths = langPaths;
-const lang = Astro.params.lang as Lang;
+interface Props { lang: Lang }
+const { lang } = Astro.props as Props;
 const t = useT(lang);
 const base = `/${lang}/`;
 const title = t('seo.legado.title');
 const description = t('seo.legado.description');
 ---
-<Base lang={lang} title={title} description={description} path="legado/" activeNav="legado" ogType="article"
-  jsonLd={[article(lang, { url: `${base}legado/`, headline: title, description }), breadcrumb([{ name: t('breadcrumb.home'), url: base }, { name: t('nav.legado'), url: `${base}legado/` }])]}>
+<Base lang={lang} title={title} description={description} path={pagePath(lang, 'legado').slice(4)} alternates={pageAlternates('legado')} activeNav="legado" ogType="article"
+  jsonLd={[article(lang, { url: pagePath(lang, 'legado'), headline: title, description }), breadcrumb([{ name: t('breadcrumb.home'), url: base }, { name: t('nav.legado'), url: pagePath(lang, 'legado') }])]}>
   <section class="eg-section">
   <div class="eg-container">
   <p class="eg-kicker">{t('legado.023')}</p>
@@ -156,7 +156,7 @@ const description = t('seo.legado.description');
   </ul>
   <p class="eg-note" style="margin-top:18px">{t('legado.048')}</p>
   <div class="eg-related">
-  <a href={`${base}investigacion/`}>{t('legado.049')}</a>
+  <a href={pagePath(lang, 'investigacion')}>{t('legado.049')}</a>
   </div>
   </div>
   </section>

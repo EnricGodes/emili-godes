@@ -1,6 +1,6 @@
 ---
 import { useT, type Lang } from '../i18n';
-import { PAGES } from '../lib/site';
+import { PAGES, pagePath } from '../lib/site';
 
 interface Props { lang: Lang; path: string; activeNav?: string }
 const { lang, path, activeNav } = Astro.props;
@@ -14,7 +14,7 @@ const drawerExtra = PAGES.filter((p) => ['creditos', 'contacto'].includes(p.id))
     <a class="eg-brand" href={base}>Emili Godes</a>
     <nav class="eg-nav" aria-label={t('ui.menu')}>
       {nav.map((p) => (
-        <a href={base + p.path} class:list={[{ 'is-active': activeNav === p.id }]} aria-current={activeNav === p.id ? 'page' : undefined}>{t('nav.' + p.id)}</a>
+        <a href={pagePath(lang, p.id)} class:list={[{ 'is-active': activeNav === p.id }]} aria-current={activeNav === p.id ? 'page' : undefined}>{t('nav.' + p.id)}</a>
       ))}
     </nav>
     <button class="eg-burger" type="button" aria-label={t('ui.menu')} aria-expanded="false" aria-controls="eg-drawer">
@@ -29,7 +29,7 @@ const drawerExtra = PAGES.filter((p) => ['creditos', 'contacto'].includes(p.id))
   </button>
   <a href={base}>{t('nav.home')}</a>
   {nav.concat(drawerExtra).map((p) => (
-    <a href={base + p.path} class:list={[{ 'is-active': activeNav === p.id }]}>{t('nav.' + p.id)}</a>
+    <a href={pagePath(lang, p.id)} class:list={[{ 'is-active': activeNav === p.id }]}>{t('nav.' + p.id)}</a>
   ))}
 </nav>
 <script>

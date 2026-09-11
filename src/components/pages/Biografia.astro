@@ -1,17 +1,17 @@
 ---
 import Base from '../../layouts/Base.astro';
+import { pagePath, pageAlternates } from '../../lib/site';
 import { useT, type Lang } from '../../i18n';
-import { langPaths } from '../../lib/paths';
 import { article, breadcrumb } from '../../lib/schema';
-export const getStaticPaths = langPaths;
-const lang = Astro.params.lang as Lang;
+interface Props { lang: Lang }
+const { lang } = Astro.props as Props;
 const t = useT(lang);
 const base = `/${lang}/`;
 const title = t('seo.biografia.title');
 const description = t('seo.biografia.description');
 ---
-<Base lang={lang} title={title} description={description} path="biografia/" activeNav="biografia" ogType="article" ogImage="/photos/bio/s1b.jpg"
-  jsonLd={[article(lang, { url: `${base}biografia/`, headline: title, description, image: "/photos/bio/s1b.jpg" }), breadcrumb([{ name: t('breadcrumb.home'), url: base }, { name: t('nav.biografia'), url: `${base}biografia/` }])]}>
+<Base lang={lang} title={title} description={description} path={pagePath(lang, 'biografia').slice(4)} alternates={pageAlternates('biografia')} activeNav="biografia" ogType="article" ogImage="/photos/bio/s1b.jpg"
+  jsonLd={[article(lang, { url: pagePath(lang, 'biografia'), headline: title, description, image: "/photos/bio/s1b.jpg" }), breadcrumb([{ name: t('breadcrumb.home'), url: base }, { name: t('nav.biografia'), url: pagePath(lang, 'biografia') }])]}>
   <section class="eg-section">
   <div class="eg-container eg-container--narrow">
   <p class="eg-kicker">{t('biografia.041')}</p>
@@ -146,9 +146,9 @@ const description = t('seo.biografia.description');
   </figure>
   </div>
   <div class="eg-related">
-  <a href={`${base}obra/`}>{t('biografia.051')}</a>
-  <a href={`${base}mirada-moderna/`}>{t('biografia.052')}</a>
-  <a href={`${base}destacadas/`}>{t('biografia.053')}</a>
+  <a href={pagePath(lang, 'obra')}>{t('biografia.051')}</a>
+  <a href={pagePath(lang, 'mirada')}>{t('biografia.052')}</a>
+  <a href={pagePath(lang, 'destacadas')}>{t('biografia.053')}</a>
   </div>
   </div>
   </section>

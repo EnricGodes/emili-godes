@@ -3,9 +3,8 @@
  * (Se hace a mano porque las fichas de temática y proyecto tienen slugs distintos por idioma.)
  */
 import type { APIRoute } from 'astro';
-import { LOCALES, DEFAULT_LANG } from '../i18n';
-import { PAGES } from '../lib/site';
-import { SITE_URL } from '../lib/site';
+import { LOCALES, DEFAULT_LANG, pagePath } from '../i18n';
+import { PAGES, SITE_URL } from '../lib/site';
 import { catalog, ambitoPath, projectPath } from '../lib/catalog';
 
 type Alt = Record<string, string>; // lang → ruta absoluta
@@ -20,7 +19,8 @@ export const GET: APIRoute = () => {
   const urls: string[] = [];
   // páginas estáticas
   for (const page of PAGES) {
-    const alts: Alt = Object.fromEntries(LOCALES.map((l) => [l, `/${l}/${page.path}`]));
+    if (page.id === 'legal' || page.id === 'privacy' || page.id === 'cookies') continue; // noindex
+    const alts: Alt = Object.fromEntries(LOCALES.map((l) => [l, pagePath(l, page.id)]));
     for (const l of LOCALES) urls.push(entry(alts, l, page.id === 'home' ? '1.0' : '0.8', 'monthly'));
   }
   // temáticas y proyectos

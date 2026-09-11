@@ -6,20 +6,28 @@ export const GTM_ID = import.meta.env.PUBLIC_GTM_ID || '';
 export const GSC_VERIFICATION = import.meta.env.PUBLIC_GSC_VERIFICATION || '';
 export const TURNSTILE_SITE_KEY = import.meta.env.PUBLIC_TURNSTILE_SITE_KEY || '';
 
+import { LOCALES, pagePath, type Lang, type PageId } from '../i18n';
+export { pagePath };
+
 export interface PageDef {
-  id: string;      // clave de nav.* y seo.*
-  path: string;    // relativo a /{lang}/ (con barra final, '' = home)
-  nav: boolean;    // aparece en la barra principal
+  id: PageId | 'home';
+  nav: boolean;     // aparece en la barra principal
+  footer: boolean;  // aparece en el pie
 }
 export const PAGES: PageDef[] = [
-  { id: 'home', path: '', nav: false },
-  { id: 'biografia', path: 'biografia/', nav: true },
-  { id: 'obra', path: 'obra/', nav: true },
-  { id: 'mirada', path: 'mirada-moderna/', nav: true },
-  { id: 'destacadas', path: 'destacadas/', nav: true },
-  { id: 'legado', path: 'legado/', nav: true },
-  { id: 'investigacion', path: 'investigacion/', nav: true },
-  { id: 'creditos', path: 'creditos/', nav: false },
-  { id: 'contacto', path: 'contacto/', nav: false },
+  { id: 'home', nav: false, footer: false },
+  { id: 'biografia', nav: true, footer: true },
+  { id: 'obra', nav: true, footer: true },
+  { id: 'mirada', nav: true, footer: true },
+  { id: 'destacadas', nav: true, footer: true },
+  { id: 'legado', nav: true, footer: true },
+  { id: 'investigacion', nav: true, footer: true },
+  { id: 'creditos', nav: false, footer: true },
+  { id: 'contacto', nav: false, footer: true },
+  { id: 'legal', nav: false, footer: false },
+  { id: 'privacy', nav: false, footer: false },
+  { id: 'cookies', nav: false, footer: false },
 ];
-export const pagePath = (id: string) => PAGES.find((p) => p.id === id)?.path ?? '';
+/** Ruta de la página en cada idioma, relativa a /{lang}/ (para hreflang y selector de idioma). */
+export const pageAlternates = (id: PageId | 'home') =>
+  Object.fromEntries(LOCALES.map((l) => [l, pagePath(l, id).slice(4)])) as Record<Lang, string>;

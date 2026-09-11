@@ -1,8 +1,8 @@
 ---
 import Base from '../../../../layouts/Base.astro';
 import UiJson from '../../../../components/UiJson.astro';
-import { LOCALES, useT, type Lang } from '../../../../i18n';
-import { catalog, useCatalogText, ambitoUrlSlug, projectUrlSlug, ambitoPath, projectPath, projectAlternates, photoUrl, thumbUrl, type Project } from '../../../../lib/catalog';
+import { LOCALES, useT, pageSlug, type Lang } from '../../../../i18n';
+import { catalog, useCatalogText, ambitoUrlSlug, projectUrlSlug, ambitoPath, projectPath, projectAlternates, photoUrl, thumbUrl, type Project, obraPath, explorerUrl } from '../../../../lib/catalog';
 import { breadcrumb, imageGallery } from '../../../../lib/schema';
 
 export function getStaticPaths() {
@@ -11,7 +11,7 @@ export function getStaticPaths() {
     for (const ambito of catalog.ambito_order) {
       const projects = catalog.ambitos[ambito].projects.slice().sort((x, y) => (x.year || 9999) - (y.year || 9999));
       projects.forEach((p, i) => out.push({
-        params: { lang, ambito: ambitoUrlSlug(lang, ambito), project: projectUrlSlug(lang, ambito, p.slug) },
+        params: { lang, obra: pageSlug(lang, 'obra'), ambito: ambitoUrlSlug(lang, ambito), project: projectUrlSlug(lang, ambito, p.slug) },
         props: { ambitoKey: ambito, project: p, prev: projects[i - 1] || null, next: projects[i + 1] || null },
       }));
     }
@@ -55,7 +55,7 @@ const gallery = imageGallery(lang, {
   })),
 });
 const crumbs = breadcrumb([
-  { name: t('breadcrumb.home'), url: base }, { name: t('breadcrumb.obra'), url: `${base}obra/` },
+  { name: t('breadcrumb.home'), url: base }, { name: t('breadcrumb.obra'), url: obraPath(lang) },
   { name: theme, url: ambitoPath(lang, ambitoKey) }, { name, url },
 ]);
 ---
@@ -65,7 +65,7 @@ const crumbs = breadcrumb([
       <nav class="eg-breadcrumb" aria-label={t('ui.breadcrumb')}>
         <ol>
           <li><a href={base}>{t('breadcrumb.home')}</a></li>
-          <li><a href={`${base}obra/`}>{t('breadcrumb.obra')}</a></li>
+          <li><a href={obraPath(lang)}>{t('breadcrumb.obra')}</a></li>
           <li><a href={ambitoPath(lang, ambitoKey)}>{theme}</a></li>
           <li aria-current="page">{name}</li>
         </ol>
@@ -81,7 +81,7 @@ const crumbs = breadcrumb([
             <li><span class="eg-meta__label">{t('project.theme')}</span><span class="eg-meta__value"><a href={ambitoPath(lang, ambitoKey)}>{theme}</a></span></li>
           </ul>
           <div class="eg-projactions">
-            <a class="eg-btn eg-btn--outline eg-btn--sm" href={`${base}obra/#${ambitoKey}/${p.slug}`}>{t('obra.openExplorer')}</a>
+            <a class="eg-btn eg-btn--outline eg-btn--sm" href={explorerUrl(lang, ambitoKey, p.slug)}>{t('obra.openExplorer')}</a>
           </div>
       </div>
     </div>

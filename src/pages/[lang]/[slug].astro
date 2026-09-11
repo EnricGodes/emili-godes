@@ -1,0 +1,41 @@
+---
+/**
+ * Páginas de sección con slug traducido: /es/biografia/, /en/biography/, /de/impressum/…
+ * El slug de cada idioma vive en ui.json (slug.<id>); aquí solo se despacha al componente.
+ */
+import { LOCALES, PAGE_IDS, pageSlug, type Lang, type PageId } from '../../i18n';
+import Biografia from '../../components/pages/Biografia.astro';
+import Obra from '../../components/pages/Obra.astro';
+import MiradaModerna from '../../components/pages/MiradaModerna.astro';
+import Destacadas from '../../components/pages/Destacadas.astro';
+import Legado from '../../components/pages/Legado.astro';
+import Investigacion from '../../components/pages/Investigacion.astro';
+import Creditos from '../../components/pages/Creditos.astro';
+import Contacto from '../../components/pages/Contacto.astro';
+import LegalPage from '../../components/LegalPage.astro';
+
+export function getStaticPaths() {
+  const out = [];
+  for (const lang of LOCALES) {
+    const seen = new Set<string>();
+    for (const id of PAGE_IDS) {
+      const slug = pageSlug(lang, id);
+      if (seen.has(slug)) throw new Error(`Slug repetido en ${lang}: ${slug} (${id})`);
+      seen.add(slug);
+      out.push({ params: { lang, slug }, props: { id } });
+    }
+  }
+  return out;
+}
+const lang = Astro.params.lang as Lang;
+const { id } = Astro.props as { id: PageId };
+---
+{id === 'biografia' && <Biografia lang={lang} />}
+{id === 'obra' && <Obra lang={lang} />}
+{id === 'mirada' && <MiradaModerna lang={lang} />}
+{id === 'destacadas' && <Destacadas lang={lang} />}
+{id === 'legado' && <Legado lang={lang} />}
+{id === 'investigacion' && <Investigacion lang={lang} />}
+{id === 'creditos' && <Creditos lang={lang} />}
+{id === 'contacto' && <Contacto lang={lang} />}
+{(id === 'legal' || id === 'privacy' || id === 'cookies') && <LegalPage lang={lang} id={id} />}

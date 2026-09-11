@@ -4,7 +4,7 @@
  */
 import catalogJson from '../data/catalog.json';
 import destacadasJson from '../data/destacadas.json';
-import { LOCALES, photoDesc, useT, type Lang } from '../i18n';
+import { LOCALES, photoDesc, useT, slugify, ambitoSlug, pagePath, type Lang } from '../i18n';
 
 export interface Photo {
   orig: string;
@@ -103,12 +103,6 @@ export function useCatalogText(lang: Lang) {
   return { t, ambitoLabel, fondoLabel, placeLabel, projectName, desc, photoTitle, decadeLabel, orderedAmbitos };
 }
 
-/** Slug de URL a partir de un texto (misma regla que scripts/import_inventory.py). */
-export function slugify(text: string): string {
-  const t = (text || '').normalize('NFD').replace(/[\u0300-\u036f]/g, '').replace(/[^a-zA-Z0-9]+/g, '-').replace(/^-+|-+$/g, '').toLowerCase();
-  return t || 'sin-titulo';
-}
-
 /**
  * Slugs de URL por idioma: la temática y el proyecto se nombran con su etiqueta traducida
  * (/ca/obra/ciencia-i-medicina/…, /en/obra/science-and-medicine/…). Sin traducción → castellano.
@@ -123,8 +117,8 @@ function langSlugs(lang: Lang): LangSlugs {
   ls = { ambito: {}, ambitoByUrl: {}, project: {}, projectByUrl: {} };
   const usedA = new Set<string>();
   for (const amb of catalog.ambito_order) {
-    let s = slugify(t('category.' + amb)), n = 2;
-    while (usedA.has(s)) s = slugify(t('category.' + amb)) + '-' + n++;
+    const s = ambitoSlug(lang, amb);
+    if (usedA.has(s)) throw new Error(`Dos temáticas con el mismo slug en ${lang}: ${s}`);
     usedA.add(s); ls.ambito[amb] = s; ls.ambitoByUrl[s] = amb;
     const used = new Set<string>();
     ls.project[amb] = {}; ls.projectByUrl[amb] = {};
@@ -142,16 +136,18 @@ export const ambitoUrlSlug = (lang: Lang, ambito: string) => langSlugs(lang).amb
 export const projectUrlSlug = (lang: Lang, ambito: string, slug: string) => langSlugs(lang).project[ambito][slug];
 
 /** Rutas de las fichas estáticas (relativas a la raíz, con idioma). */
-export const ambitoPath = (lang: Lang, ambito: string) => `/${lang}/obra/${ambitoUrlSlug(lang, ambito)}/`;
+export const obraPath = (lang: Lang) => pagePath(lang, 'obra');
+export const ambitoPath = (lang: Lang, ambito: string) => `${obraPath(lang)}${ambitoUrlSlug(lang, ambito)}/`;
 export const projectPath = (lang: Lang, ambito: string, slug: string) =>
-  `/${lang}/obra/${ambitoUrlSlug(lang, ambito)}/${projectUrlSlug(lang, ambito, slug)}/`;
+  `${ambitoPath(lang, ambito)}${projectUrlSlug(lang, ambito, slug)}/`;
 /** Mismas rutas en todos los idiomas (para hreflang), relativas a /{lang}/. */
 export const ambitoAlternates = (ambito: string) =>
   Object.fromEntries(LOCALES.map((l) => [l, ambitoPath(l, ambito).slice(4)])) as Record<Lang, string>;
 export const projectAlternates = (ambito: string, slug: string) =>
   Object.fromEntries(LOCALES.map((l) => [l, projectPath(l, ambito, slug).slice(4)])) as Record<Lang, string>;
-export const explorerHash = (ambito: string, slug?: string, idx?: number) =>
-  '#' + ambito + (slug ? '/' + slug + (idx != null ? '/' + idx : '') : '');
+/** Enlace al explorador con el estado en el hash (slugs del idioma). */
+export const explorerUrl = (lang: Lang, ambito: string, slug?: string, idx?: number) =>
+  obraPath(lang) + '#' + ambitoUrlSlug(lang, ambito) + (slug ? '/' + projectUrlSlug(lang, ambito, slug) + (idx != null ? '/' + idx : '') : '');
 
 export function findProject(ambito: string, slug: string): Project | undefined {
   return catalog.ambitos[ambito]?.projects.find((p) => p.slug === slug);

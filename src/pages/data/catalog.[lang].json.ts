@@ -4,7 +4,7 @@
  */
 import type { APIRoute } from 'astro';
 import { LOCALES, useT, type Lang } from '../../i18n';
-import { catalog, useCatalogText, ambitoPath, projectPath, photoUrl, thumbUrl } from '../../lib/catalog';
+import { catalog, useCatalogText, ambitoPath, projectPath, ambitoUrlSlug, projectUrlSlug, photoUrl, thumbUrl } from '../../lib/catalog';
 
 export function getStaticPaths() {
   return LOCALES.map((lang) => ({ params: { lang } }));
@@ -18,6 +18,7 @@ export const GET: APIRoute = ({ params }) => {
   for (const [amb, a] of Object.entries(catalog.ambitos)) {
     ambitos[amb] = {
       label: ct.ambitoLabel(amb),
+      uslug: ambitoUrlSlug(lang, amb),
       intro: t('obra.intro.' + amb),
       url: ambitoPath(lang, amb),
       count: a.count,
@@ -25,6 +26,7 @@ export const GET: APIRoute = ({ params }) => {
       fondos: a.fondos,
       projects: a.projects.map((p) => ({
         slug: p.slug,
+        uslug: projectUrlSlug(lang, amb, p.slug),
         name: ct.projectName(p),
         lugar: ct.placeLabel(p.lugar),
         fecha: p.fecha,

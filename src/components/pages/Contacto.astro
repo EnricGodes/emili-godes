@@ -1,19 +1,19 @@
 ---
 import Base from '../../layouts/Base.astro';
+import { pagePath, pageAlternates } from '../../lib/site';
 import { useT, type Lang } from '../../i18n';
-import { langPaths } from '../../lib/paths';
 import { breadcrumb } from '../../lib/schema';
 import { TURNSTILE_SITE_KEY, CONTACT_FALLBACK_EMAIL } from '../../lib/site';
-export const getStaticPaths = langPaths;
-const lang = Astro.params.lang as Lang;
+interface Props { lang: Lang }
+const { lang } = Astro.props as Props;
 const t = useT(lang);
 const base = `/${lang}/`;
 const title = t('seo.contacto.title');
 const description = t('seo.contacto.description');
 const strings = { sending: t('contact.sending'), sent: t('contact.sent'), error: t('contact.error'), send: t('contact.send'), tooBig: t('contact.fileTooBig') };
 ---
-<Base lang={lang} title={title} description={description} path="contacto/" activeNav="contacto"
-  jsonLd={[breadcrumb([{ name: t('breadcrumb.home'), url: base }, { name: t('nav.contacto'), url: `${base}contacto/` }])]}>
+<Base lang={lang} title={title} description={description} path={pagePath(lang, 'contacto').slice(4)} alternates={pageAlternates('contacto')} activeNav="contacto"
+  jsonLd={[breadcrumb([{ name: t('breadcrumb.home'), url: base }, { name: t('nav.contacto'), url: pagePath(lang, 'contacto') }])]}>
   <section class="eg-section">
     <div class="eg-container eg-container--narrow">
       <p class="eg-kicker">{t('contact.kicker')}</p>
@@ -35,7 +35,7 @@ const strings = { sending: t('contact.sending'), sent: t('contact.sent'), error:
       <p class="eg-note" style="margin-top:22px">{t('contact.note')}</p>
       {CONTACT_FALLBACK_EMAIL && <p class="eg-note"><a href={`mailto:${CONTACT_FALLBACK_EMAIL}`}>{CONTACT_FALLBACK_EMAIL}</a></p>}
       <div class="eg-related">
-        <a href={`${base}creditos/`}>{t('nav.creditos')} →</a>
+        <a href={pagePath(lang, 'creditos')}>{t('nav.creditos')} →</a>
       </div>
     </div>
   </section>

@@ -1,0 +1,17 @@
+---
+/** 404 único para Cloudflare Pages (dist/404.html): en castellano, con enlaces a cada idioma. */
+import Base from '../layouts/Base.astro';
+import { LOCALES, LANG_NAMES, useT } from '../i18n';
+const t = useT('es');
+---
+<Base lang="es" title={t('notfound.title')} description={t('notfound.text')} path="404/" noindex>
+  <section class="eg-404 eg-container">
+    <p class="eg-kicker">404</p>
+    <h1>{t('notfound.title')}</h1>
+    <p class="eg-lead" style="margin:0 auto">{t('notfound.text')}</p>
+    <p style="margin-top:28px"><a class="eg-btn eg-btn--solid" href="/es/">{t('notfound.home')}</a></p>
+    <ul class="eg-langlist" style="justify-content:center;margin-top:30px">
+      {LOCALES.map((l) => <li><a href={`/${l}/`} hreflang={l} lang={l}>{LANG_NAMES[l]}</a></li>)}
+    </ul>
+  </section>
+</Base>

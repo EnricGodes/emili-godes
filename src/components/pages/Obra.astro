@@ -1,20 +1,20 @@
 ---
-import Base from '../../../layouts/Base.astro';
-import UiJson from '../../../components/UiJson.astro';
-import { useT, type Lang } from '../../../i18n';
-import { langPaths } from '../../../lib/paths';
-import { catalog, useCatalogText, ambitoPath } from '../../../lib/catalog';
-import { breadcrumb } from '../../../lib/schema';
-export const getStaticPaths = langPaths;
-const lang = Astro.params.lang as Lang;
+import Base from '../../layouts/Base.astro';
+import { pagePath, pageAlternates } from '../../lib/site';
+import UiJson from '../../components/UiJson.astro';
+import { useT, type Lang } from '../../i18n';
+import { catalog, useCatalogText, ambitoPath } from '../../lib/catalog';
+import { breadcrumb } from '../../lib/schema';
+interface Props { lang: Lang }
+const { lang } = Astro.props as Props;
 const t = useT(lang);
 const base = `/${lang}/`;
 const ct = useCatalogText(lang);
 const title = t('seo.obra.title');
 const description = t('seo.obra.description');
 ---
-<Base lang={lang} title={title} description={description} path="obra/" activeNav="obra" ogImage="/photos/obra/ACP-23-1.jpg"
-  jsonLd={[breadcrumb([{ name: t('breadcrumb.home'), url: base }, { name: t('breadcrumb.obra'), url: `${base}obra/` }])]}>
+<Base lang={lang} title={title} description={description} path={pagePath(lang, 'obra').slice(4)} alternates={pageAlternates('obra')} activeNav="obra" ogImage="/photos/obra/ACP-23-1.jpg"
+  jsonLd={[breadcrumb([{ name: t('breadcrumb.home'), url: base }, { name: t('breadcrumb.obra'), url: pagePath(lang, 'obra') }])]}>
   <section class="eg-section" style="padding-bottom:1.2rem">
     <div class="eg-container">
       <p class="eg-kicker">{t('obra.002')}</p>
@@ -31,5 +31,5 @@ const description = t('seo.obra.description');
     <div class="eg-obra-main" id="eg-obra-main"><p class="eg-empty">{t('obra.pick')}</p></div>
   </div>
   <UiJson lang={lang} />
-  <script src="../../../scripts/explorer.ts"></script>
+  <script src="../../scripts/explorer.ts"></script>
 </Base>

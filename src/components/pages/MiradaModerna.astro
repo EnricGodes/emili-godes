@@ -1,17 +1,18 @@
 ---
 import Base from '../../layouts/Base.astro';
+import { pagePath, pageAlternates } from '../../lib/site';
+import { explorerUrl } from '../../lib/catalog';
 import { useT, type Lang } from '../../i18n';
-import { langPaths } from '../../lib/paths';
 import { article, breadcrumb } from '../../lib/schema';
-export const getStaticPaths = langPaths;
-const lang = Astro.params.lang as Lang;
+interface Props { lang: Lang }
+const { lang } = Astro.props as Props;
 const t = useT(lang);
 const base = `/${lang}/`;
 const title = t('seo.mirada.title');
 const description = t('seo.mirada.description');
 ---
-<Base lang={lang} title={title} description={description} path="mirada-moderna/" activeNav="mirada" ogType="article" ogImage="/photos/obra/219214-000_083264.jpg"
-  jsonLd={[article(lang, { url: `${base}mirada-moderna/`, headline: title, description, image: "/photos/obra/219214-000_083264.jpg" }), breadcrumb([{ name: t('breadcrumb.home'), url: base }, { name: t('nav.mirada'), url: `${base}mirada-moderna/` }])]}>
+<Base lang={lang} title={title} description={description} path={pagePath(lang, 'mirada').slice(4)} alternates={pageAlternates('mirada')} activeNav="mirada" ogType="article" ogImage="/photos/obra/219214-000_083264.jpg"
+  jsonLd={[article(lang, { url: pagePath(lang, 'mirada'), headline: title, description, image: "/photos/obra/219214-000_083264.jpg" }), breadcrumb([{ name: t('breadcrumb.home'), url: base }, { name: t('nav.mirada'), url: pagePath(lang, 'mirada') }])]}>
   <section class="eg-section">
   <div class="eg-container">
   <p class="eg-kicker">{t('mirada_moderna.083')}</p>
@@ -61,14 +62,14 @@ const description = t('seo.mirada.description');
   <figcaption><span class="eg-comp__who">Emili Godes</span><span set:html={t('mirada_moderna.005')}></span>
   <div class="eg-comp__why" set:html={t('mirada_moderna.006')}></div>
 
-  <span class="eg-comp__src">MNAC · 219214-000 · <a href={`${base}obra/#fotografia_artistica`}>{t('mirada_moderna.105')}</a></span></figcaption>
+  <span class="eg-comp__src">MNAC · 219214-000 · <a href={explorerUrl(lang, 'fotografia_artistica')}>{t('mirada_moderna.105')}</a></span></figcaption>
   </figure>
   <figure class="is-godes">
   <div class="eg-comp__img"><img alt={t('mirada_moderna.160')} height="764" loading="lazy" src="/photos/obra/202468-000_011034.jpg" width="1000"/></div>
   <figcaption><span class="eg-comp__who">Emili Godes</span><span set:html={t('mirada_moderna.007')}></span>
   <div class="eg-comp__why" set:html={t('mirada_moderna.008')}></div>
 
-  <span class="eg-comp__src">MNAC · 202468-000 · <a href={`${base}obra/#fotografia_artistica`}>{t('mirada_moderna.106')}</a></span></figcaption>
+  <span class="eg-comp__src">MNAC · 202468-000 · <a href={explorerUrl(lang, 'fotografia_artistica')}>{t('mirada_moderna.106')}</a></span></figcaption>
   </figure>
   </div>
   </div>
@@ -91,7 +92,7 @@ const description = t('seo.mirada.description');
   <figcaption><span class="eg-comp__who">Emili Godes</span><span set:html={t('mirada_moderna.012')}></span>
   <div class="eg-comp__why" set:html={t('mirada_moderna.013')}></div>
 
-  <span class="eg-comp__src">MNAC · 205317-000 · <a href={`${base}obra/#fotografia_artistica`}>{t('mirada_moderna.110')}</a></span></figcaption>
+  <span class="eg-comp__src">MNAC · 205317-000 · <a href={explorerUrl(lang, 'fotografia_artistica')}>{t('mirada_moderna.110')}</a></span></figcaption>
   </figure>
   </div>
   </div>
@@ -103,14 +104,14 @@ const description = t('seo.mirada.description');
   <figcaption><span class="eg-comp__who">Emili Godes</span><span set:html={t('mirada_moderna.014')}></span>
   <div class="eg-comp__why" set:html={t('mirada_moderna.015')}></div>
 
-  <span class="eg-comp__src">MNAC · 202120-000 · <a href={`${base}obra/#fotografia_artistica`}>{t('mirada_moderna.112')}</a></span></figcaption>
+  <span class="eg-comp__src">MNAC · 202120-000 · <a href={explorerUrl(lang, 'fotografia_artistica')}>{t('mirada_moderna.112')}</a></span></figcaption>
   </figure>
   <figure class="is-godes">
   <div class="eg-comp__img"><img alt={t('mirada_moderna.163')} height="1000" loading="lazy" src="/photos/obra/202134-000_011021.jpg" width="613"/></div>
   <figcaption><span class="eg-comp__who">Emili Godes</span><span set:html={t('mirada_moderna.016')}></span>
   <div class="eg-comp__why" set:html={t('mirada_moderna.017')}></div>
 
-  <span class="eg-comp__src">MNAC · 202134-000 · <a href={`${base}obra/#fotografia_artistica`}>{t('mirada_moderna.113')}</a></span></figcaption>
+  <span class="eg-comp__src">MNAC · 202134-000 · <a href={explorerUrl(lang, 'fotografia_artistica')}>{t('mirada_moderna.113')}</a></span></figcaption>
   </figure>
   </div>
   </div>
@@ -135,14 +136,14 @@ const description = t('seo.mirada.description');
   <figcaption><span class="eg-comp__who">Emili Godes</span><span set:html={t('mirada_moderna.021')}></span>
   <div class="eg-comp__why" set:html={t('mirada_moderna.022')}></div>
 
-  <span class="eg-comp__src">MNAC · 202483-000 · <a href={`${base}obra/#fotografia_artistica`}>{t('mirada_moderna.116')}</a></span></figcaption>
+  <span class="eg-comp__src">MNAC · 202483-000 · <a href={explorerUrl(lang, 'fotografia_artistica')}>{t('mirada_moderna.116')}</a></span></figcaption>
   </figure>
   <figure class="is-godes">
   <div class="eg-comp__img"><img alt={t('mirada_moderna.165')} height="1000" loading="lazy" src="/photos/obra/202129-000_020903.jpg" width="757"/></div>
   <figcaption><span class="eg-comp__who">Emili Godes</span><span set:html={t('mirada_moderna.023')}></span>
   <div class="eg-comp__why" set:html={t('mirada_moderna.024')}></div>
 
-  <span class="eg-comp__src">MNAC · 202129-000 · <a href={`${base}obra/#fotografia_artistica`}>{t('mirada_moderna.117')}</a></span></figcaption>
+  <span class="eg-comp__src">MNAC · 202129-000 · <a href={explorerUrl(lang, 'fotografia_artistica')}>{t('mirada_moderna.117')}</a></span></figcaption>
   </figure>
   </div>
   </div>
@@ -167,14 +168,14 @@ const description = t('seo.mirada.description');
   <figcaption><span class="eg-comp__who">Emili Godes</span><span set:html={t('mirada_moderna.028')}></span>
   <div class="eg-comp__why" set:html={t('mirada_moderna.029')}></div>
 
-  <span class="eg-comp__src">MNAC · 202130-000 · <a href={`${base}obra/#fotografia_artistica`}>{t('mirada_moderna.120')}</a></span></figcaption>
+  <span class="eg-comp__src">MNAC · 202130-000 · <a href={explorerUrl(lang, 'fotografia_artistica')}>{t('mirada_moderna.120')}</a></span></figcaption>
   </figure>
   <figure class="is-godes">
   <div class="eg-comp__img"><img alt={t('mirada_moderna.169')} height="1000" loading="lazy" src="/photos/obra/202133-000_075193.jpg" width="737"/></div>
   <figcaption><span class="eg-comp__who">Emili Godes</span><span set:html={t('mirada_moderna.030')}></span>
   <div class="eg-comp__why" set:html={t('mirada_moderna.031')}></div>
 
-  <span class="eg-comp__src">MNAC · 202133-000 · <a href={`${base}obra/#fotografia_artistica`}>{t('mirada_moderna.121')}</a></span></figcaption>
+  <span class="eg-comp__src">MNAC · 202133-000 · <a href={explorerUrl(lang, 'fotografia_artistica')}>{t('mirada_moderna.121')}</a></span></figcaption>
   </figure>
   </div>
   </div>
@@ -210,7 +211,7 @@ const description = t('seo.mirada.description');
   <div class="eg-comp__grid">
   <figure class="is-godes">
   <div class="eg-comp__img"><img alt="Emili Godes, Piano, 1940" height="904" loading="lazy" src="/photos/obra/ACP-23-173b.jpg" width="710"/></div>
-  <figcaption><span class="eg-comp__who">Emili Godes</span><span set:html={t('mirada_moderna.037')}></span><span class="eg-comp__src">IEFC · <a href={`${base}obra/#fotografia_artistica`}>{t('mirada_moderna.126')}</a></span></figcaption>
+  <figcaption><span class="eg-comp__who">Emili Godes</span><span set:html={t('mirada_moderna.037')}></span><span class="eg-comp__src">IEFC · <a href={explorerUrl(lang, 'fotografia_artistica')}>{t('mirada_moderna.126')}</a></span></figcaption>
   </figure>
   <figure>
   <div class="eg-comp__img"><img alt={t('mirada_moderna.173')} height="317" loading="lazy" src="/assets/mirada/ref-llado-1934.jpg" width="256"/></div>
@@ -241,28 +242,28 @@ const description = t('seo.mirada.description');
   <figcaption><span class="eg-comp__who">Emili Godes</span><span set:html={t('mirada_moderna.043')}></span>
   <div class="eg-comp__why" set:html={t('mirada_moderna.044')}></div>
 
-  <span class="eg-comp__src">MNAC · 202116-000 · <a href={`${base}obra/#fotografia_artistica`}>{t('mirada_moderna.129')}</a></span></figcaption>
+  <span class="eg-comp__src">MNAC · 202116-000 · <a href={explorerUrl(lang, 'fotografia_artistica')}>{t('mirada_moderna.129')}</a></span></figcaption>
   </figure>
   <figure class="is-godes">
   <div class="eg-comp__img"><img alt={t('mirada_moderna.177')} height="1000" loading="lazy" src="/photos/obra/202118-000_011007.jpg" width="804"/></div>
   <figcaption><span class="eg-comp__who">Emili Godes</span><span set:html={t('mirada_moderna.045')}></span>
   <div class="eg-comp__why" set:html={t('mirada_moderna.046')}></div>
 
-  <span class="eg-comp__src">MNAC · 202118-000 · <a href={`${base}obra/#fotografia_artistica`}>{t('mirada_moderna.130')}</a></span></figcaption>
+  <span class="eg-comp__src">MNAC · 202118-000 · <a href={explorerUrl(lang, 'fotografia_artistica')}>{t('mirada_moderna.130')}</a></span></figcaption>
   </figure>
   <figure class="is-godes">
   <div class="eg-comp__img"><img alt={t('mirada_moderna.178')} height="630" loading="lazy" src="/photos/obra/202135-000_072431.jpg" width="1000"/></div>
   <figcaption><span class="eg-comp__who">Emili Godes</span><span set:html={t('mirada_moderna.047')}></span>
   <div class="eg-comp__why" set:html={t('mirada_moderna.048')}></div>
 
-  <span class="eg-comp__src">MNAC · 202135-000 · <a href={`${base}obra/#fotografia_artistica`}>{t('mirada_moderna.131')}</a></span></figcaption>
+  <span class="eg-comp__src">MNAC · 202135-000 · <a href={explorerUrl(lang, 'fotografia_artistica')}>{t('mirada_moderna.131')}</a></span></figcaption>
   </figure>
   <figure class="is-godes">
   <div class="eg-comp__img"><img alt={t('mirada_moderna.179')} height="663" loading="lazy" src="/photos/obra/202493-000_011059.jpg" width="1000"/></div>
   <figcaption><span class="eg-comp__who">Emili Godes</span><span set:html={t('mirada_moderna.049')}></span>
   <div class="eg-comp__why" set:html={t('mirada_moderna.050')}></div>
 
-  <span class="eg-comp__src">MNAC · 202493-000 · <a href={`${base}obra/#fotografia_artistica`}>{t('mirada_moderna.132')}</a></span></figcaption>
+  <span class="eg-comp__src">MNAC · 202493-000 · <a href={explorerUrl(lang, 'fotografia_artistica')}>{t('mirada_moderna.132')}</a></span></figcaption>
   </figure>
   </div>
   </div>
@@ -279,14 +280,14 @@ const description = t('seo.mirada.description');
   <figcaption><span class="eg-comp__who">Emili Godes</span><span set:html={t('mirada_moderna.052')}></span>
   <div class="eg-comp__why" set:html={t('mirada_moderna.053')}></div>
 
-  <span class="eg-comp__src">IEFC · ACP-23-119 · <a href={`${base}obra/#arquitectura_instalaciones`}>{t('mirada_moderna.135')}</a></span></figcaption>
+  <span class="eg-comp__src">IEFC · ACP-23-119 · <a href={explorerUrl(lang, 'arquitectura_instalaciones')}>{t('mirada_moderna.135')}</a></span></figcaption>
   </figure>
   <figure class="is-godes">
   <div class="eg-comp__img"><img alt={t('mirada_moderna.181')} height="739" loading="lazy" src="/photos/obra/ACP-23-446.jpg" width="1000"/></div>
   <figcaption><span class="eg-comp__who">Emili Godes</span><span set:html={t('mirada_moderna.054')}></span>
   <div class="eg-comp__why" set:html={t('mirada_moderna.055')}></div>
 
-  <span class="eg-comp__src">IEFC · ACP-23-446 · <a href={`${base}obra/#fotografia_industrial`}>{t('mirada_moderna.136')}</a></span></figcaption>
+  <span class="eg-comp__src">IEFC · ACP-23-446 · <a href={explorerUrl(lang, 'fotografia_industrial')}>{t('mirada_moderna.136')}</a></span></figcaption>
   </figure>
   </div>
   </div>
@@ -303,14 +304,14 @@ const description = t('seo.mirada.description');
   <figcaption><span class="eg-comp__who">Emili Godes</span><span set:html={t('mirada_moderna.057')}></span>
   <div class="eg-comp__why" set:html={t('mirada_moderna.058')}></div>
 
-  <span class="eg-comp__src">IEFC · ACP-23-597 · <a href={`${base}obra/#fotografia_artistica`}>{t('mirada_moderna.139')}</a></span></figcaption>
+  <span class="eg-comp__src">IEFC · ACP-23-597 · <a href={explorerUrl(lang, 'fotografia_artistica')}>{t('mirada_moderna.139')}</a></span></figcaption>
   </figure>
   <figure class="is-godes">
   <div class="eg-comp__img"><img alt={t('mirada_moderna.183')} height="871" loading="lazy" src="/photos/obra/ACP-23-187.jpg" width="1000"/></div>
   <figcaption><span class="eg-comp__who">Emili Godes</span><span set:html={t('mirada_moderna.059')}></span>
   <div class="eg-comp__why" set:html={t('mirada_moderna.060')}></div>
 
-  <span class="eg-comp__src">IEFC · ACP-23-187 · <a href={`${base}obra/#fotografia_artistica`}>{t('mirada_moderna.140')}</a></span></figcaption>
+  <span class="eg-comp__src">IEFC · ACP-23-187 · <a href={explorerUrl(lang, 'fotografia_artistica')}>{t('mirada_moderna.140')}</a></span></figcaption>
   </figure>
   </div>
   </div>
@@ -332,7 +333,7 @@ const description = t('seo.mirada.description');
   </figure>
   <figure class="is-godes">
   <div class="eg-comp__img"><img alt={t('mirada_moderna.186')} height="747" loading="lazy" src="/photos/obra/ACP-23-596.jpg" width="1000"/></div>
-  <figcaption><span class="eg-comp__who">Emili Godes</span><span set:html={t('mirada_moderna.064')}></span><span class="eg-comp__src">IEFC · <a href={`${base}obra/#fotografia_artistica`}>{t('mirada_moderna.143')}</a></span></figcaption>
+  <figcaption><span class="eg-comp__who">Emili Godes</span><span set:html={t('mirada_moderna.064')}></span><span class="eg-comp__src">IEFC · <a href={explorerUrl(lang, 'fotografia_artistica')}>{t('mirada_moderna.143')}</a></span></figcaption>
   </figure>
   </div>
   </div>
@@ -354,7 +355,7 @@ const description = t('seo.mirada.description');
   </figure>
   <figure class="is-godes">
   <div class="eg-comp__img"><img alt={t('mirada_moderna.189')} height="1000" loading="lazy" src="/photos/obra/ACP-23-649.jpg" width="743"/></div>
-  <figcaption><span class="eg-comp__who">Emili Godes</span><span set:html={t('mirada_moderna.068')}></span><span class="eg-comp__src">IEFC · <a href={`${base}obra/#fotografia_industrial`}>{t('mirada_moderna.146')}</a></span></figcaption>
+  <figcaption><span class="eg-comp__who">Emili Godes</span><span set:html={t('mirada_moderna.068')}></span><span class="eg-comp__src">IEFC · <a href={explorerUrl(lang, 'fotografia_industrial')}>{t('mirada_moderna.146')}</a></span></figcaption>
   </figure>
   </div>
   </div>
@@ -371,28 +372,28 @@ const description = t('seo.mirada.description');
   <figcaption><span class="eg-comp__who">Emili Godes</span><span set:html={t('mirada_moderna.070')}></span>
   <div class="eg-comp__why" set:html={t('mirada_moderna.071')}></div>
 
-  <span class="eg-comp__src">{t('mirada_moderna.199')} <a href={`${base}obra/#foto_fija_cine`}>{t('mirada_moderna.149')}</a></span></figcaption>
+  <span class="eg-comp__src">{t('mirada_moderna.199')} <a href={explorerUrl(lang, 'foto_fija_cine')}>{t('mirada_moderna.149')}</a></span></figcaption>
   </figure>
   <figure class="is-godes">
   <div class="eg-comp__img"><img alt={t('mirada_moderna.191')} height="803" loading="lazy" src="/photos/obra/14661_canas_y_barro.jpg" width="800"/></div>
   <figcaption><span class="eg-comp__who">Emili Godes</span><span set:html={t('mirada_moderna.072')}></span>
   <div class="eg-comp__why" set:html={t('mirada_moderna.073')}></div>
 
-  <span class="eg-comp__src">{t('mirada_moderna.200')} <a href={`${base}obra/#foto_fija_cine`}>{t('mirada_moderna.150')}</a></span></figcaption>
+  <span class="eg-comp__src">{t('mirada_moderna.200')} <a href={explorerUrl(lang, 'foto_fija_cine')}>{t('mirada_moderna.150')}</a></span></figcaption>
   </figure>
   <figure class="is-godes">
   <div class="eg-comp__img"><img alt={t('mirada_moderna.192')} height="596" loading="lazy" src="/photos/obra/15011_siega_verde.jpg" width="800"/></div>
   <figcaption><span class="eg-comp__who">Emili Godes</span><span set:html={t('mirada_moderna.074')}></span>
   <div class="eg-comp__why" set:html={t('mirada_moderna.075')}></div>
 
-  <span class="eg-comp__src">{t('mirada_moderna.201')} <a href={`${base}obra/#foto_fija_cine`}>{t('mirada_moderna.151')}</a></span></figcaption>
+  <span class="eg-comp__src">{t('mirada_moderna.201')} <a href={explorerUrl(lang, 'foto_fija_cine')}>{t('mirada_moderna.151')}</a></span></figcaption>
   </figure>
   <figure class="is-godes">
   <div class="eg-comp__img"><img alt={t('mirada_moderna.193')} height="754" loading="lazy" src="/photos/obra/73002_placido.jpg" width="1000"/></div>
   <figcaption><span class="eg-comp__who">Emili Godes</span><span set:html={t('mirada_moderna.076')}></span>
   <div class="eg-comp__why" set:html={t('mirada_moderna.077')}></div>
 
-  <span class="eg-comp__src">{t('mirada_moderna.202')} <a href={`${base}obra/#foto_fija_cine`}>{t('mirada_moderna.152')}</a></span></figcaption>
+  <span class="eg-comp__src">{t('mirada_moderna.202')} <a href={explorerUrl(lang, 'foto_fija_cine')}>{t('mirada_moderna.152')}</a></span></figcaption>
   </figure>
   </div>
   </div>
@@ -409,20 +410,20 @@ const description = t('seo.mirada.description');
   <figcaption><span class="eg-comp__who">Emili Godes</span><span set:html={t('mirada_moderna.079')}></span>
   <div class="eg-comp__why" set:html={t('mirada_moderna.080')}></div>
 
-  <span class="eg-comp__src">IEFC · ACP-23-690 · <a href={`${base}obra/#fotografia_industrial`}>{t('mirada_moderna.155')}</a></span></figcaption>
+  <span class="eg-comp__src">IEFC · ACP-23-690 · <a href={explorerUrl(lang, 'fotografia_industrial')}>{t('mirada_moderna.155')}</a></span></figcaption>
   </figure>
   <figure class="is-godes">
   <div class="eg-comp__img"><img alt={t('mirada_moderna.195')} height="728" loading="lazy" src="/photos/obra/ACP-23-710.jpg" width="1000"/></div>
   <figcaption><span class="eg-comp__who">Emili Godes</span><span set:html={t('mirada_moderna.081')}></span>
   <div class="eg-comp__why" set:html={t('mirada_moderna.082')}></div>
 
-  <span class="eg-comp__src">IEFC · ACP-23-710 · <a href={`${base}obra/#fotografia_industrial`}>{t('mirada_moderna.156')}</a></span></figcaption>
+  <span class="eg-comp__src">IEFC · ACP-23-710 · <a href={explorerUrl(lang, 'fotografia_industrial')}>{t('mirada_moderna.156')}</a></span></figcaption>
   </figure>
   </div>
   </div>
   <div class="eg-related">
-  <a href={`${base}obra/`}>{t('mirada_moderna.157')}</a>
-  <a href={`${base}investigacion/`}>{t('mirada_moderna.158')}</a>
+  <a href={pagePath(lang, 'obra')}>{t('mirada_moderna.157')}</a>
+  <a href={pagePath(lang, 'investigacion')}>{t('mirada_moderna.158')}</a>
   </div>
   </section>
   </div>

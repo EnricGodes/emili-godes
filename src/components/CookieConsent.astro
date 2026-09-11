@@ -5,6 +5,7 @@
  * Elección en cookie `eg_consent` = 'analytics' | 'none' (180 días).
  */
 import { useT, type Lang } from '../i18n';
+import { pagePath } from '../lib/site';
 interface Props { lang: Lang; enabled: boolean }
 const { lang, enabled } = Astro.props;
 const t = useT(lang);
@@ -14,7 +15,7 @@ const base = `/${lang}/`;
   <div class="eg-cookie" id="eg-cookie" role="dialog" aria-live="polite" aria-label={t('cookies.title')} hidden>
     <div class="eg-cookie__box">
       <h2 class="eg-cookie__title">{t('cookies.title')}</h2>
-      <p class="eg-cookie__text">{t('cookies.text')} <a href={`${base}legal/cookies/`}>{t('cookies.more')}</a></p>
+      <p class="eg-cookie__text">{t('cookies.text')} <a href={pagePath(lang, 'cookies')}>{t('cookies.more')}</a></p>
       <div class="eg-cookie__opts" id="eg-cookie-opts" hidden>
         <label class="eg-cookie__opt">
           <input type="checkbox" checked disabled />

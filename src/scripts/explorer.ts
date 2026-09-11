@@ -6,8 +6,8 @@
 import { openViewer, esc, readUI, initViewer, type ViewerPhoto } from './viewer';
 
 interface Photo { orig: string; image: string; thumb: string; w: number; h: number; title: string; desc: string; fecha: string; lugar: string; categoria: string; fondo: string; decada: string }
-interface Project { slug: string; name: string; lugar: string; fecha: string; year: number; decada: string; count: number; cover: string; fondos: string[]; url: string; photos: Photo[] }
-interface Ambito { label: string; intro: string; url: string; count: number; decades: string[]; fondos: string[]; projects: Project[] }
+interface Project { slug: string; uslug: string; name: string; lugar: string; fecha: string; year: number; decada: string; count: number; cover: string; fondos: string[]; url: string; photos: Photo[] }
+interface Ambito { label: string; uslug: string; intro: string; url: string; count: number; decades: string[]; fondos: string[]; projects: Project[] }
 interface Data { lang: string; total: number; ambito_order: string[]; decades: string[]; fondos_order: string[]; fondos: Record<string, string>; ambitos: Record<string, Ambito> }
 interface UI { themes: string; allThemes: string; decades: string; funds: string; all: string; search: string; sortCount: string; sortName: string; sortDate: string; photos: string; pick: string; noresults: string; backAll: string; sf: string; loadError: string; projectPage: string; themePage: string }
 
@@ -59,13 +59,23 @@ function fromHash() {
   const h = decodeURIComponent((location.hash || '').replace(/^#/, ''));
   if (!h) return;
   const parts = h.split('/');
-  if (st.data!.ambitos[parts[0]]) {
-    st.ambito = parts[0]; st.project = parts[1] || null;
-    st.pendingPhoto = parts[1] && parts[2] != null && parts[2] !== '' ? parseInt(parts[2], 10) : null;
+  const d = st.data!;
+  const amb = Object.keys(d.ambitos).find((k) => d.ambitos[k].uslug === parts[0] || k === parts[0]);
+  if (amb) {
+    st.ambito = amb;
+    const pr = parts[1] ? d.ambitos[amb].projects.find((p) => p.uslug === parts[1] || p.slug === parts[1]) : null;
+    st.project = pr ? pr.slug : null;
+    st.pendingPhoto = pr && parts[2] != null && parts[2] !== '' ? parseInt(parts[2], 10) : null;
   }
 }
+function hashFor(amb: string | null | undefined, slug: string | null, idx?: number) {
+  if (!amb || !st.data) return '';
+  const a = st.data.ambitos[amb];
+  const p = slug ? a.projects.find((x) => x.slug === slug) : null;
+  return a.uslug + (p ? '/' + p.uslug + (idx != null ? '/' + idx : '') : '');
+}
 function setHash() {
-  const h = st.ambito ? st.ambito + (st.project ? '/' + st.project : '') : '';
+  const h = hashFor(st.ambito, st.project);
   if (decodeURIComponent((location.hash || '').replace(/^#/, '')) !== h) history.replaceState(null, '', h ? '#' + h : location.pathname);
 }
 
@@ -153,7 +163,7 @@ function renderProjectPhotos(a: Ambito) {
   if (!p) { st.project = null; return renderProjects(a); }
   const q = norm(st.q);
   const photos = p.photos.filter((ph) => (st.decade === 'all' || ph.decada === st.decade) && (st.fondo === 'all' || ph.fondo === st.fondo) && (!q || norm(ph.desc + ' ' + ph.lugar).includes(q)));
-  const crumbs = `<div class="eg-crumbs"><a data-act="back" href="#${st.ambito}">${esc(a.label)}</a> ▸ <span>${esc(p.name)}</span></div>`;
+  const crumbs = `<div class="eg-crumbs"><a data-act="back" href="#${a.uslug}">${esc(a.label)}</a> ▸ <span>${esc(p.name)}</span></div>`;
   const meta = [p.lugar, p.fecha, p.count + ' ' + UI.photos].filter(Boolean).join(' · ');
   const head = `<h2 style="font-size:1.5rem;margin:.2rem 0 0">${esc(p.name)}</h2>${meta ? `<p class="eg-projcard__meta" style="margin-bottom:.5rem">${esc(meta)}</p>` : ''}` +
     `<div class="eg-obra-links"><a href="${esc(p.url)}">${esc(UI.projectPage)} →</a></div>` +
@@ -169,7 +179,7 @@ function openPhotos(i: number) {
   const amb = st.ambito || null;
   const list = st.photos.map((ph) => toViewer(ph, p, amb, p ? p.photos.indexOf(ph) : undefined));
   if (p) { // el hash apunta a la foto abierta mientras el visor está activo
-    const upd = (idx: number) => history.replaceState(null, '', `#${st.ambito}/${p.slug}/${idx}`);
+    const upd = (idx: number) => history.replaceState(null, '', '#' + hashFor(st.ambito, p.slug, idx));
     upd(i);
     const onNav = (e: Event) => upd((e as CustomEvent).detail.index);
     const onClose = () => { document.removeEventListener('eg:viewer-nav', onNav); document.removeEventListener('eg:viewer-close', onClose); setHash(); };

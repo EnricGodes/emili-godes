@@ -48,8 +48,46 @@ export function baseOf(lang: Lang): string {
   return `/${lang}/`;
 }
 
+/** Slug de URL a partir de un texto (misma regla que scripts/import_inventory.py). */
+export function slugify(text: string): string {
+  const t = (text || '').normalize('NFD').replace(/[\u0300-\u036f]/g, '').replace(/[^a-zA-Z0-9]+/g, '-').replace(/^-+|-+$/g, '').toLowerCase();
+  return t || 'sin-titulo';
+}
+
+/** Ids de página con slug traducido (ui.json → slug.<id>). */
+export const PAGE_IDS = ['biografia', 'obra', 'mirada', 'destacadas', 'legado', 'investigacion', 'creditos', 'contacto', 'legal', 'privacy', 'cookies'] as const;
+export type PageId = (typeof PAGE_IDS)[number];
+/** Slug de una página en un idioma (cae al castellano si falta). */
+export function pageSlug(lang: Lang, id: PageId): string {
+  return (dicts[lang]?.['slug.' + id] ?? dicts[DEFAULT_LANG]?.['slug.' + id] ?? id) as string;
+}
+export const pagePath = (lang: Lang, id: PageId | 'home') => (id === 'home' ? `/${lang}/` : `/${lang}/${pageSlug(lang, id)}/`);
+/** Slug de URL de una temática del catálogo (etiqueta traducida). */
+export function ambitoSlug(lang: Lang, ambito: string): string {
+  const label = dicts[lang]?.['category.' + ambito] ?? dicts[DEFAULT_LANG]?.['category.' + ambito] ?? ambito;
+  return slugify(label);
+}
+
+/** Enlaces escritos en castellano dentro de los textos → ruta del idioma:
+ *  {{base}}biografia/  ·  {{base}}legal/privacidad/  ·  {{base}}obra/#fotografia_artistica  */
+const ES_LINKS: Record<string, PageId> = {
+  'biografia/': 'biografia', 'obra/': 'obra', 'mirada-moderna/': 'mirada', 'destacadas/': 'destacadas', 'legado/': 'legado',
+  'investigacion/': 'investigacion', 'creditos/': 'creditos', 'contacto/': 'contacto',
+  'legal/aviso-legal/': 'legal', 'legal/privacidad/': 'privacy', 'legal/cookies/': 'cookies',
+};
+function localizeLinks(s: string, lang: Lang): string {
+  return s.replace(/\{\{base\}\}(legal\/[a-z-]+\/|[a-z-]+\/)?(#[a-z_]+)?/g, (_m, seg: string | undefined, hash: string | undefined) => {
+    if (!seg) return baseOf(lang);
+    const id = ES_LINKS[seg];
+    if (!id) return baseOf(lang) + seg + (hash || '');
+    let out = pagePath(lang, id);
+    if (hash) out += id === 'obra' ? '#' + ambitoSlug(lang, hash.slice(1)) : hash;
+    return out;
+  });
+}
+
 function interpolate(s: string, lang: Lang, vars?: Record<string, string | number>): string {
-  let out = s.replace(/\{\{base\}\}/g, baseOf(lang));
+  let out = localizeLinks(s, lang);
   if (vars) for (const [k, v] of Object.entries(vars)) out = out.split(`{${k}}`).join(String(v));
   return out;
 }

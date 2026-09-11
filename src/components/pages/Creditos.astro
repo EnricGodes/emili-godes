@@ -1,17 +1,17 @@
 ---
 import Base from '../../layouts/Base.astro';
+import { pagePath, pageAlternates } from '../../lib/site';
 import { useT, type Lang } from '../../i18n';
-import { langPaths } from '../../lib/paths';
 import { article, breadcrumb } from '../../lib/schema';
-export const getStaticPaths = langPaths;
-const lang = Astro.params.lang as Lang;
+interface Props { lang: Lang }
+const { lang } = Astro.props as Props;
 const t = useT(lang);
 const base = `/${lang}/`;
 const title = t('seo.creditos.title');
 const description = t('seo.creditos.description');
 ---
-<Base lang={lang} title={title} description={description} path="creditos/" activeNav="creditos" ogType="article"
-  jsonLd={[article(lang, { url: `${base}creditos/`, headline: title, description }), breadcrumb([{ name: t('breadcrumb.home'), url: base }, { name: t('nav.creditos'), url: `${base}creditos/` }])]}>
+<Base lang={lang} title={title} description={description} path={pagePath(lang, 'creditos').slice(4)} alternates={pageAlternates('creditos')} activeNav="creditos" ogType="article"
+  jsonLd={[article(lang, { url: pagePath(lang, 'creditos'), headline: title, description }), breadcrumb([{ name: t('breadcrumb.home'), url: base }, { name: t('nav.creditos'), url: pagePath(lang, 'creditos') }])]}>
   <section class="eg-section">
   <div class="eg-container eg-container--narrow">
   <p class="eg-kicker">{t('creditos.009')}</p>

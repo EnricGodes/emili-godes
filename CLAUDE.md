@@ -28,8 +28,11 @@ src/
   lib/site.ts         SITE_URL, PAGES (registro de páginas/nav), env PUBLIC_*
   layouts/Base.astro  <head> SEO completo (title, description, canonical, hreflang ×6 + x-default, OG, JSON-LD), GTM + Consent Mode, header/footer/cookies
   components/         Header, Footer, LangSwitch, CookieConsent, UiJson (strings para JS cliente), LegalPage
-  pages/[lang]/       index, biografia, mirada-moderna, destacadas, legado, investigacion, creditos, contacto, 404, legal/{aviso-legal,privacidad,cookies}
-  pages/[lang]/obra/  index (explorador JS) · [ambito]/index (9 temáticas) · [ambito]/[project] (255 fichas)
+  pages/[lang]/index.astro      portada
+  pages/[lang]/[slug].astro     despachador de secciones con slug traducido (ui.json slug.<id>): /es/biografia/, /en/biography/, /de/impressum/…
+  components/pages/*.astro      contenido de cada sección (Biografia, Obra=explorador, MiradaModerna, Destacadas, Legado, Investigacion, Creditos, Contacto) + LegalPage
+  pages/[lang]/[obra]/[ambito]/index · [project]   9 temáticas y 255 fichas, todo con slugs traducidos (/en/work/science-and-medicine/…)
+  pages/404.astro               404 único (dist/404.html, el que usa Cloudflare Pages)
   pages/data/catalog.[lang].json.ts   JSON resuelto por idioma para el explorador
   pages/sitemap-images.xml.ts         sitemap de imágenes (Google Images)
   scripts/            explorer.ts (explorador, hash #ambito/proyecto/idx) · viewer.ts (visor) · gallery.ts (fichas estáticas, #foto-N)
@@ -48,7 +51,8 @@ docs/                 DEPLOY.md (Cloudflare, DNS, variables) · ANALYTICS.md (GT
   - Dedup por nombre exacto de archivo; nombres distintos nunca se fusionan. Un proyecto = `proyecto_es` exacto (una preposición distinta parte la serie: arreglar en el Excel, no con matching difuso).
   - Claves de texto estables: `project.<ambito>.<slug>`, `place.<hash>`, `category.<slug>`, `fondo.<slug>`, descripciones por hash sha1[:12] del texto ES.
 - **Traducir:** ver `translations/README.md` (exportar → ChatGPT → `incoming/<lang>/` → `i18n_apply.py <lang>`). El build cae al castellano en lo que falte; `i18n_apply.py --status` da la cobertura.
-- **Cambiar textos:** `src/i18n/es/*.json` es la fuente; `{{base}}` se sustituye por `/<lang>/` en tiempo de render; los párrafos con HTML se pintan con `set:html`.
+- **Cambiar textos:** `src/i18n/es/*.json` es la fuente; los enlaces se escriben en castellano (`{{base}}biografia/`, `{{base}}legal/privacidad/`, `{{base}}obra/#fotografia_artistica`) y `t()` los convierte a la ruta del idioma (`localizeLinks` en `src/i18n/index.ts`); los párrafos con HTML se pintan con `set:html`.
+- **URLs por idioma:** secciones (`slug.*` en ui.json), temáticas y proyectos (slugify de la etiqueta traducida, `src/lib/catalog.ts`); el hash del explorador usa esos mismos slugs (`#science-and-medicine/torre-marimon`) y acepta las claves internas antiguas. Cambiar un slug cambia la URL pública: hacerlo antes de indexar o añadir una redirección en `public/_redirects`.
 - **SEO:** títulos/descripciones en `ui.json` (`seo.*`); `Base.astro` añade « · Emili Godes» salvo que el título ya lo contenga. Páginas legales y 404: `noindex` y fuera del sitemap.
 - **Desplegar:** push a `main` → Cloudflare Pages construye (`npm run build`, output `dist`). Variables de entorno en `docs/DEPLOY.md`.
 

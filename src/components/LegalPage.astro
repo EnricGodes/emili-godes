@@ -1,16 +1,19 @@
 ---
 import Base from '../layouts/Base.astro';
 import { useT, type Lang } from '../i18n';
-interface Props { lang: Lang; id: 'aviso' | 'privacy' | 'cookies'; slug: string; seo: string }
-const { lang, id, slug, seo } = Astro.props;
+import { pagePath, pageAlternates } from '../lib/site';
+interface Props { lang: Lang; id: 'legal' | 'privacy' | 'cookies' }
+const { lang, id } = Astro.props;
+const seo = { legal: 'seo.legal.title', privacy: 'seo.privacy.title', cookies: 'seo.cookies.title' }[id];
+const bodyKey = { legal: 'aviso', privacy: 'privacy', cookies: 'cookies' }[id];
 const t = useT(lang);
 const base = `/${lang}/`;
-const title = t(`legal.${id}.title`);
-const body = t(`legal.${id}.body`).replace(/\{\{contactVia\}\}/g, t('legal.contactVia'));
-const path = `legal/${slug}/`;
+const title = t(`legal.${bodyKey}.title`);
+const body = t(`legal.${bodyKey}.body`).replace(/\{\{contactVia\}\}/g, t('legal.contactVia'));
+const path = pagePath(lang, id).slice(4);
 const description = title + ' · ' + t('legal.holder') + ' · emili.godes.org';
 ---
-<Base lang={lang} title={t(seo)} description={description} path={path} noindex>
+<Base lang={lang} title={t(seo)} description={description} path={path} alternates={pageAlternates(id)} noindex>
   <section class="eg-section">
     <div class="eg-container eg-container--narrow">
       <nav class="eg-breadcrumb" aria-label={t('ui.breadcrumb')}><ol><li><a href={base}>{t('breadcrumb.home')}</a></li><li aria-current="page">{title}</li></ol></nav>
@@ -18,9 +21,9 @@ const description = title + ' · ' + t('legal.holder') + ' · emili.godes.org';
       <p class="eg-note">{t('legal.updated')}</p>
       <div class="eg-prose eg-legal" set:html={body}></div>
       <nav class="eg-related" aria-label="Legal">
-        {slug !== 'aviso-legal' && <a href={`${base}legal/aviso-legal/`}>{t('legal.nav.legal')}</a>}
-        {slug !== 'privacidad' && <a href={`${base}legal/privacidad/`}>{t('legal.nav.privacy')}</a>}
-        {slug !== 'cookies' && <a href={`${base}legal/cookies/`}>{t('legal.nav.cookies')}</a>}
+        {id !== 'legal' && <a href={pagePath(lang, 'legal')}>{t('legal.nav.legal')}</a>}
+        {id !== 'privacy' && <a href={pagePath(lang, 'privacy')}>{t('legal.nav.privacy')}</a>}
+        {id !== 'cookies' && <a href={pagePath(lang, 'cookies')}>{t('legal.nav.cookies')}</a>}
       </nav>
     </div>
   </section>
