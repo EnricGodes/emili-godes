@@ -18,8 +18,8 @@ Hace, en un solo paso (idempotente, re-ejecutable):
   4. Genera src/data/catalog.json (estructura, sin textos) y src/data/destacadas.json.
   5. Genera los textos por idioma en src/i18n/{es,ca}/catalog-meta.json (proyectos, lugares,
      categorías, fondos) y catalog-photos.json (descripciones únicas, clave = hash del texto ES).
-     Las claves son estables: el pipeline de traducción (scripts/i18n_export.py) solo pide
-     traducir lo que sea nuevo.
+     Las claves son estables (hash del texto ES): al reimportar, solo las descripciones nuevas o
+     cambiadas quedan sin traducir en src/i18n/{en,fr,de,it}/ y caen al castellano hasta traducirlas.
   6. Avisa (no aborta) de archivos físicos SIN ficha en el Excel (quedarían sin publicar).
 
 Uso:  python3 scripts/import_inventory.py [--force]
