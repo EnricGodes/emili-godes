@@ -38,8 +38,7 @@ src/
   scripts/            explorer.ts (explorador, hash #ambito/proyecto/idx) · viewer.ts (visor) · gallery.ts (fichas estáticas, #foto-N)
 public/photos/obra/   2.801 JPEG (1000 px) + thumbs/ (480 px)   ← en el repo, generados por el importador
 public/photos/bio/    fotos de la biografía · public/assets/ hero, mirada/, PDF, og/
-scripts/              import_inventory.py · i18n_export.py · i18n_apply.py · og_images.py
-translations/         README.md, PROMPT.md, glossary.md, source/ (exportado), incoming/<lang>/ (devuelto por ChatGPT)
+scripts/              import_inventory.py · og_images.py
 _resources/           (gitignored) Excel del inventario, originales por fondo, .md de contenido, TFG
 docs/                 DEPLOY.md (Cloudflare, DNS, variables) · ANALYTICS.md (GTM, GA4, Search Console)
 ```
@@ -47,10 +46,10 @@ docs/                 DEPLOY.md (Cloudflare, DNS, variables) · ANALYTICS.md (GT
 ## Flujos habituales
 
 - **Desarrollo:** `npm run dev` (http://localhost:4321/es/). `npm run build && npx astro preview`. Con Functions: `npm run build && npx wrangler pages dev dist`.
-- **Actualizar el catálogo:** editar `_resources/archivo/inventario_maestro_consolidado_traduccion.xlsx` (hoja `Inventario`) o añadir fotos en las carpetas de `FOLDER` → `python3 scripts/import_inventory.py` → revisar avisos (SIN ARCHIVO / cobertura inversa) → `python3 scripts/i18n_export.py --only-missing en` etc. para traducir lo nuevo → build → commit (incluye `public/photos/obra/`).
+- **Actualizar el catálogo:** editar `_resources/archivo/inventario_maestro_consolidado_traduccion.xlsx` (hoja `Inventario`) o añadir fotos en las carpetas de `FOLDER` → `python3 scripts/import_inventory.py` → revisar avisos (SIN ARCHIVO / cobertura inversa) → traducir a mano las claves nuevas de `src/i18n/{es,ca}/catalog-*.json` en los otros cuatro idiomas (mismas claves) → build → commit (incluye `public/photos/obra/`).
   - Dedup por nombre exacto de archivo; nombres distintos nunca se fusionan. Un proyecto = `proyecto_es` exacto (una preposición distinta parte la serie: arreglar en el Excel, no con matching difuso).
   - Claves de texto estables: `project.<ambito>.<slug>`, `place.<hash>`, `category.<slug>`, `fondo.<slug>`, descripciones por hash sha1[:12] del texto ES.
-- **Traducir:** ver `translations/README.md` (exportar → ChatGPT → `incoming/<lang>/` → `i18n_apply.py <lang>`). El build cae al castellano en lo que falte; `i18n_apply.py --status` da la cobertura.
+- **Traducciones:** completas en los 6 idiomas (sep-2026). Los ficheros `src/i18n/<lang>/*.json` son la única fuente; lo que falte en un idioma cae al castellano. El pipeline de ChatGPT (`i18n_export.py`/`i18n_apply.py`, carpeta `translations/`) se eliminó una vez aplicado; está en el historial de git si hiciera falta recuperarlo.
 - **Cambiar textos:** `src/i18n/es/*.json` es la fuente; los enlaces se escriben en castellano (`{{base}}biografia/`, `{{base}}legal/privacidad/`, `{{base}}obra/#fotografia_artistica`) y `t()` los convierte a la ruta del idioma (`localizeLinks` en `src/i18n/index.ts`); los párrafos con HTML se pintan con `set:html`.
 - **URLs por idioma:** secciones (`slug.*` en ui.json), temáticas y proyectos (slugify de la etiqueta traducida, `src/lib/catalog.ts`); el hash del explorador usa esos mismos slugs (`#science-and-medicine/torre-marimon`) y acepta las claves internas antiguas. Cambiar un slug cambia la URL pública: hacerlo antes de indexar o añadir una redirección en `public/_redirects`.
 - **SEO:** títulos/descripciones en `ui.json` (`seo.*`); `Base.astro` añade « · Emili Godes» salvo que el título ya lo contenga. Páginas legales y 404: `noindex` y fuera del sitemap.

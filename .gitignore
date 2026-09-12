@@ -25,8 +25,6 @@ pnpm-debug.log*
 
 # fuentes originales (Excel, TIF, originales de museos): fuera del repo
 _resources/
-# traducciones devueltas por ChatGPT ya aplicadas se conservan; el directorio de trabajo local no
-translations/incoming/**/*.tmp
 # wrangler
 .wrangler/
 .dev.vars
