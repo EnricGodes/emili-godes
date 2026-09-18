@@ -27,7 +27,7 @@ Tras añadir variables: Deployments → Retry deployment.
 1. Pages → Custom domains → **Set up a custom domain** → `emili.godes.org`. Cloudflare mostrará el CNAME a crear.
 2. Namecheap → Domain List → godes.org → **Advanced DNS** → Add record: `CNAME` · Host `emili` · Value `emili-godes.pages.dev` · TTL automático.
 3. Volver a Cloudflare y pulsar *Check DNS*. Activo en minutos (hasta 24 h en el peor caso). Certificado TLS automático.
-4. Comprobar: `curl -I https://emili.godes.org/` → `302` a `/es/`; `curl -I -H "Accept-Language: fr" https://emili.godes.org/` → `/fr/`.
+4. Comprobar: `curl -I https://emili.godes.org/` → `301` a `/es/`; `curl -I -H "Accept-Language: fr" https://emili.godes.org/` → `/fr/`.
 
 ## 4. Turnstile (opcional, recomendado)
 Cloudflare → Turnstile → Add site → dominio `emili.godes.org` (+ `localhost` para pruebas) → widget *Managed*.
@@ -50,7 +50,7 @@ godes.org no tiene MX hoy (Resend solo envía). Namecheap → godes.org → **Em
 registro `send.godes.org` (MX de rebotes de Resend, en subdominio aparte: no interfiere).
 
 ## 8. Checklist tras el primer deploy
-- [ ] `https://emili.godes.org/es/` 200 y `https://emili.godes.org/` 302
+- [ ] `https://emili.godes.org/es/` 200 y `https://emili.godes.org/` 301
 - [ ] `https://emili.godes.org/sitemap.xml`, `/sitemap-images.xml`, `/robots.txt`
 - [ ] Search Console: propiedad `emili.godes.org` (dominio, por DNS TXT en Namecheap) → Sitemaps → enviar los dos
 - [ ] Bing Webmaster Tools → Import from Google Search Console

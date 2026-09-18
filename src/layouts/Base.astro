@@ -40,7 +40,8 @@ const t = useT(lang);
 const canonical = `${SITE_URL}/${lang}/${path}`;
 const fullTitle = path === '' || title.includes(SITE_NAME) ? title : `${title} · ${SITE_NAME}`;
 const ogImageAbs = ogImage.startsWith('http') ? ogImage : SITE_URL + ogImage;
-const xDefault = path === '' ? `${SITE_URL}/` : `${SITE_URL}/${DEFAULT_LANG}/${altPath(DEFAULT_LANG)}`;
+// x-default siempre a la versión ES (la raíz «/» solo redirige; apuntar ahí hacía que Google la eligiera como canónica de /es/)
+const xDefault = `${SITE_URL}/${DEFAULT_LANG}/${altPath(DEFAULT_LANG)}`;
 const gtm = GTM_ID;
 ---
 <!doctype html>
