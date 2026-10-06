@@ -1,5 +1,5 @@
 {
- "generated_at": "2026-09-11 07:15:00",
+ "generated_at": "2026-10-06 15:01:16",
  "ambito_order": [
   "foto_fija_cine",
   "fotografia_industrial",
@@ -1564,9 +1564,9 @@
      ]
     },
     {
-     "slug": "reportaje-de-patrimonio-romanico-no-identificado",
-     "name": "project.arquitectura_instalaciones.reportaje-de-patrimonio-romanico-no-identificado",
-     "lugar": "place.07038c11b70b",
+     "slug": "iglesia-de-sant-pau-del-camp",
+     "name": "project.arquitectura_instalaciones.iglesia-de-sant-pau-del-camp",
+     "lugar": "place.f2a0022141f7",
      "fecha": "ca. 1930",
      "year": 1930,
      "decada": "1930",
@@ -1581,9 +1581,9 @@
        "file": "ACM-23-3.jpg",
        "w": 1000,
        "h": 682,
-       "desc": "d8c812b14e72",
+       "desc": "5a1bd37ad17a",
        "fecha": "ca. 1930",
-       "lugar": "place.07038c11b70b",
+       "lugar": "place.f2a0022141f7",
        "categoria": "arquitectura_instalaciones",
        "fondo": "iefc",
        "decada": "1930"

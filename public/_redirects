@@ -1,3 +1,11 @@
 # rutas del antiguo microsite dentro de Godesia
 /emili-godes/*  /  301
 /index.html     /  301
+
+# ACM-23-3 identificada como Sant Pau del Camp (oct-2026)
+/es/obra/arquitectura-e-instalaciones/reportaje-de-patrimonio-romanico-no-identificado/*  /es/obra/arquitectura-e-instalaciones/iglesia-de-sant-pau-del-camp/  301
+/ca/obra/arquitectura-i-instal-lacions/reportatge-de-patrimoni-romanic-no-identificat/*  /ca/obra/arquitectura-i-instal-lacions/esglesia-de-sant-pau-del-camp/  301
+/en/work/architecture-and-facilities/photo-report-on-unidentified-romanesque-heritage/*  /en/work/architecture-and-facilities/church-of-sant-pau-del-camp/  301
+/fr/oeuvre/architecture-et-installations/reportage-sur-un-patrimoine-roman-non-identifie/*  /fr/oeuvre/architecture-et-installations/eglise-de-sant-pau-del-camp/  301
+/de/werk/architektur-und-anlagen/reportage-uber-nicht-identifiziertes-romanisches-kulturerbe/*  /de/werk/architektur-und-anlagen/kirche-sant-pau-del-camp/  301
+/it/opera/architettura-e-impianti/reportage-su-patrimonio-romanico-non-identificato/*  /it/opera/architettura-e-impianti/chiesa-di-sant-pau-del-camp/  301
