@@ -5,12 +5,12 @@
 import type { APIRoute } from 'astro';
 import { LOCALES, DEFAULT_LANG, pagePath } from '../i18n';
 import { PAGES, SITE_URL } from '../lib/site';
-import { catalog, ambitoPath, projectPath } from '../lib/catalog';
+import { catalog, ambitoPath, projectPath, projectIndexLangs } from '../lib/catalog';
 
 type Alt = Record<string, string>; // lang → ruta absoluta
 
-function entry(alts: Alt, lang: string, priority: string, changefreq: string) {
-  const links = LOCALES.map((l) => `<xhtml:link rel="alternate" hreflang="${l}" href="${SITE_URL}${alts[l]}"/>`).join('');
+function entry(alts: Alt, lang: string, priority: string, changefreq: string, langs: readonly string[] = LOCALES) {
+  const links = langs.map((l) => `<xhtml:link rel="alternate" hreflang="${l}" href="${SITE_URL}${alts[l]}"/>`).join('');
   const xd = `<xhtml:link rel="alternate" hreflang="x-default" href="${SITE_URL}${alts[DEFAULT_LANG]}"/>`;
   return `<url><loc>${SITE_URL}${alts[lang]}</loc>${links}${xd}<changefreq>${changefreq}</changefreq><priority>${priority}</priority></url>`;
 }
@@ -29,7 +29,8 @@ export const GET: APIRoute = () => {
     for (const l of LOCALES) urls.push(entry(alts, l, '0.7', 'monthly'));
     for (const p of catalog.ambitos[amb].projects) {
       const palts: Alt = Object.fromEntries(LOCALES.map((l) => [l, projectPath(l, amb, p.slug)]));
-      for (const l of LOCALES) urls.push(entry(palts, l, '0.6', 'yearly'));
+      const langs = projectIndexLangs(p); // fichas con pocas fotos: solo es/ca/en
+      for (const l of langs) urls.push(entry(palts, l, '0.6', 'yearly', langs));
     }
   }
   const xml = `<?xml version="1.0" encoding="UTF-8"?>

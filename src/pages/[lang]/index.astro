@@ -3,9 +3,11 @@ import Base from '../../layouts/Base.astro';
 import { LOCALES, useT, type Lang } from '../../i18n';
 import { person, website } from '../../lib/schema';
 import { pagePath } from '../../lib/site';
+import { catalog, useCatalogText, ambitoPath } from '../../lib/catalog';
 export const getStaticPaths = () => LOCALES.map((lang) => ({ params: { lang } }));
 const lang = Astro.params.lang as Lang;
 const t = useT(lang);
+const ct = useCatalogText(lang);
 const base = `/${lang}/`;
 const description = t('seo.home.description');
 ---
@@ -27,4 +29,17 @@ const description = t('seo.home.description');
     </div>
   </section>
 
+  <section class="eg-section eg-section--tint">
+    <div class="eg-container">
+      <div class="eg-prose">
+        <p class="eg-kicker">{t('index.007')}</p>
+        <h2>{t('index.008')}</h2>
+        <Fragment set:html={t('index.009')} />
+      </div>
+      <h3>{t('index.010')}</h3>
+      <nav class="eg-anchor-nav" aria-label={t('obra.themes')}>
+        {ct.orderedAmbitos().map((a) => <a href={ambitoPath(lang, a)}>{ct.ambitoLabel(a)} <small>({catalog.ambitos[a].count})</small></a>)}
+      </nav>
+    </div>
+  </section>
 </Base>

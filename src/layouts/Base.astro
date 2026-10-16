@@ -30,10 +30,12 @@ interface Props {
   activeNav?: string;
   /** Ruta de esta página en cada idioma (relativa a /{lang}/) cuando los slugs cambian por idioma. */
   alternates?: Record<Lang, string>;
+  /** Idiomas indexables de esta página (los únicos que se anuncian en hreflang). Por defecto, todos. */
+  hreflangLangs?: readonly Lang[];
 }
 const {
   lang, title, description, path, ogImage = '/assets/og/default.jpg', ogType = 'website',
-  noindex = false, jsonLd = [], bodyClass = '', activeNav, alternates,
+  noindex = false, jsonLd = [], bodyClass = '', activeNav, alternates, hreflangLangs = LOCALES,
 } = Astro.props;
 const altPath = (l: Lang) => (alternates ? alternates[l] : path);
 const t = useT(lang);
@@ -52,7 +54,7 @@ const gtm = GTM_ID;
     <title>{fullTitle}</title>
     <meta name="description" content={description} />
     <link rel="canonical" href={canonical} />
-    {LOCALES.map((l) => <link rel="alternate" hreflang={l} href={`${SITE_URL}/${l}/${altPath(l)}`} />)}
+    {hreflangLangs.map((l) => <link rel="alternate" hreflang={l} href={`${SITE_URL}/${l}/${altPath(l)}`} />)}
     <link rel="alternate" hreflang="x-default" href={xDefault} />
     {noindex ? <meta name="robots" content="noindex, follow" /> : <meta name="robots" content="index, follow, max-image-preview:large" />}
     <meta property="og:site_name" content={SITE_NAME} />

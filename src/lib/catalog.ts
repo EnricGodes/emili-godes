@@ -145,6 +145,13 @@ export const ambitoAlternates = (ambito: string) =>
   Object.fromEntries(LOCALES.map((l) => [l, ambitoPath(l, ambito).slice(4)])) as Record<Lang, string>;
 export const projectAlternates = (ambito: string, slug: string) =>
   Object.fromEntries(LOCALES.map((l) => [l, projectPath(l, ambito, slug).slice(4)])) as Record<Lang, string>;
+/** Fichas con pocas fotos: contenido muy escaso, solo se indexan en es/ca/en (en el resto, noindex
+ *  y fuera del sitemap y del hreflang) para no diluir la calidad del sitio ante Google. */
+export const THIN_PROJECT_MAX_PHOTOS = 2;
+const THIN_PROJECT_LANGS: readonly Lang[] = ['es', 'ca', 'en'];
+export const projectIndexLangs = (p: Project): readonly Lang[] =>
+  p.count > THIN_PROJECT_MAX_PHOTOS ? LOCALES : THIN_PROJECT_LANGS;
+
 /** Enlace al explorador con el estado en el hash (slugs del idioma). */
 export const explorerUrl = (lang: Lang, ambito: string, slug?: string, idx?: number) =>
   obraPath(lang) + '#' + ambitoUrlSlug(lang, ambito) + (slug ? '/' + projectUrlSlug(lang, ambito, slug) + (idx != null ? '/' + idx : '') : '');
