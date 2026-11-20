@@ -1,9 +1,9 @@
 /**
  * Sitemap de imágenes (Google Images): una entrada por ficha de proyecto en castellano
- * (las fotos son las mismas en todos los idiomas; se evita repetirlas 6 veces).
+ * (las fotos son las mismas en todos los idiomas; se evita repetirlas 6 veces). Solo fichas indexables.
  */
 import type { APIRoute } from 'astro';
-import { catalog, useCatalogText, projectPath, photoUrl } from '../lib/catalog';
+import { catalog, useCatalogText, projectPath, photoUrl, isProjectIndexable } from '../lib/catalog';
 import { SITE_URL } from '../lib/site';
 
 const esc = (s: string) => s.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
@@ -13,6 +13,7 @@ export const GET: APIRoute = () => {
   const urls: string[] = [];
   for (const [amb, a] of Object.entries(catalog.ambitos)) {
     for (const p of a.projects) {
+      if (!isProjectIndexable(p, amb)) continue; // ficha noindex: sus fotos no se indexarían
       const imgs = p.photos.map((ph) =>
         `<image:image><image:loc>${SITE_URL}${photoUrl(ph.file)}</image:loc><image:title>${esc(ct.photoTitle(ph, p))}</image:title></image:image>`).join('');
       urls.push(`<url><loc>${SITE_URL}${projectPath('es', amb, p.slug)}</loc>${imgs}</url>`);

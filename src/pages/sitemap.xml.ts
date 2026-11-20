@@ -5,7 +5,7 @@
 import type { APIRoute } from 'astro';
 import { LOCALES, DEFAULT_LANG, pagePath } from '../i18n';
 import { PAGES, SITE_URL } from '../lib/site';
-import { catalog, ambitoPath, projectPath, projectIndexLangs } from '../lib/catalog';
+import { catalog, ambitoPath, projectPath, isProjectIndexable } from '../lib/catalog';
 
 type Alt = Record<string, string>; // lang → ruta absoluta
 
@@ -28,9 +28,9 @@ export const GET: APIRoute = () => {
     const alts: Alt = Object.fromEntries(LOCALES.map((l) => [l, ambitoPath(l, amb)]));
     for (const l of LOCALES) urls.push(entry(alts, l, '0.7', 'monthly'));
     for (const p of catalog.ambitos[amb].projects) {
+      if (!isProjectIndexable(p, amb)) continue; // fichas con contenido escaso: noindex en todos los idiomas
       const palts: Alt = Object.fromEntries(LOCALES.map((l) => [l, projectPath(l, amb, p.slug)]));
-      const langs = projectIndexLangs(p); // fichas con pocas fotos: solo es/ca/en
-      for (const l of langs) urls.push(entry(palts, l, '0.6', 'yearly', langs));
+      for (const l of LOCALES) urls.push(entry(palts, l, '0.6', 'yearly'));
     }
   }
   const xml = `<?xml version="1.0" encoding="UTF-8"?>

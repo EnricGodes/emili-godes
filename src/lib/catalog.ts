@@ -145,12 +145,25 @@ export const ambitoAlternates = (ambito: string) =>
   Object.fromEntries(LOCALES.map((l) => [l, ambitoPath(l, ambito).slice(4)])) as Record<Lang, string>;
 export const projectAlternates = (ambito: string, slug: string) =>
   Object.fromEntries(LOCALES.map((l) => [l, projectPath(l, ambito, slug).slice(4)])) as Record<Lang, string>;
-/** Fichas con pocas fotos: contenido muy escaso, solo se indexan en es/ca/en (en el resto, noindex
- *  y fuera del sitemap y del hreflang) para no diluir la calidad del sitio ante Google. */
-export const THIN_PROJECT_MAX_PHOTOS = 2;
-const THIN_PROJECT_LANGS: readonly Lang[] = ['es', 'ca', 'en'];
-export const projectIndexLangs = (p: Project): readonly Lang[] =>
-  p.count > THIN_PROJECT_MAX_PHOTOS ? LOCALES : THIN_PROJECT_LANGS;
+/** Fichas con contenido escaso: noindex (y fuera del sitemap) en los 6 idiomas por igual, para no
+ *  diluir la calidad del sitio ante Google (nov-2026: Google dejó de indexar ~1.000 fichas casi vacías).
+ *  Una ficha es indexable si tiene al menos INDEX_MIN_PHOTOS fotos, o al menos INDEX_MIN_WORDS palabras
+ *  de descripciones distintas (contadas en castellano, para que el criterio no dependa del idioma),
+ *  o si alguna de sus fotos está entre las destacadas. Las fichas no indexables siguen publicadas y enlazadas. */
+export const INDEX_MIN_PHOTOS = 3;
+export const INDEX_MIN_WORDS = 50;
+const destacadaProjects = new Set(destacadas.map((d) => `${d.ambito}/${d.project}`));
+const indexableCache = new Map<Project, boolean>();
+export function isProjectIndexable(p: Project, ambito: string): boolean {
+  let v = indexableCache.get(p);
+  if (v === undefined) {
+    const descs = new Set(p.photos.map((ph) => ph.desc).filter(Boolean));
+    const words = [...descs].reduce((n, h) => n + photoDesc('es', h).split(/\s+/).filter(Boolean).length, 0);
+    v = p.count >= INDEX_MIN_PHOTOS || words >= INDEX_MIN_WORDS || destacadaProjects.has(`${ambito}/${p.slug}`);
+    indexableCache.set(p, v);
+  }
+  return v;
+}
 
 /** Enlace al explorador con el estado en el hash (slugs del idioma). */
 export const explorerUrl = (lang: Lang, ambito: string, slug?: string, idx?: number) =>
