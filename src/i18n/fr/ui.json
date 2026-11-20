@@ -45,7 +45,7 @@
  "nav.creditos": "Crédits et sources",
  "nav.destacadas": "Sélection",
  "nav.home": "Accueil",
- "nav.investigacion": "Étude",
+ "nav.investigacion": "Recherche",
  "nav.legado": "Reconnaissance",
  "nav.mirada": "Regard",
  "nav.obra": "Œuvre",
@@ -96,8 +96,8 @@
  "seo.destacadas.title": "Photographies remarquables d’Emili Godes",
  "seo.home.description": "Vie, œuvre et héritage d’Emili Godes : photographie industrielle, scientifique, publicitaire, de plateau et Nouvelle Objectivité. Plus de 2 800 photos.",
  "seo.home.title": "Emili Godes (1895–1970), photographe catalan de la modernité",
- "seo.investigacion.description": "L’étude de Laia Foix sur la modernité et les avant-gardes dans l’œuvre d’Emili Godes : méthodologie, objectifs et PDF complet.",
- "seo.investigacion.title": "Modernité et avant-gardes dans l’œuvre d’Emili Godes (Laia Foix)",
+ "seo.investigacion.description": "Les deux études de référence sur Emili Godes —la thèse de Marisol Farré et le travail de Laia Foix, en PDF— et la bibliographie sur le photographe.",
+ "seo.investigacion.title": "La recherche sur Emili Godes : Marisol Farré (1986) et Laia Foix (2014)",
  "seo.legado.description": "Prix, concours, expositions, publications et jurys depuis 1915, et fonds conservés au MNAC, IEFC, Filmoteca de Catalunya et Arxiu Fotogràfic de Barcelona.",
  "seo.legado.title": "Reconnaissance et héritage d’Emili Godes : prix et fonds",
  "seo.legal.title": "Mentions légales",
@@ -145,5 +145,9 @@
  "viewer.prev": "Précédent",
  "viewer.share": "Partager",
  "viewer.signature": "Cote",
- "viewer.zoom": "Zoom"
+ "viewer.zoom": "Zoom",
+ "nav.exposicion": "L’exposition de 1944",
+ "slug.exposicion": "exposition-1944",
+ "seo.exposicion.title": "L’exposition de 1944 à la galerie El Jardín : « Fotografías de Emilio Godes »",
+ "seo.exposicion.description": "Reconstitution de la seule exposition individuelle d’Emili Godes de son vivant (Barcelone, 1944–1945) : les 21 photomacrographies du catalogue original, où elles sont conservées et celles qui restent à retrouver."
 }

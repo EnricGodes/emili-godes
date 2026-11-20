@@ -45,7 +45,7 @@
  "nav.creditos": "Crèdits i fonts",
  "nav.destacadas": "Destacades",
  "nav.home": "Inici",
- "nav.investigacion": "Estudi",
+ "nav.investigacion": "Recerca",
  "nav.legado": "Reconeixement",
  "nav.mirada": "Mirada",
  "nav.obra": "Obra",
@@ -96,8 +96,8 @@
  "seo.destacadas.title": "Fotografies destacades d’Emili Godes",
  "seo.home.description": "Vida, obra i llegat d’Emili Godes, fotògraf de Barcelona: fotografia industrial, científica, publicitària, foto fixa de cinema i Nova Objectivitat. Catàleg amb més de 2.800 fotografies.",
  "seo.home.title": "Emili Godes (1895–1970), fotògraf català de la modernitat",
- "seo.investigacion.description": "L’estudi de Laia Foix sobre la modernitat i les avantguardes en l’obra d’Emili Godes: metodologia, objectius i PDF complet.",
- "seo.investigacion.title": "Modernitat i avantguardes fotogràfiques en l’obra d’Emili Godes (Laia Foix)",
+ "seo.investigacion.description": "Els dos estudis de referència sobre Emili Godes —la tesi de Marisol Farré i el treball de Laia Foix, amb PDF— i la bibliografia sobre el fotògraf.",
+ "seo.investigacion.title": "La recerca sobre Emili Godes: Marisol Farré (1986) i Laia Foix (2014)",
  "seo.legado.description": "Premis, concursos, exposicions, publicacions i jurats d’Emili Godes des de 1915, i les institucions que conserven la seva obra: MNAC, IEFC, Filmoteca de Catalunya i Arxiu Fotogràfic de Barcelona.",
  "seo.legado.title": "Reconeixement i llegat d’Emili Godes: premis, exposicions i fons",
  "seo.legal.title": "Avís legal",
@@ -145,5 +145,9 @@
  "viewer.prev": "Anterior",
  "viewer.share": "Comparteix",
  "viewer.signature": "Signatura",
- "viewer.zoom": "Zoom"
+ "viewer.zoom": "Zoom",
+ "nav.exposicion": "Exposició de 1944",
+ "slug.exposicion": "exposicio-1944",
+ "seo.exposicion.title": "L’exposició de 1944 a la Galeria El Jardín: «Fotografías de Emilio Godes»",
+ "seo.exposicion.description": "Reconstrucció de l’única exposició individual d’Emili Godes en vida (Barcelona, 1944–1945): les 21 fotomacrografies del catàleg original, on es conserven i quines falten per localitzar."
 }

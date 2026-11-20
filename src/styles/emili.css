@@ -261,6 +261,32 @@ tr.is-hidden { display: none; }
 .eg-feat__why { font-size: .9rem; margin-top: 4px; }
 .eg-feat__src { font-size: .74rem; color: var(--secondary); margin-top: auto; padding-top: 8px; }
 
+/* ── Exposición de 1944 (reconstrucción del catálogo) ─────────────────── */
+.eg-expo { list-style: none; padding: 0; margin: 24px 0 0; display: grid; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); gap: 18px; }
+.eg-expo__item { background: var(--surface-container-lowest); border: 1px solid var(--outline-variant); border-radius: 14px; overflow: hidden; display: flex; flex-direction: column; }
+.eg-expo__img { display: block; width: 100%; aspect-ratio: 4 / 5; border: 0; padding: 0; margin: 0; background: var(--surface-container-high); cursor: pointer; overflow: hidden; }
+.eg-expo__img img { width: 100%; height: 100%; object-fit: cover; display: block; }
+.eg-expo__img--empty { cursor: default; display: flex; align-items: center; justify-content: center;
+  background: repeating-linear-gradient(135deg, var(--surface-container) 0 10px, var(--surface-container-high) 10px 20px); }
+.eg-expo__img--empty span { font-family: var(--font-serif); font-size: 2.6rem; color: var(--on-surface-variant); opacity: .55; }
+.eg-expo__body { padding: 12px 14px 14px; display: flex; flex-direction: column; gap: 4px; flex: 1; }
+.eg-expo__title { font-family: var(--font-serif); font-size: 1.05rem; color: var(--primary); font-weight: 600; line-height: 1.3; }
+.eg-expo__n { color: var(--secondary); font-variant-numeric: tabular-nums; margin-right: 2px; }
+.eg-expo__meta { font-size: .8rem; color: var(--on-surface-variant); }
+.eg-expo__status { align-self: flex-start; font-size: .7rem; letter-spacing: .03em; text-transform: uppercase; border-radius: 999px; padding: 2px 9px; margin-top: 4px;
+  background: var(--surface-container); color: var(--on-surface-variant); }
+.eg-expo__status.is-id { background: var(--primary); color: var(--on-primary); }
+.eg-expo__status.is-prob { border: 1px solid var(--primary); color: var(--primary); background: transparent; }
+@media (max-width: 480px) { .eg-expo { grid-template-columns: 1fr 1fr; gap: 12px; } .eg-expo__title { font-size: .95rem; } }
+.eg-quote { margin: 26px 0 0; border-left: 3px solid var(--secondary); padding: 6px 0 6px 18px; }
+.eg-quote p { font-family: var(--font-serif); font-size: 1.15rem; font-style: italic; color: var(--primary); margin: 0; }
+.eg-quote footer { font-size: .82rem; color: var(--on-surface-variant); margin-top: 8px; }
+
+/* ── Bibliografía ───────────────────────────────────────────────────── */
+.eg-biblio { list-style: none; padding: 0; margin: 10px 0 0; }
+.eg-biblio li { padding: 8px 0 8px 1.6em; text-indent: -1.6em; border-bottom: 1px solid var(--outline-variant); font-size: .93rem; line-height: 1.5; }
+.eg-biblio li:last-child { border-bottom: 0; }
+
 /* ── Enlaces contextuales entre secciones ──────────────────────────────── */
 .eg-related { display: flex; flex-wrap: wrap; gap: 12px; margin-top: 30px; }
 .eg-related a { display: inline-flex; align-items: center; gap: 6px; font-size: .88rem; color: var(--primary);

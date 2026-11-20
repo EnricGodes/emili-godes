@@ -9,15 +9,67 @@ const t = useT(lang);
 const base = `/${lang}/`;
 const title = t('seo.investigacion.title');
 const description = t('seo.investigacion.description');
+
+/** Bibliografía: las referencias se citan en su lengua original (no se traducen). */
+const BIBLIO: { group: string; items: string[] }[] = [
+  { group: 'investigacion.035', items: [
+    'Farré Brufau, Marisol (1986). <em>Un fotógrafo catalán de la Nueva Objetividad: Emili Godes (1895-1970)</em>. Tesis de licenciatura, Facultat de Belles Arts, Universitat de Barcelona. Inédita.',
+    'Foix, Laia (2014). <em>Modernidad y vanguardias fotográficas en la obra de Emili Godes</em>. Trabajo final de posgrado, Escuela Superior de Archivística y Gestión de Documentos. <a href="/assets/tfg-laia-foix.pdf">PDF</a>.',
+    '<em>Emili Godes. Fotògraf de la Nova Objectivitat</em> (1996). Barcelona: Actar / Departament de Cultura de la Generalitat de Catalunya. Dir. David Balsells; comisarios J. Rigol y D. Giralt-Miracle.',
+    '<em>Huesca Imagen</em> (1995). Zaragoza: Diputación de Huesca. Incluye la exposición «Emili Godes», comisariada por Juan Naranjo.',
+  ] },
+  { group: 'investigacion.036', items: [
+    '<em>Fotografías de Emilio Godes</em> (1944). Catálogo de la exposición, Galería de Arte El Jardín, Barcelona, 23 de diciembre de 1944 – 5 de enero de 1945.',
+    '<em>Photographies catalanes des années trente</em> (1982). Centre d’Études Catalanes, París, noviembre de 1982. Comisarios: Joan Fontcuberta y Cristina Zelich. Barcelona: Departament de Cultura de la Generalitat de Catalunya.',
+    '<em>Idas y caos. Aspectos de las vanguardias fotográficas en España</em> (1984). Comisario: Joan Fontcuberta. Madrid: Ministerio de Cultura.',
+    '<em>Les avantguardes fotogràfiques a Espanya 1925-1945</em> (1997). Comisario: Juan Naranjo. Barcelona: Fundació «la Caixa».',
+    '<em>Praha Paris Barcelona: modernitat fotogràfica de 1918 a 1948</em> (2010). Dir. David Balsells y Juan Naranjo. Barcelona: MNAC; Madrid: La Fábrica.',
+  ] },
+  { group: 'investigacion.037', items: [
+    '«Los artistas catalanes en Huelva» (1930). <em>El Progreso Fotográfico</em>, n.º 117.',
+    'Gasch, Sebastià (1938). «Emili Godes». <em>Meridià</em>.',
+    'Sindreu, Carlos (1955). «Bajo el lente multiplicador: los aciertos intuitivos de Emilio Godes, mago de la fotomicrografía catalana». <em>El Español</em>.',
+    'Sindreu, Carlos (1956). «Monstruos insospechados». <em>Diario de Barcelona</em>.',
+    'Sindreu, Carlos (1963). «Monstruos en primavera». <em>San Jorge</em>, n.º 49, enero, pp. 32-37.',
+    'A. (s. f.). «Descubrimiento del mundo. E. Godes y la fotografía a gran escala».',
+  ] },
+  { group: 'investigacion.038', items: [
+    'González, Antonio Jesús (2006). <em>La Mezquita de plata. Un siglo de fotógrafos y fotografías de Córdoba. 1840-1939</em>. Córdoba: Fundación Botí.',
+    'Torrella, Rafael (2008). <em>El registre fotogràfic de Montjuïc, 1915-1923. La metamorfosi d’una muntanya</em>. Barcelona: Arxiu Històric de la Ciutat de Barcelona.',
+    'Torres, José Manuel (2001). <em>La retina del sabio</em>. Santander: Universidad de Cantabria.',
+    '<em>Enciclopedia gráfica del siglo XX</em> (1983). Madrid: Ediciones Urbión.',
+  ] },
+];
 ---
 <Base lang={lang} title={title} description={description} path={pagePath(lang, 'investigacion').slice(4)} alternates={pageAlternates('investigacion')} activeNav="investigacion" ogType="article"
   jsonLd={[article(lang, { url: pagePath(lang, 'investigacion'), headline: title, description }), breadcrumb([{ name: t('breadcrumb.home'), url: base }, { name: t('nav.investigacion'), url: pagePath(lang, 'investigacion') }])]}>
   <section class="eg-section">
   <div class="eg-container eg-container--narrow">
   <p class="eg-kicker">{t('investigacion.010')}</p>
-  <h1 class="eg-page-title" set:html={t('investigacion.021')}></h1>
-  <p class="eg-note">{t('investigacion.011')}</p>
-  <div class="eg-lead" set:html={t('investigacion.001')} style="margin-top:18px"></div>
+  <h1 class="eg-page-title">{t('investigacion.030')}</h1>
+  <div class="eg-lead" set:html={t('investigacion.031')} style="margin-top:18px"></div>
+  </div>
+  </section>
+
+  <section class="eg-section eg-section--tint">
+  <div class="eg-container eg-container--narrow">
+  <h2 style="font-size:1.6rem">{t('investigacion.023')}</h2>
+  <p class="eg-note">{t('investigacion.024')}</p>
+  <div class="eg-prose" set:html={t('investigacion.025')} style="margin-top:14px"></div>
+  <ul class="eg-prose" style="margin-top:4px">
+  <li set:html={t('investigacion.026')}></li>
+  <li set:html={t('investigacion.027')}></li>
+  <li set:html={t('investigacion.028')}></li>
+  </ul>
+  <p class="eg-note" style="margin-top:14px">{t('investigacion.029')}</p>
+  </div>
+  </section>
+
+  <section class="eg-section">
+  <div class="eg-container eg-container--narrow">
+  <h2 style="font-size:1.6rem">{t('investigacion.032')}</h2>
+  <p class="eg-note"><em set:html={t('investigacion.021')}></em> · {t('investigacion.011')}</p>
+  <div class="eg-prose" set:html={t('investigacion.001')} style="margin-top:14px"></div>
 
   <div class="eg-pdfbox">
   <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M14 3H7a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V8z"/><path d="M14 3v5h5"/><path d="M9 13h6M9 17h6"/></svg>
@@ -30,7 +82,6 @@ const description = t('seo.investigacion.description');
   </div>
   <object class="eg-pdf-viewer" data="/assets/tfg-laia-foix.pdf#view=FitH" type="application/pdf">
   <p set:html={t('investigacion.002')} style="padding:18px"></p>
-
   </object>
   </div>
   </section>
@@ -38,35 +89,44 @@ const description = t('seo.investigacion.description');
   <div class="eg-container">
   <div class="eg-grid">
   <div>
-  <h2 style="font-size:1.4rem">{t('investigacion.015')}</h2>
+  <h3 style="font-size:1.3rem">{t('investigacion.015')}</h3>
   <div class="eg-prose" set:html={t('investigacion.003')}></div>
-
   </div>
   <div>
-  <h2 style="font-size:1.4rem">{t('investigacion.016')}</h2>
+  <h3 style="font-size:1.3rem">{t('investigacion.016')}</h3>
   <div class="eg-prose" set:html={t('investigacion.004')}></div>
-
   </div>
   </div>
   </div>
   </section>
   <section class="eg-section">
   <div class="eg-container eg-container--narrow">
-  <h2 style="font-size:1.5rem">{t('investigacion.017')}</h2>
+  <h3 style="font-size:1.3rem">{t('investigacion.017')}</h3>
   <ul class="eg-prose" style="margin-top:12px">
   <li set:html={t('investigacion.005')}></li>
-
   <li set:html={t('investigacion.006')}></li>
-
   <li set:html={t('investigacion.007')}></li>
-
   <li set:html={t('investigacion.008')}></li>
-
   </ul>
   <div class="eg-prose eg-mt-lg" set:html={t('investigacion.009')}></div>
+  </div>
+  </section>
 
+  <section class="eg-section eg-section--tint" id="bibliografia">
+  <div class="eg-container eg-container--narrow">
+  <h2 style="font-size:1.6rem">{t('investigacion.033')}</h2>
+  <p class="eg-note">{t('investigacion.034')}</p>
+  {BIBLIO.map(({ group, items }) => (
+    <>
+      <h3 style="font-size:1.15rem;margin-top:26px">{t(group)}</h3>
+      <ul class="eg-biblio">
+        {items.map((it) => <li set:html={it}></li>)}
+      </ul>
+    </>
+  ))}
   <div class="eg-related">
   <a href={pagePath(lang, 'biografia')}>{t('investigacion.018')}</a>
+  <a href={pagePath(lang, 'exposicion')}>{t('nav.exposicion')} →</a>
   <a href={pagePath(lang, 'mirada')}>{t('investigacion.019')}</a>
   <a href={pagePath(lang, 'creditos')}>{t('investigacion.020')}</a>
   </div>

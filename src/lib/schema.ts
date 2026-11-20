@@ -109,3 +109,24 @@ export function imageGallery(lang: Lang, opts: { url: string; name: string; desc
     })),
   };
 }
+
+/** Exposición histórica (ExhibitionEvent), p. ej. la individual de 1944 en la Galería El Jardín. */
+export function exhibitionEvent(lang: Lang, opts: { url: string; name: string; description: string; startDate: string; endDate: string; place: string; locality: string; image?: string; works?: { name: string; url?: string; image?: string }[] }) {
+  return {
+    '@context': 'https://schema.org',
+    '@type': 'ExhibitionEvent',
+    name: opts.name,
+    description: opts.description,
+    url: SITE_URL + opts.url,
+    inLanguage: lang,
+    startDate: opts.startDate,
+    endDate: opts.endDate,
+    eventAttendanceMode: 'https://schema.org/OfflineEventAttendanceMode',
+    eventStatus: 'https://schema.org/EventScheduled',
+    location: { '@type': 'Place', name: opts.place, address: { '@type': 'PostalAddress', addressLocality: opts.locality, addressCountry: 'ES' } },
+    ...(opts.image ? { image: [SITE_URL + opts.image] } : {}),
+    about: { '@id': PERSON_ID },
+    performer: { '@id': PERSON_ID },
+    ...(opts.works?.length ? { workFeatured: opts.works.map((w) => ({ '@type': 'Photograph', name: w.name, creator: { '@id': PERSON_ID }, ...(w.url ? { url: SITE_URL + w.url } : {}), ...(w.image ? { image: SITE_URL + w.image } : {}) })) } : {}),
+  };
+}

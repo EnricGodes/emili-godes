@@ -9,6 +9,7 @@ import Obra from '../../components/pages/Obra.astro';
 import MiradaModerna from '../../components/pages/MiradaModerna.astro';
 import Destacadas from '../../components/pages/Destacadas.astro';
 import Legado from '../../components/pages/Legado.astro';
+import Exposicion1944 from '../../components/pages/Exposicion1944.astro';
 import Investigacion from '../../components/pages/Investigacion.astro';
 import Creditos from '../../components/pages/Creditos.astro';
 import Contacto from '../../components/pages/Contacto.astro';
@@ -35,6 +36,7 @@ const { id } = Astro.props as { id: PageId };
 {id === 'mirada' && <MiradaModerna lang={lang} />}
 {id === 'destacadas' && <Destacadas lang={lang} />}
 {id === 'legado' && <Legado lang={lang} />}
+{id === 'exposicion' && <Exposicion1944 lang={lang} />}
 {id === 'investigacion' && <Investigacion lang={lang} />}
 {id === 'creditos' && <Creditos lang={lang} />}
 {id === 'contacto' && <Contacto lang={lang} />}

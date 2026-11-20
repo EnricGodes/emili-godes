@@ -45,7 +45,7 @@
  "nav.creditos": "Credits und Quellen",
  "nav.destacadas": "Highlights",
  "nav.home": "Startseite",
- "nav.investigacion": "Studie",
+ "nav.investigacion": "Forschung",
  "nav.legado": "Anerkennung",
  "nav.mirada": "Blick",
  "nav.obra": "Werk",
@@ -96,8 +96,8 @@
  "seo.destacadas.title": "Ausgewählte Fotografien von Emili Godes",
  "seo.home.description": "Leben, Werk und Vermächtnis von Emili Godes: Industrie-, Wissenschafts- und Werbefotografie, Standfotografie und Neue Sachlichkeit. Über 2.800 Fotografien.",
  "seo.home.title": "Emili Godes (1895–1970), katalanischer Fotograf der Moderne",
- "seo.investigacion.description": "Laia Foix’ Studie zu Moderne und Avantgarden im Werk von Emili Godes: Methodik, Ziele und vollständiges PDF.",
- "seo.investigacion.title": "Moderne und fotografische Avantgarden bei Emili Godes (Laia Foix)",
+ "seo.investigacion.description": "Die beiden grundlegenden Studien zu Emili Godes – die Abschlussarbeit von Marisol Farré und die Studie von Laia Foix als PDF – sowie eine Bibliografie zum Fotografen.",
+ "seo.investigacion.title": "Die Forschung zu Emili Godes: Marisol Farré (1986) und Laia Foix (2014)",
  "seo.legado.description": "Preise, Wettbewerbe, Ausstellungen, Publikationen und Jurys seit 1915 sowie Bestände bei MNAC, IEFC, Filmoteca de Catalunya und Arxiu Fotogràfic de Barcelona.",
  "seo.legado.title": "Anerkennung und Vermächtnis von Emili Godes: Preise und Bestände",
  "seo.legal.title": "Impressum",
@@ -145,5 +145,9 @@
  "viewer.prev": "Zurück",
  "viewer.share": "Teilen",
  "viewer.signature": "Signatur",
- "viewer.zoom": "Zoom"
+ "viewer.zoom": "Zoom",
+ "nav.exposicion": "Die Ausstellung von 1944",
+ "slug.exposicion": "ausstellung-1944",
+ "seo.exposicion.title": "Die Ausstellung von 1944 in der Galerie El Jardín: „Fotografías de Emilio Godes“",
+ "seo.exposicion.description": "Rekonstruktion der einzigen Einzelausstellung Emili Godes’ zu Lebzeiten (Barcelona, 1944–1945): die 21 Makrofotografien des Originalkatalogs, wo sie heute aufbewahrt werden und welche noch fehlen."
 }

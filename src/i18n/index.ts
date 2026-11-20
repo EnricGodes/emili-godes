@@ -55,7 +55,7 @@ export function slugify(text: string): string {
 }
 
 /** Ids de página con slug traducido (ui.json → slug.<id>). */
-export const PAGE_IDS = ['biografia', 'obra', 'mirada', 'destacadas', 'legado', 'investigacion', 'creditos', 'contacto', 'legal', 'privacy', 'cookies'] as const;
+export const PAGE_IDS = ['biografia', 'obra', 'mirada', 'destacadas', 'legado', 'exposicion', 'investigacion', 'creditos', 'contacto', 'legal', 'privacy', 'cookies'] as const;
 export type PageId = (typeof PAGE_IDS)[number];
 /** Slug de una página en un idioma (cae al castellano si falta). */
 export function pageSlug(lang: Lang, id: PageId): string {
@@ -71,12 +71,12 @@ export function ambitoSlug(lang: Lang, ambito: string): string {
 /** Enlaces escritos en castellano dentro de los textos → ruta del idioma:
  *  {{base}}biografia/  ·  {{base}}legal/privacidad/  ·  {{base}}obra/#fotografia_artistica  */
 const ES_LINKS: Record<string, PageId> = {
-  'biografia/': 'biografia', 'obra/': 'obra', 'mirada-moderna/': 'mirada', 'destacadas/': 'destacadas', 'legado/': 'legado',
+  'biografia/': 'biografia', 'obra/': 'obra', 'mirada-moderna/': 'mirada', 'destacadas/': 'destacadas', 'legado/': 'legado', 'exposicion-1944/': 'exposicion',
   'investigacion/': 'investigacion', 'creditos/': 'creditos', 'contacto/': 'contacto',
   'legal/aviso-legal/': 'legal', 'legal/privacidad/': 'privacy', 'legal/cookies/': 'cookies',
 };
 function localizeLinks(s: string, lang: Lang): string {
-  return s.replace(/\{\{base\}\}(legal\/[a-z-]+\/|[a-z-]+\/)?(#[a-z_]+)?/g, (_m, seg: string | undefined, hash: string | undefined) => {
+  return s.replace(/\{\{base\}\}(legal\/[a-z-]+\/|[a-z0-9-]+\/)?(#[a-z_]+)?/g, (_m, seg: string | undefined, hash: string | undefined) => {
     if (!seg) return baseOf(lang);
     const id = ES_LINKS[seg];
     if (!id) return baseOf(lang) + seg + (hash || '');

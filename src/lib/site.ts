@@ -21,6 +21,7 @@ export const PAGES: PageDef[] = [
   { id: 'mirada', nav: true, footer: true },
   { id: 'destacadas', nav: true, footer: true },
   { id: 'legado', nav: true, footer: true },
+  { id: 'exposicion', nav: false, footer: true },
   { id: 'investigacion', nav: true, footer: true },
   { id: 'creditos', nav: false, footer: true },
   { id: 'contacto', nav: false, footer: true },

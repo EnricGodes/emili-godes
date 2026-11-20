@@ -1,0 +1,23 @@
+[
+  { "n": 1, "orig": "Gallo", "ambito": "fotografia_artistica", "project": "gall", "file": "202484-000_060882.jpg", "status": "id" },
+  { "n": 2, "orig": "Saltamontes", "ambito": "fotografia_artistica", "project": "saltamontes", "file": "33_6512_saltamontes.jpg", "status": "id" },
+  { "n": 3, "orig": "Libélula", "ambito": "fotografia_artistica", "project": "paisatge-a-traves-d-ales-de-libellula", "file": "202116-000_101787.jpg", "status": "prob" },
+  { "n": 4, "orig": "Lagartija", "status": "none" },
+  { "n": 5, "orig": "Salamanquesa", "status": "none" },
+  { "n": 6, "orig": "Abejorro", "latin": "Bombus terrestris", "ambito": "fotografia_artistica", "project": "sense-titol", "file": "202473-000_011039.jpg", "status": "prob" },
+  { "n": 7, "orig": "Hormiga", "status": "none" },
+  { "n": 8, "orig": "Hormiga-león", "latin": "Myrmeleon formicarius", "status": "none" },
+  { "n": 9, "orig": "Oruga", "ambito": "fotografia_artistica", "project": "eruga", "file": "200411-000_083201.jpg", "status": "id" },
+  { "n": 10, "orig": "Mariposa", "latin": "Papilio machaon", "ambito": "fotografia_artistica", "project": "papallona", "file": "202490-000_011056.jpg", "status": "id" },
+  { "n": 11, "orig": "Avispa arenera", "latin": "Ammophila sabulosa", "status": "none" },
+  { "n": 12, "orig": "Chinche de bosque", "ambito": "fotografia_artistica", "project": "xinxa-de-les-malves", "file": "202491-000_011057.jpg", "status": "prob" },
+  { "n": 13, "orig": "Haba", "latin": "Vicia faba", "ambito": "fotografia_artistica", "project": "fava", "file": "202135-000_072431.jpg", "status": "id" },
+  { "n": 14, "orig": "Guisante", "latin": "Pisum sativum", "ambito": "fotografia_artistica", "project": "pesols", "file": "202120-000_072434.jpg", "status": "id" },
+  { "n": 15, "orig": "Coliflor", "latin": "Brassica oleracea", "ambito": "fotografia_artistica", "project": "coliflor", "file": "202125-000_072430.jpg", "status": "id" },
+  { "n": 16, "orig": "Rosa", "ambito": "fotografia_artistica", "project": "rosa", "file": "202499-000_011065.jpg", "status": "id" },
+  { "n": 17, "orig": "Pasionaria", "latin": "Passiflora", "ambito": "fotografia_artistica", "project": "flor-de-pasionaria", "file": "27_5391_flor_de_pasionaria.jpg", "status": "id" },
+  { "n": 18, "orig": "Cactus", "ambito": "fotografia_artistica", "project": "cactus-punxos", "file": "202126-000_011014.jpg", "status": "id" },
+  { "n": 19, "orig": "Flor de almendro", "ambito": "fotografia_artistica", "project": "flor-de-ametllar", "file": "26_5392_flor_de_ametllar.jpg", "status": "id" },
+  { "n": 20, "orig": "Capullo de almendro, corte longitudinal", "ambito": "fotografia_artistica", "project": "poncella-d-ametller", "file": "202124-000_011012.jpg", "status": "id" },
+  { "n": 21, "orig": "Cristales de ácido hipúrico", "status": "none" }
+]

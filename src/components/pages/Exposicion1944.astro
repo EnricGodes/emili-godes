@@ -1,0 +1,132 @@
+---
+/**
+ * Reconstrucción de la exposición individual «Fotografías de Emilio Godes»
+ * (Galería de Arte El Jardín, Barcelona, 23-12-1944 → 5-1-1945) a partir del catálogo original,
+ * reproducido por Marisol Farré en su tesina (1986). Datos: src/data/exposicion-1944.json.
+ */
+import Base from '../../layouts/Base.astro';
+import { pagePath, pageAlternates } from '../../lib/site';
+import UiJson from '../../components/UiJson.astro';
+import { useT, type Lang } from '../../i18n';
+import { catalog, useCatalogText, projectPath, ambitoPath, photoUrl, thumbUrl, type Photo } from '../../lib/catalog';
+import { breadcrumb, exhibitionEvent } from '../../lib/schema';
+import obras from '../../data/exposicion-1944.json';
+
+interface Obra { n: number; orig: string; latin?: string; ambito?: string; project?: string; file?: string; status: 'id' | 'prob' | 'none' }
+interface Props { lang: Lang }
+const { lang } = Astro.props as Props;
+const t = useT(lang);
+const ct = useCatalogText(lang);
+const base = `/${lang}/`;
+const url = pagePath(lang, 'exposicion');
+const title = t('seo.exposicion.title');
+const description = t('seo.exposicion.description');
+const COVER = '/assets/exposicion-1944/cataleg-portada.jpg';
+const LIST = '/assets/exposicion-1944/cataleg-obres.jpg';
+
+const items = (obras as Obra[]).map((o) => {
+  const name = t('exposicion.w' + String(o.n).padStart(2, '0'));
+  let photo: Photo | undefined;
+  let href: string | undefined;
+  if (o.ambito && o.project && o.file) {
+    const p = catalog.ambitos[o.ambito]?.projects.find((x) => x.slug === o.project);
+    photo = p?.photos.find((ph) => ph.file === o.file);
+    if (!p || !photo) throw new Error(`exposicion-1944.json: no existe ${o.ambito}/${o.project}/${o.file}`);
+    href = projectPath(lang, o.ambito, o.project);
+  }
+  return { o, name, photo, href };
+});
+const located = items.filter((i) => i.photo);
+const viewerPhotos = located.map(({ o, name, photo, href }) => ({
+  image: photoUrl(photo!.file), title: `${o.n}. ${name}`, desc: ct.desc(photo!), fecha: photo!.fecha,
+  lugar: ct.placeLabel(photo!.lugar), categoria: ct.ambitoLabel(o.ambito!), fondo: ct.fondoLabel(photo!.fondo),
+  decada: photo!.decada !== 'sf' ? photo!.decada + 's' : '', orig: photo!.orig, theme: ct.ambitoLabel(o.ambito!),
+  project: { name, url: href },
+}));
+const viewerIndex = new Map(located.map((it, i) => [it.o.n, i]));
+const statusLabel = { id: t('exposicion.010'), prob: t('exposicion.011'), none: t('exposicion.012') };
+
+const jsonLd = [
+  breadcrumb([{ name: t('breadcrumb.home'), url: base }, { name: t('nav.legado'), url: pagePath(lang, 'legado') }, { name: t('nav.exposicion'), url }]),
+  exhibitionEvent(lang, {
+    url, name: 'Fotografías de Emilio Godes', description, startDate: '1944-12-23', endDate: '1945-01-05',
+    place: 'Galería de Arte El Jardín', locality: 'Barcelona', image: COVER,
+    works: items.map(({ o, name, photo, href }) => ({ name: lang === 'es' ? o.orig : `${o.orig} (${name})`, url: href, image: photo ? photoUrl(photo.file) : undefined })),
+  }),
+];
+---
+<Base lang={lang} title={title} description={description} path={url.slice(4)} alternates={pageAlternates('exposicion')} activeNav="legado" ogType="article" ogImage={COVER} jsonLd={jsonLd}>
+  <section class="eg-section">
+    <div class="eg-container eg-container--narrow">
+      <p class="eg-kicker">{t('exposicion.001')}</p>
+      <h1 class="eg-page-title">{t('exposicion.002')}</h1>
+      <p class="eg-note">{t('exposicion.003')}</p>
+      <div class="eg-lead" set:html={t('exposicion.004')} style="margin-top:18px"></div>
+    </div>
+  </section>
+
+  <section class="eg-section eg-section--tint">
+    <div class="eg-container eg-container--narrow">
+      <h2 style="font-size:1.6rem">{t('exposicion.005')}</h2>
+      <div class="eg-figs">
+        <figure class="eg-fig"><img src={COVER} width="820" height="1030" alt={t('exposicion.006')} loading="lazy" /><figcaption set:html={t('exposicion.006')}></figcaption></figure>
+        <figure class="eg-fig"><img src={LIST} width="560" height="1052" alt={t('exposicion.007')} loading="lazy" /><figcaption set:html={t('exposicion.007')}></figcaption></figure>
+      </div>
+    </div>
+  </section>
+
+  <section class="eg-section">
+    <div class="eg-container">
+      <h2 style="font-size:1.6rem">{t('exposicion.008')}</h2>
+      <p class="eg-note" style="max-width:760px">{t('exposicion.009')}</p>
+      <ol class="eg-expo">
+        {items.map(({ o, name, photo, href }) => (
+          <li class:list={['eg-expo__item', `is-${o.status}`]}>
+            {photo ? (
+              <button type="button" class="eg-expo__img" data-photo-index={viewerIndex.get(o.n)} aria-label={name}>
+                <img src={thumbUrl(photo.file)} width={photo.w} height={photo.h} alt={name} loading={o.n < 7 ? 'eager' : 'lazy'} decoding="async" />
+              </button>
+            ) : (
+              <div class="eg-expo__img eg-expo__img--empty" aria-hidden="true"><span>{o.n}</span></div>
+            )}
+            <div class="eg-expo__body">
+              <div class="eg-expo__title"><span class="eg-expo__n">{o.n}</span> {name}</div>
+              {(lang !== 'es' || o.latin) && (
+                <div class="eg-expo__meta">{[lang !== 'es' ? `«${o.orig}»` : '', o.latin ? <em>{o.latin}</em> : ''].filter(Boolean).map((x, i) => (i ? [' · ', x] : x))}</div>
+              )}
+              <span class:list={['eg-expo__status', `is-${o.status}`]}>{statusLabel[o.status]}</span>
+              {href && <a class="eg-feat__src" href={href}>{t('obra.projectPage')} →</a>}
+            </div>
+          </li>
+        ))}
+      </ol>
+    </div>
+  </section>
+
+  <section class="eg-section eg-section--tint">
+    <div class="eg-container eg-container--narrow">
+      <h2 style="font-size:1.6rem">{t('exposicion.013')}</h2>
+      <div class="eg-prose" set:html={t('exposicion.014')}></div>
+      <blockquote class="eg-quote">
+        <p set:html={t('exposicion.015')}></p>
+        <footer set:html={t('exposicion.016')}></footer>
+      </blockquote>
+    </div>
+  </section>
+
+  <section class="eg-section">
+    <div class="eg-container eg-container--narrow">
+      <h2 style="font-size:1.6rem">{t('exposicion.017')}</h2>
+      <div class="eg-prose" set:html={t('exposicion.018')}></div>
+      <p class="eg-note" style="margin-top:14px" set:html={t('exposicion.022')}></p>
+      <div class="eg-related">
+        <a href={pagePath(lang, 'legado')}>{t('exposicion.019')}</a>
+        <a href={ambitoPath(lang, 'fotografia_artistica')}>{t('exposicion.020')}</a>
+        <a href={pagePath(lang, 'investigacion')}>{t('exposicion.021')}</a>
+      </div>
+    </div>
+  </section>
+  <UiJson lang={lang} />
+  <script is:inline type="application/json" id="eg-photos" set:html={JSON.stringify(viewerPhotos)} />
+  <script src="../../scripts/gallery.ts"></script>
+</Base>

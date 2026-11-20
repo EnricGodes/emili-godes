@@ -45,7 +45,7 @@
  "nav.creditos": "Crediti e fonti",
  "nav.destacadas": "In evidenza",
  "nav.home": "Home",
- "nav.investigacion": "Studio",
+ "nav.investigacion": "Ricerca",
  "nav.legado": "Riconoscimento",
  "nav.mirada": "Sguardo",
  "nav.obra": "Opera",
@@ -96,8 +96,8 @@
  "seo.destacadas.title": "Fotografie in evidenza di Emili Godes",
  "seo.home.description": "Vita, opera ed eredità di Emili Godes: fotografia industriale, scientifica e pubblicitaria, fotografia di scena e Nuova Oggettività. Oltre 2.800 fotografie.",
  "seo.home.title": "Emili Godes (1895–1970), fotografo catalano della modernità",
- "seo.investigacion.description": "Lo studio di Laia Foix sulla modernità e le avanguardie nell’opera di Emili Godes: metodologia, obiettivi e PDF completo.",
- "seo.investigacion.title": "Modernità e avanguardie nell’opera di Emili Godes (Laia Foix)",
+ "seo.investigacion.description": "I due studi di riferimento su Emili Godes —la tesi di Marisol Farré e il lavoro di Laia Foix, in PDF— e la bibliografia sul fotografo.",
+ "seo.investigacion.title": "La ricerca su Emili Godes: Marisol Farré (1986) e Laia Foix (2014)",
  "seo.legado.description": "Premi, concorsi, mostre, pubblicazioni e giurie dal 1915, e i fondi conservati presso MNAC, IEFC, Filmoteca de Catalunya e Arxiu Fotogràfic de Barcelona.",
  "seo.legado.title": "Riconoscimento ed eredità di Emili Godes: premi e fondi",
  "seo.legal.title": "Note legali",
@@ -145,5 +145,9 @@
  "viewer.prev": "Precedente",
  "viewer.share": "Condividi",
  "viewer.signature": "Segnatura",
- "viewer.zoom": "Zoom"
+ "viewer.zoom": "Zoom",
+ "nav.exposicion": "La mostra del 1944",
+ "slug.exposicion": "mostra-1944",
+ "seo.exposicion.title": "La mostra del 1944 alla galleria El Jardín: «Fotografías de Emilio Godes»",
+ "seo.exposicion.description": "Ricostruzione dell’unica mostra personale di Emili Godes in vita (Barcellona, 1944–1945): le 21 fotomacrografie del catalogo originale, dove sono conservate e quali restano da ritrovare."
 }

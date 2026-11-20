@@ -8,7 +8,7 @@
  "nav.mirada": "Mirada",
  "nav.destacadas": "Destacadas",
  "nav.legado": "Reconocimiento",
- "nav.investigacion": "Estudio",
+ "nav.investigacion": "Investigación",
  "nav.creditos": "Créditos y fuentes",
  "nav.contacto": "Contacto",
  "slug.biografia": "biografia",
@@ -45,8 +45,8 @@
  "seo.destacadas.description": "Una selección de las obras más singulares del archivo de Emili Godes: arquitectura, ciencia, industria, publicidad, cine y experimentación fotográfica.",
  "seo.legado.title": "Reconocimiento y legado de Emili Godes: premios, exposiciones y fondos",
  "seo.legado.description": "Premios, concursos, exposiciones, publicaciones y jurados de Emili Godes desde 1915, y las instituciones que conservan su obra: MNAC, IEFC, Filmoteca de Catalunya y Arxiu Fotogràfic de Barcelona.",
- "seo.investigacion.title": "Modernidad y vanguardias fotográficas en la obra de Emili Godes (Laia Foix)",
- "seo.investigacion.description": "El estudio de Laia Foix sobre la modernidad y las vanguardias en la obra de Emili Godes: metodología, objetivos y PDF completo.",
+ "seo.investigacion.title": "La investigación sobre Emili Godes: Marisol Farré (1986) y Laia Foix (2014)",
+ "seo.investigacion.description": "Los dos estudios de referencia sobre Emili Godes —la tesis de Marisol Farré y el trabajo de Laia Foix, con PDF— y la bibliografía sobre el fotógrafo.",
  "seo.creditos.title": "Créditos y fuentes",
  "seo.creditos.description": "Procedencia de los materiales, fuentes documentales, instituciones colaboradoras y créditos de imagen de la web dedicada a Emili Godes.",
  "seo.contacto.title": "Contacto y aportaciones",
@@ -145,5 +145,9 @@
  "notfound.home": "Volver al inicio",
  "legal.nav.legal": "Aviso legal",
  "legal.nav.privacy": "Política de privacidad",
- "legal.nav.cookies": "Política de cookies"
+ "legal.nav.cookies": "Política de cookies",
+ "nav.exposicion": "Exposición de 1944",
+ "slug.exposicion": "exposicion-1944",
+ "seo.exposicion.title": "La exposición de 1944 en la Galería El Jardín: «Fotografías de Emilio Godes»",
+ "seo.exposicion.description": "Reconstrucción de la única exposición individual de Emili Godes en vida (Barcelona, 1944–1945): las 21 fotomacrografías del catálogo original, dónde se conservan y cuáles faltan por localizar."
 }
