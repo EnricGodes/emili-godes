@@ -261,6 +261,9 @@ tr.is-hidden { display: none; }
 .eg-feat__why { font-size: .9rem; margin-top: 4px; }
 .eg-feat__src { font-size: .74rem; color: var(--secondary); margin-top: auto; padding-top: 8px; }
 
+/* Fila separadora dentro de una tabla (p. ej. «Exposiciones póstumas») */
+.eg-table tr.eg-table__group th { text-align: left; font-family: var(--font-serif); font-size: 1rem; color: var(--primary); padding-top: 18px; border-bottom: 1px solid var(--outline-variant); background: transparent; }
+
 /* ── Exposición de 1944 (reconstrucción del catálogo) ─────────────────── */
 .eg-expo { list-style: none; padding: 0; margin: 24px 0 0; display: grid; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); gap: 18px; }
 .eg-expo__item { background: var(--surface-container-lowest); border: 1px solid var(--outline-variant); border-radius: 14px; overflow: hidden; display: flex; flex-direction: column; }
