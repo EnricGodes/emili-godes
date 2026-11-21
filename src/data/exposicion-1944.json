@@ -1,8 +1,8 @@
 [
   { "n": 1, "orig": "Gallo", "ambito": "fotografia_artistica", "project": "gall", "file": "202484-000_060882.jpg", "status": "id" },
   { "n": 2, "orig": "Saltamontes", "ambito": "fotografia_artistica", "project": "saltamontes", "file": "33_6512_saltamontes.jpg", "status": "id" },
-  { "n": 3, "orig": "Libélula", "ambito": "fotografia_artistica", "project": "paisatge-a-traves-d-ales-de-libellula", "file": "202116-000_101787.jpg", "status": "id" },
-  { "n": 4, "orig": "Lagartija", "status": "none" },
+  { "n": 3, "orig": "Libélula", "ambito": "fotografia_artistica", "project": "libelula", "file": "Sindreu_Libelula_c1930.jpg", "status": "id" },
+  { "n": 4, "orig": "Lagartija", "ambito": "fotografia_artistica", "project": "lagartija", "file": "Sindreu_Lagarto_c1930.jpg", "status": "id" },
   { "n": 5, "orig": "Salamanquesa", "status": "none" },
   { "n": 6, "orig": "Abejorro", "latin": "Bombus terrestris", "ambito": "fotografia_artistica", "project": "abejorro", "file": "202473-000_011039.jpg", "status": "id" },
   { "n": 7, "orig": "Hormiga", "status": "none" },

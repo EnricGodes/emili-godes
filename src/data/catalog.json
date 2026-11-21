@@ -1,5 +1,5 @@
 {
- "generated_at": "2026-11-21 09:21:42",
+ "generated_at": "2026-11-21 09:29:08",
  "ambito_order": [
   "foto_fija_cine",
   "fotografia_industrial",
@@ -2079,7 +2079,7 @@
    ]
   },
   "fotografia_artistica": {
-   "count": 127,
+   "count": 129,
    "decades": [
     "1920",
     "1930",
@@ -2087,6 +2087,7 @@
     "1950"
    ],
    "fondos": [
+    "coleccion-carles-sindreu",
     "iefc",
     "mnac",
     "museo-reina-sofia",
@@ -4535,6 +4536,60 @@
        "lugar": "",
        "categoria": "fotografia_artistica",
        "fondo": "museo-universidad-de-navarra",
+       "decada": "1930"
+      }
+     ]
+    },
+    {
+     "slug": "libelula",
+     "name": "project.fotografia_artistica.libelula",
+     "lugar": "",
+     "fecha": "c. 1930",
+     "year": 1930,
+     "decada": "1930",
+     "count": 1,
+     "cover": "Sindreu_Libelula_c1930.jpg",
+     "fondos": [
+      "coleccion-carles-sindreu"
+     ],
+     "photos": [
+      {
+       "orig": "Sindreu_Libelula_c1930.jpg",
+       "file": "Sindreu_Libelula_c1930.jpg",
+       "w": 574,
+       "h": 381,
+       "desc": "25b36de9b8a3",
+       "fecha": "c. 1930",
+       "lugar": "",
+       "categoria": "fotografia_artistica",
+       "fondo": "coleccion-carles-sindreu",
+       "decada": "1930"
+      }
+     ]
+    },
+    {
+     "slug": "lagartija",
+     "name": "project.fotografia_artistica.lagartija",
+     "lugar": "",
+     "fecha": "c. 1930",
+     "year": 1930,
+     "decada": "1930",
+     "count": 1,
+     "cover": "Sindreu_Lagarto_c1930.jpg",
+     "fondos": [
+      "coleccion-carles-sindreu"
+     ],
+     "photos": [
+      {
+       "orig": "Sindreu_Lagarto_c1930.jpg",
+       "file": "Sindreu_Lagarto_c1930.jpg",
+       "w": 567,
+       "h": 363,
+       "desc": "d6fadfc402e1",
+       "fecha": "c. 1930",
+       "lugar": "",
+       "categoria": "fotografia_artistica",
+       "fondo": "coleccion-carles-sindreu",
        "decada": "1930"
       }
      ]
@@ -37628,7 +37683,8 @@
   "museo-universidad-de-navarra",
   "mnac",
   "museo-reina-sofia",
-  "arxiu-fotografic-de-barcelona"
+  "arxiu-fotografic-de-barcelona",
+  "coleccion-carles-sindreu"
  ],
- "total": 2801
+ "total": 2803
 }
