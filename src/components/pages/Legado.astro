@@ -3,12 +3,16 @@ import Base from '../../layouts/Base.astro';
 import { pagePath, pageAlternates } from '../../lib/site';
 import { useT, type Lang } from '../../i18n';
 import { article, breadcrumb } from '../../lib/schema';
+import { catalog, projectPath } from '../../lib/catalog';
 interface Props { lang: Lang }
 const { lang } = Astro.props as Props;
 const t = useT(lang);
 const base = `/${lang}/`;
 const title = t('seo.legado.title');
 const description = t('seo.legado.description');
+// Obra de Godes en «Visions expandides» (CaixaForum Barcelona, 2023): fotograma MNAC 202470
+const vProj = catalog.ambitos.fotografia_artistica.projects.find((p) => p.photos.some((ph) => ph.file.startsWith('202470-000')))!;
+const visionsHref = projectPath(lang, 'fotografia_artistica', vProj.slug) + '#foto-' + (vProj.photos.findIndex((ph) => ph.file.startsWith('202470-000')) + 1);
 ---
 <Base lang={lang} title={title} description={description} path={pagePath(lang, 'legado').slice(4)} alternates={pageAlternates('legado')} activeNav="legado" ogType="article"
   jsonLd={[article(lang, { url: pagePath(lang, 'legado'), headline: title, description }), breadcrumb([{ name: t('breadcrumb.home'), url: base }, { name: t('nav.legado'), url: pagePath(lang, 'legado') }])]}>
@@ -88,9 +92,14 @@ const description = t('seo.legado.description');
   <tr data-decade="post"><td>1997</td><td><em>Les avantguardes fotogràfiques a Espanya 1925-1945</em></td><td>Fundació «la Caixa», Barcelona</td><td set:html={t('legado.140')}></td></tr>
   <tr data-decade="post"><td>2007</td><td><em>Montjuïc 1915: primera mirada</em></td><td>Arxiu Fotogràfic de Barcelona</td><td set:html={t('legado.141')}></td></tr>
   <tr data-decade="post"><td>2010</td><td><em>Praha Paris Barcelona: modernitat fotogràfica de 1918 a 1948</em></td><td>MNAC, Barcelona</td><td set:html={t('legado.142')}></td></tr>
+  <tr data-decade="post"><td>2023</td><td><em>Visions expandides. Fotografia i experimentació</em></td><td>CaixaForum Barcelona</td><td set:html={t('legado.145')}></td></tr>
   </tbody>
   </table>
   </div>
+  <figure class="eg-fig" style="max-width:440px;margin-top:22px">
+  <img src="/assets/visions-expandides-2023.jpg" width="900" height="1200" alt={t('legado.147')} loading="lazy" />
+  <figcaption><span set:html={t('legado.146')}></span> <a href={visionsHref}>{t('legado.148')}</a></figcaption>
+  </figure>
   </div>
   <div class="eg-prose eg-mt-lg" set:html={t('legado.002')}></div>
 
