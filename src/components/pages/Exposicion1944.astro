@@ -94,7 +94,7 @@ const jsonLd = [
               {(lang !== 'es' || o.latin) && (
                 <div class="eg-expo__meta">{[lang !== 'es' ? `«${o.orig}»` : '', o.latin ? <em>{o.latin}</em> : ''].filter(Boolean).map((x, i) => (i ? [' · ', x] : x))}</div>
               )}
-              <span class:list={['eg-expo__status', `is-${o.status}`]}>{statusLabel[o.status]}</span>
+              {o.status === 'none' && <span class="eg-expo__status is-none">{statusLabel.none}</span>}
               {href && <a class="eg-feat__src" href={href}>{t('obra.projectPage')} →</a>}
             </div>
           </li>
