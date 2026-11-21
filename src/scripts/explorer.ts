@@ -24,6 +24,7 @@ const st = {
   project: null as string | null,
   decade: 'all', fondo: 'all', q: '', sort: 'date',
   photos: [] as Photo[], pendingPhoto: null as number | null,
+  flatCtx: [] as { p: Project; amb: string }[], // vista transversal: proyecto y temática de cada foto
 };
 
 const norm = (s: string) => (s || '').toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '');
@@ -126,11 +127,12 @@ const filterLabel = () => [st.decade !== 'all' ? st.decade + 's' : '', st.fondo 
 function renderFlat() {
   const q = norm(st.q); const photos: Photo[] = [];
   const d = st.data!;
+  const ctx = new Map<Photo, { p: Project; amb: string }>();
   d.ambito_order.forEach((k) => d.ambitos[k].projects.forEach((p) => p.photos.forEach((ph) => {
     if (st.decade !== 'all' && ph.decada !== st.decade) return;
     if (st.fondo !== 'all' && ph.fondo !== st.fondo) return;
     if (q && !norm(ph.desc + ' ' + ph.lugar + ' ' + p.name).includes(q)) return;
-    photos.push(ph);
+    photos.push(ph); ctx.set(ph, { p, amb: k });
   })));
   photos.sort((x, y) => {
     const dx = x.decada === 'sf' ? '9999' : x.decada, dy = y.decada === 'sf' ? '9999' : y.decada;
@@ -139,9 +141,12 @@ function renderFlat() {
   const label = filterLabel();
   const head = `<p class="eg-kicker">${esc(UI.allThemes)}</p>${label ? `<h2 style="font-size:1.5rem;margin:.2rem 0 .1rem">${esc(label)}</h2>` : ''}<p class="eg-projcard__meta" style="margin-bottom:.6rem">${photos.length} ${esc(UI.photos)}</p>` + toolbar(false);
   st.photos = photos;
+  st.flatCtx = photos.map((ph) => ctx.get(ph)!);
   if (!photos.length) return head + `<p class="eg-empty">${esc(UI.noresults)}</p>`;
-  return head + `<div class="eg-photogrid">${photos.map((ph, i) =>
-    `<button class="eg-photocell" data-act="photo" data-i="${i}" aria-label="${esc(ph.title)}"><img loading="lazy" src="${esc(ph.thumb)}" width="${ph.w}" height="${ph.h}" alt="${esc(ph.title)}"></button>`).join('')}</div>`;
+  return head + `<div class="eg-photogrid">${photos.map((ph, i) => {
+    const name = st.flatCtx[i].p.name;
+    return `<button class="eg-photocell" data-act="photo" data-i="${i}" aria-label="${esc(name)}"><img loading="lazy" src="${esc(ph.thumb)}" width="${ph.w}" height="${ph.h}" alt="${esc(name)}"></button>`;
+  }).join('')}</div>`;
 }
 
 function renderProjects(a: Ambito) {
@@ -177,7 +182,12 @@ function renderProjectPhotos(a: Ambito) {
 function openPhotos(i: number) {
   const p = st.ambito ? currentProject() : null;
   const amb = st.ambito || null;
-  const list = st.photos.map((ph) => toViewer(ph, p, amb, p ? p.photos.indexOf(ph) : undefined));
+  // vista transversal: cada foto lleva su propio proyecto (título, enlace a la ficha y enlace para compartir)
+  const list = st.photos.map((ph, j) => {
+    const c = p || st.ambito ? null : st.flatCtx[j];
+    const pp = p || c?.p || null;
+    return toViewer(ph, pp, amb || c?.amb || null, pp ? pp.photos.indexOf(ph) : undefined);
+  });
   if (p) { // el hash apunta a la foto abierta mientras el visor está activo
     const upd = (idx: number) => history.replaceState(null, '', '#' + hashFor(st.ambito, p.slug, idx));
     upd(i);

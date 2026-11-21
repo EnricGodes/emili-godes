@@ -69,8 +69,10 @@ function truncate(line: string) {
   line = line.trim();
   return line.length > 90 ? line.slice(0, 88).trimEnd() + '…' : line;
 }
+/** Líneas de procedencia de las fichas de museo (depósito, donación, adquisición), en los 6 idiomas: no son títulos. */
+const PROVENANCE = /^(dip[òo]sit|dep[óo]sito|deposito|deposit|d[ée]p[ôo]t|leihgabe|donaci[óo]|donation|donazione|schenkung|adquisici[óo]|acquisition|acquisizione|erwerb)\b|^generalitat de catalunya'?s? (deposit|depot)\b/i;
 function isCaption(line: string) {
-  if (line.length < 15 || !line.includes(' ') || KEYVAL.test(line) || DIM_ONLY.test(line)) return false;
+  if (line.length < 15 || !line.includes(' ') || KEYVAL.test(line) || DIM_ONLY.test(line) || PROVENANCE.test(line)) return false;
   return /^[A-Za-zÀ-ÿ¿¡]/.test(line);
 }
 export function tituloFrom(desc: string, proyecto: string): string {
