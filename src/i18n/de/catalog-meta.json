@@ -153,10 +153,10 @@
  "project.arquitectura_instalaciones.basilica-de-la-merce": "Basílica de la Mercè",
  "project.arquitectura_instalaciones.basilica-de-la-sagrada-familia": "Basílica de la Sagrada Família",
  "project.arquitectura_instalaciones.coleccion-privada-del-dr-jesus-perez-rosales-i-samanillo": "Privatsammlung von Dr. Jesús Pérez-Rosales i Samanillo",
+ "project.arquitectura_instalaciones.iglesia-de-sant-pau-del-camp": "Kirche Sant Pau del Camp",
  "project.arquitectura_instalaciones.monestir-de-montserrat": "Monestir de Montserrat",
  "project.arquitectura_instalaciones.paisaje-rural": "Ländliche Landschaft",
  "project.arquitectura_instalaciones.reportaje-aereo-urbanistico": "Luftbildreportage zur Stadtplanung",
- "project.arquitectura_instalaciones.iglesia-de-sant-pau-del-camp": "Kirche Sant Pau del Camp",
  "project.arquitectura_instalaciones.reportaje-de-residencia-senorial-no-identificada": "Reportage über eine nicht identifizierte herrschaftliche Residenz",
  "project.arquitectura_instalaciones.reproduccion-arquitectonica": "Architekturreproduktion",
  "project.arquitectura_instalaciones.residencia-placa-francesc-macia": "Residenz an der Plaça Francesc Macià",
@@ -208,6 +208,7 @@
  "project.foto_fija_cine.vidas-cruzadas": "Vidas cruzadas",
  "project.foto_fija_cine.ya-tenemos-coche": "Ya tenemos coche",
  "project.foto_fija_cine.zalacain-el-aventurero-1955": "Zalacaín el aventurero (1955)",
+ "project.fotografia_artistica.abejorro": "Hummel",
  "project.fotografia_artistica.arana": "Spinne",
  "project.fotografia_artistica.arros": "Reis",
  "project.fotografia_artistica.avellanes": "Haselnüsse",
@@ -363,6 +364,7 @@
  "project.fotografia_industrial.guerin-nuevas-instalaciones-de-via-augusta": "Guerin – Neue Anlagen an der Via Augusta",
  "project.fotografia_industrial.iberia-filomatic-bassat-s-a": "Iberia - Filomatic / Bassat, S.A.",
  "project.fotografia_industrial.instituto-de-investigaciones-pesqueras-del-csic": "Instituto de Investigaciones Pesqueras del CSIC",
+ "project.fotografia_industrial.laboratorio-fotofilm": "Fotofilm-Labor",
  "project.fotografia_industrial.laboratoris-esteve": "Laboratoris Esteve",
  "project.fotografia_industrial.manuel-maluquer-s-a": "Manuel Maluquer S.A.",
  "project.fotografia_industrial.obras-de-construccion-de-generos-de-punto-rafel-dux": "Bauarbeiten für Géneros de Punto Rafel (DUX)",
@@ -402,7 +404,5 @@
  "project.reproduccion_arte.relieve-escultorico": "Skulpturales Relief",
  "project.reproduccion_arte.reproduccion-de-escultura-contemporanea": "Reproduktion einer zeitgenössischen Skulptur",
  "project.reproduccion_arte.reproduccion-relieve-medieval": "Reproduktion eines mittelalterlichen Reliefs",
- "project.reproduccion_arte.talla-ornamental": "Ornamentale Schnitzerei",
- "project.fotografia_industrial.laboratorio-fotofilm": "Fotofilm-Labor",
- "project.fotografia_artistica.abejorro": "Hummel"
+ "project.reproduccion_arte.talla-ornamental": "Ornamentale Schnitzerei"
 }

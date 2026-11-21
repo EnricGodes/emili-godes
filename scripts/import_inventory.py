@@ -20,6 +20,8 @@ Hace, en un solo paso (idempotente, re-ejecutable):
      categorías, fondos) y catalog-photos.json (descripciones únicas, clave = hash del texto ES).
      Las claves son estables (hash del texto ES): al reimportar, solo las descripciones nuevas o
      cambiadas quedan sin traducir en src/i18n/{en,fr,de,it}/ y caen al castellano hasta traducirlas.
+     Las traducciones ya existentes en los JSON se CONSERVAN (CA: el Excel prevalece si trae valor;
+     EN/FR/DE/IT: intactas). Solo se descartan las claves que ya no existen en ES, y se informa.
   6. Avisa (no aborta) de archivos físicos SIN ficha en el Excel (quedarían sin publicar).
 
 Uso:  python3 scripts/import_inventory.py [--force]
@@ -393,6 +395,41 @@ def write_json(path, data):
     path.write_text(json.dumps(data, ensure_ascii=False, indent=1) + "\n", encoding="utf-8")
 
 
+def read_json(path):
+    try:
+        return json.loads(path.read_text(encoding="utf-8"))
+    except (FileNotFoundError, json.JSONDecodeError):
+        return {}
+
+
+OTHER_LANGS = ("ca", "en", "fr", "de", "it")
+
+
+def write_texts(tx):
+    """Escribe los textos por idioma SIN perder traducciones hechas a mano en los JSON.
+    - ES: se regenera entero desde el Excel (es la fuente; define qué claves existen).
+    - CA: Excel manda cuando trae valor; si no, se conserva lo que ya hubiera en el JSON.
+    - EN/FR/DE/IT: se conservan tal cual (no salen del Excel).
+    En todos, se descartan las claves que ya no existen en ES (textos cambiados o eliminados).
+    Devuelve un informe {(lang, fichero): (conservadas, descartadas, sin_traducir)}."""
+    report = {}
+    for fname, store in (("catalog-meta", tx.meta), ("catalog-photos", tx.photos)):
+        es = dict(sorted(store["es"].items()))
+        write_json(I18N_DIR / "es" / f"{fname}.json", es)
+        for lang in OTHER_LANGS:
+            path = I18N_DIR / lang / f"{fname}.json"
+            old = read_json(path)
+            merged = {k: v for k, v in old.items() if k in es and v}
+            kept = len(merged)
+            if lang == "ca":
+                merged.update(store["ca"])  # el Excel prevalece
+            dropped = sorted(k for k in old if k not in es)
+            missing = sum(1 for k in es if k not in merged)
+            write_json(path, dict(sorted(merged.items())))
+            report[(lang, fname)] = (kept, dropped, missing)
+    return report
+
+
 def main():
     force = "--force" in sys.argv
     if not XLSX.exists():
@@ -422,9 +459,13 @@ def main():
     dest = build_destacadas(kept, catalog)
     write_json(DATA_DIR / "catalog.json", catalog)
     write_json(DATA_DIR / "destacadas.json", dest)
-    for lang in ("es", "ca"):
-        write_json(I18N_DIR / lang / "catalog-meta.json", dict(sorted(tx.meta[lang].items())))
-        write_json(I18N_DIR / lang / "catalog-photos.json", dict(sorted(tx.photos[lang].items())))
+    report = write_texts(tx)
+    print("  traducciones (conservadas del JSON · descartadas por texto ES cambiado/eliminado · pendientes):")
+    for (lang, fname), (n_kept, dropped, missing) in report.items():
+        line = f"     {lang} {fname}: {n_kept} conservadas · {len(dropped)} descartadas · {missing} sin traducir"
+        if dropped and len(dropped) <= 10:
+            line += "  [" + ", ".join(dropped) + "]"
+        print(line)
 
     # limpieza: imágenes en public/photos/obra que ya no están en el catálogo
     valid = {r["file"] for r in kept}
