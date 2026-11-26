@@ -110,6 +110,18 @@ export function useCatalogText(lang: Lang) {
  * (/ca/obra/ciencia-i-medicina/…, /en/obra/science-and-medicine/…). Sin traducción → castellano.
  * Las colisiones dentro de una temática se resuelven con sufijo -2, -3… en orden estable (slug ES).
  */
+/** Máximo de caracteres del slug de URL de una ficha. Si el nombre es más largo, se corta en una frontera
+ *  de palabra y se añade un sufijo estable (hash del slug completo) para no colisionar. Las URLs antiguas
+ *  de los slugs recortados redirigen con 301 desde public/_redirects (nov-2026). */
+const MAX_URL_SLUG = 70;
+function urlSlug(text: string): string {
+  const full = slugify(text);
+  if (full.length <= MAX_URL_SLUG) return full;
+  const cut = full.slice(0, MAX_URL_SLUG - 6).replace(/-[^-]*$/, '');
+  let h = 0;
+  for (let i = 0; i < full.length; i++) h = (h * 31 + full.charCodeAt(i)) >>> 0;
+  return `${cut}-${h.toString(36).slice(0, 5)}`;
+}
 interface LangSlugs { ambito: Record<string, string>; ambitoByUrl: Record<string, string>; project: Record<string, Record<string, string>>; projectByUrl: Record<string, Record<string, string>> }
 const slugCache = new Map<Lang, LangSlugs>();
 function langSlugs(lang: Lang): LangSlugs {
@@ -125,7 +137,7 @@ function langSlugs(lang: Lang): LangSlugs {
     const used = new Set<string>();
     ls.project[amb] = {}; ls.projectByUrl[amb] = {};
     for (const p of catalog.ambitos[amb].projects.slice().sort((a, b) => a.slug.localeCompare(b.slug))) {
-      const base = slugify(t(p.name));
+      const base = urlSlug(t(p.name));
       let ps = base, k = 2;
       while (used.has(ps)) ps = base + '-' + k++;
       used.add(ps); ls.project[amb][p.slug] = ps; ls.projectByUrl[amb][ps] = p.slug;
