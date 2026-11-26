@@ -24,7 +24,11 @@ const description = t('seo.home.description');
       </div>
     </div>
     <div class="eg-hero__media">
-      <img alt={t('index.005')} height="1024" width="1024" src="/assets/emili-godes-laboratorio.jpg" fetchpriority="high" />
+      <picture>
+        <source srcset="/assets/emili-godes-laboratorio.avif" type="image/avif" />
+        <source srcset="/assets/emili-godes-laboratorio.webp" type="image/webp" />
+        <img alt={t('index.005')} height="1024" width="1024" src="/assets/emili-godes-laboratorio.jpg" fetchpriority="high" />
+      </picture>
     </div>
   </section>
 
