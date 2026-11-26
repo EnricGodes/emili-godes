@@ -1,5 +1,6 @@
 /** Constantes del sitio y registro de páginas estáticas (nav, sitemap, tarjetas de la home). */
-export const SITE_URL = 'https://emili.godes.org';
+import { SITE_URL } from './constants';
+export { SITE_URL };
 export const SITE_NAME = 'Emili Godes';
 export const CONTACT_FALLBACK_EMAIL = import.meta.env.PUBLIC_CONTACT_EMAIL || '';
 export const GTM_ID = import.meta.env.PUBLIC_GTM_ID || '';

@@ -11,7 +11,8 @@ const base = `/${lang}/`;
 const title = t('seo.legado.title');
 const description = t('seo.legado.description');
 // Obra de Godes en «Visions expandides» (CaixaForum Barcelona, 2023): fotograma MNAC 202470
-const vProj = catalog.ambitos.fotografia_artistica.projects.find((p) => p.photos.some((ph) => ph.file.startsWith('202470-000')))!;
+const vProj = catalog.ambitos.fotografia_artistica.projects.find((p) => p.photos.some((ph) => ph.file.startsWith('202470-000')));
+if (!vProj) throw new Error('Legado: no se encuentra la foto 202470-000 (fotograma de Visions expandides) en Fotografía artística');
 const visionsHref = projectPath(lang, 'fotografia_artistica', vProj.slug) + '#foto-' + (vProj.photos.findIndex((ph) => ph.file.startsWith('202470-000')) + 1);
 ---
 <Base lang={lang} title={title} description={description} path={pagePath(lang, 'legado').slice(4)} alternates={pageAlternates('legado')} activeNav="legado" ogType="article"

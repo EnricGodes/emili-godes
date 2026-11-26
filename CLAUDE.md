@@ -5,14 +5,14 @@ Guía para Claude Code en este repositorio.
 ## Qué es
 
 Web pública y multilingüe (es, ca, en, fr, de, it) dedicada al fotógrafo **Emili Godes (1895–1970)**:
-biografía, catálogo de 2.801 fotografías en 255 proyectos, «Una mirada moderna», destacadas, legado,
+biografía, catálogo de 2.803 fotografías en 258 proyectos, «Una mirada moderna», destacadas, legado,
 investigación, créditos, contacto y legales. Producción: **https://emili.godes.org** (Cloudflare Pages).
 Nació como subcarpeta de Godesia (`godesia/frontend/emili-godes`) y en septiembre de 2026 se separó en
 este proyecto independiente. No usa base de datos: la verdad es el Excel + carpetas de fotos.
 
 ## Stack
 
-- **Astro 7** estático (`npm run build` → `dist/`, ~7.400 ficheros, 1.660 páginas). Sin framework UI ni Tailwind: CSS propio en `src/styles/emili.css`, fuentes autoalojadas (@fontsource Manrope Variable + Noto Serif).
+- **Astro 7** estático (`npm run build` → `dist/`, ~7.400 ficheros, ~1.680 páginas). Sin framework UI ni Tailwind: CSS propio en `src/styles/emili.css`, fuentes autoalojadas (@fontsource Manrope Variable + Noto Serif).
 - Scripts de datos en **Python 3** (Pillow, openpyxl).
 - **Cloudflare Pages Functions** (`functions/`): `index.ts` redirige `/` al idioma del navegador (cookie `eg_lang` > Accept-Language > es); `api/contact.ts` envía el formulario por Resend (+ Turnstile opcional).
 
@@ -31,12 +31,12 @@ src/
   pages/[lang]/index.astro      portada
   pages/[lang]/[slug].astro     despachador de secciones con slug traducido (ui.json slug.<id>): /es/biografia/, /en/biography/, /de/impressum/…
   components/pages/*.astro      contenido de cada sección (Biografia, Obra=explorador, MiradaModerna, Destacadas, Legado, Investigacion, Creditos, Contacto) + LegalPage
-  pages/[lang]/[obra]/[ambito]/index · [project]   9 temáticas y 255 fichas, todo con slugs traducidos (/en/work/science-and-medicine/…)
+  pages/[lang]/[obra]/[ambito]/index · [project]   9 temáticas y 258 fichas, todo con slugs traducidos (/en/work/science-and-medicine/…)
   pages/404.astro               404 único (dist/404.html, el que usa Cloudflare Pages)
   pages/data/catalog.[lang].json.ts   JSON resuelto por idioma para el explorador
   pages/sitemap-images.xml.ts         sitemap de imágenes (Google Images)
   scripts/            explorer.ts (explorador, hash #ambito/proyecto/idx) · viewer.ts (visor) · gallery.ts (fichas estáticas, #foto-N)
-public/photos/obra/   2.801 JPEG (1000 px) + thumbs/ (480 px)   ← en el repo, generados por el importador
+public/photos/obra/   2.803 JPEG (1000 px) + thumbs/ (480 px)   ← en el repo, generados por el importador
 public/photos/bio/    fotos de la biografía · public/assets/ hero, mirada/, PDF, og/
 scripts/              import_inventory.py · og_images.py
 _resources/           (gitignored) Excel del inventario, originales por fondo, .md de contenido, TFG
@@ -53,7 +53,7 @@ docs/                 DEPLOY.md (Cloudflare, DNS, variables) · ANALYTICS.md (GT
 - **Traducciones:** completas en los 6 idiomas (sep-2026). Los ficheros `src/i18n/<lang>/*.json` son la única fuente; lo que falte en un idioma cae al castellano. El pipeline de ChatGPT (`i18n_export.py`/`i18n_apply.py`, carpeta `translations/`) se eliminó una vez aplicado; está en el historial de git si hiciera falta recuperarlo.
 - **Cambiar textos:** `src/i18n/es/*.json` es la fuente; los enlaces se escriben en castellano (`{{base}}biografia/`, `{{base}}legal/privacidad/`, `{{base}}obra/#fotografia_artistica`) y `t()` los convierte a la ruta del idioma (`localizeLinks` en `src/i18n/index.ts`); los párrafos con HTML se pintan con `set:html`.
 - **URLs por idioma:** secciones (`slug.*` en ui.json), temáticas y proyectos (slugify de la etiqueta traducida, `src/lib/catalog.ts`); el hash del explorador usa esos mismos slugs (`#science-and-medicine/torre-marimon`) y acepta las claves internas antiguas. Cambiar un slug cambia la URL pública: hacerlo antes de indexar o añadir una redirección en `public/_redirects`.
-- **SEO:** títulos/descripciones en `ui.json` (`seo.*`); `Base.astro` añade « · Emili Godes» salvo que el título ya lo contenga. Páginas legales y 404: `noindex` y fuera del sitemap.
+- **SEO:** títulos/descripciones en `ui.json` (`seo.*`); `Base.astro` añade « · Emili Godes» salvo que el título ya lo contenga. Páginas legales y 404: `noindex` y fuera del sitemap. Fichas de proyecto: indexables solo si suman ≥100 palabras de descripción (ES) o tienen una destacada (`isProjectIndexable()` en `src/lib/catalog.ts`); las demás son `noindex` y quedan fuera de los sitemaps. Las descripciones se muestran como texto en la ficha («Las fotografías»).
 - **Desplegar:** push a `main` → Cloudflare Pages construye (`npm run build`, output `dist`). Variables de entorno en `docs/DEPLOY.md`.
 
 ## Reglas

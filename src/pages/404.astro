@@ -1,10 +1,11 @@
 ---
 /** 404 único para Cloudflare Pages (dist/404.html): en castellano, con enlaces a cada idioma. */
 import Base from '../layouts/Base.astro';
+import { pageAlternates } from '../lib/site';
 import { LOCALES, LANG_NAMES, useT } from '../i18n';
 const t = useT('es');
 ---
-<Base lang="es" title={t('notfound.title')} description={t('notfound.text')} path="404/" noindex>
+<Base lang="es" title={t('notfound.title')} description={t('notfound.text')} path="404/" noindex alternates={pageAlternates('home')}>
   <section class="eg-404 eg-container">
     <p class="eg-kicker">404</p>
     <h1>{t('notfound.title')}</h1>

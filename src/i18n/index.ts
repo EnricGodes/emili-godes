@@ -4,8 +4,7 @@
  *  - pages.json         prosa de las páginas (claves <pagina>.NNN, HTML inline permitido)
  *  - catalog-meta.json  nombres de proyecto, lugares, categorías, fondos (generado por scripts/import_inventory.py)
  *  - catalog-photos.json descripciones de foto por hash del texto ES (generado)
- * Todo lo que falte en un idioma cae al castellano (idioma fuente). Los fallbacks se cuentan
- * y se muestran al final del build (ver astro.config.mjs).
+ * Todo lo que falte en un idioma cae al castellano (idioma fuente).
  */
 export const LOCALES = ['es', 'ca', 'en', 'fr', 'de', 'it'] as const;
 export type Lang = (typeof LOCALES)[number];
@@ -31,13 +30,6 @@ for (const [path, data] of Object.entries(files)) {
   const [, lang, file] = m;
   const target = file === 'catalog-photos' ? photoDicts : dicts;
   target[lang] = Object.assign(target[lang] || {}, data);
-}
-
-/** Recuento de claves que han caído al castellano, por idioma (para el informe del build). */
-export const fallbacks: Record<string, Set<string>> = {};
-function noteFallback(lang: string, key: string) {
-  if (lang === DEFAULT_LANG) return;
-  (fallbacks[lang] ||= new Set()).add(key);
 }
 
 export function isLang(x: unknown): x is Lang {
@@ -101,7 +93,6 @@ export function useT(lang: Lang) {
     if (s === undefined) {
       s = es[key];
       if (s === undefined) return key;
-      noteFallback(lang, key);
     }
     return interpolate(s, lang, vars);
   };
@@ -113,21 +104,5 @@ export function photoDesc(lang: Lang, hash: string): string {
   const s = photoDicts[lang]?.[hash];
   if (s !== undefined) return s;
   const es = photoDicts[DEFAULT_LANG]?.[hash];
-  if (es === undefined) return '';
-  noteFallback(lang, 'photo:' + hash);
-  return es;
-}
-
-/** ¿Existe la clave en ese idioma (sin fallback)? */
-export function has(lang: Lang, key: string): boolean {
-  return dicts[lang]?.[key] !== undefined;
-}
-
-export function fallbackReport(): string[] {
-  return LOCALES.filter((l) => l !== DEFAULT_LANG).map((l) => {
-    const set = fallbacks[l];
-    const n = set ? set.size : 0;
-    const photos = set ? [...set].filter((k) => k.startsWith('photo:')).length : 0;
-    return `${l}: ${n} claves en castellano (${photos} descripciones de foto, ${n - photos} de UI/prosa/catálogo)`;
-  });
+  return es ?? '';
 }

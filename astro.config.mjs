@@ -1,7 +1,7 @@
 // @ts-check
 import { defineConfig } from 'astro/config';
 
-const SITE = 'https://emili.godes.org';
+import { SITE_URL as SITE } from './src/lib/constants.ts';
 const LOCALES = ['es', 'ca', 'en', 'fr', 'de', 'it'];
 
 export default defineConfig({

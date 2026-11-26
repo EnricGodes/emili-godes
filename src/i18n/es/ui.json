@@ -1,7 +1,4 @@
 {
- "site.name": "Emili Godes",
- "site.tagline": "Fotógrafo de la modernidad",
- "site.dates": "1895–1970",
  "nav.home": "Inicio",
  "nav.biografia": "Biografía",
  "nav.obra": "Obra",
@@ -54,7 +51,6 @@
  "seo.legal.title": "Aviso legal",
  "seo.privacy.title": "Política de privacidad",
  "seo.cookies.title": "Política de cookies",
- "seo.notfound.title": "Página no encontrada",
  "seo.ambito.title": "{name}: fotografías de Emili Godes",
  "seo.ambito.description": "{count} fotografías de Emili Godes en el ámbito de {name}, agrupadas en {projects} proyectos y series con ficha, fecha y fondo de procedencia.",
  "seo.project.title": "{name}",
