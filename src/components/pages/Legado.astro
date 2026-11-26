@@ -30,13 +30,13 @@ const visionsHref = projectPath(lang, 'fotografia_artistica', vProj.slug) + '#fo
   <div class="eg-container">
   <h2 style="font-size:1.7rem">{t('legado.025')}</h2>
   <div class="eg-filterbar" data-decade-filter>
-  <span class="eg-chip is-active" data-decade="all">{t('legado.026')}</span>
-  <span class="eg-chip" data-decade="1910">1910s</span>
-  <span class="eg-chip" data-decade="1920">1920s</span>
-  <span class="eg-chip" data-decade="1930">1930s</span>
-  <span class="eg-chip" data-decade="1940">1940s</span>
-  <span class="eg-chip" data-decade="1950">1950s</span>
-  <span class="eg-chip" data-decade="post">{t('legado.131')}</span>
+  <button type="button" class="eg-chip is-active" data-decade="all" aria-pressed="true">{t('legado.026')}</button>
+  <button type="button" class="eg-chip" data-decade="1910" aria-pressed="false">1910s</button>
+  <button type="button" class="eg-chip" data-decade="1920" aria-pressed="false">1920s</button>
+  <button type="button" class="eg-chip" data-decade="1930" aria-pressed="false">1930s</button>
+  <button type="button" class="eg-chip" data-decade="1940" aria-pressed="false">1940s</button>
+  <button type="button" class="eg-chip" data-decade="1950" aria-pressed="false">1950s</button>
+  <button type="button" class="eg-chip" data-decade="post" aria-pressed="false">{t('legado.131')}</button>
   </div>
   <div data-decades>
   <h3 style="margin:24px 0 0;font-size:1.2rem">{t('legado.027')}</h3>
@@ -203,7 +203,7 @@ const visionsHref = projectPath(lang, 'fotografia_artistica', vProj.slug) + '#fo
       const chip = (e.target as HTMLElement).closest<HTMLElement>('.eg-chip');
       if (!chip) return;
       const dec = chip.dataset.decade;
-      bar.querySelectorAll('.eg-chip').forEach((c) => c.classList.toggle('is-active', c === chip));
+      bar.querySelectorAll('.eg-chip').forEach((c) => { c.classList.toggle('is-active', c === chip); c.setAttribute('aria-pressed', String(c === chip)); });
       document.querySelectorAll<HTMLElement>('[data-decades] tbody tr').forEach((row) => {
         const ds = (row.getAttribute('data-decade') || '').split(' ');
         row.classList.toggle('is-hidden', dec !== 'all' && !ds.includes(dec!));

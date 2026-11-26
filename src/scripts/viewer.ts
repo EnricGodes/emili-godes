@@ -54,8 +54,14 @@ function filename(ph: ViewerPhoto) {
   return base + (ext ? ext[0] : '.jpg');
 }
 
+/** Elemento que tenía el foco al abrir el visor (se le devuelve al cerrar). */
+let returnFocus: HTMLElement | null = null;
+
 export function openViewer(photos: ViewerPhoto[], i = 0) {
   if (!UI) UI = readUI();
+  if (!document.getElementById('eg-viewer')?.classList.contains('open')) {
+    returnFocus = document.activeElement instanceof HTMLElement ? document.activeElement : null;
+  }
   state.photos = photos; state.i = i;
   if (!document.getElementById('eg-viewer')) {
     const ov = document.createElement('div'); ov.id = 'eg-viewer'; document.body.appendChild(ov);
@@ -72,6 +78,8 @@ export function closeViewer() {
   const el = document.getElementById('eg-viewer');
   if (el) { el.classList.remove('open'); el.innerHTML = ''; }
   document.body.style.overflow = '';
+  if (returnFocus?.isConnected) returnFocus.focus();
+  returnFocus = null;
   document.dispatchEvent(new CustomEvent('eg:viewer-close'));
 }
 
@@ -85,8 +93,20 @@ function nav(d: number) {
 function onKey(e: KeyboardEvent) {
   if (document.getElementById('eg-zoom')) { if (e.key === 'Escape') zoomExit(); return; }
   if (e.key === 'Escape') { e.preventDefault(); closeViewer(); }
+  else if (e.key === 'Tab') trapTab(e);
   else if (e.key === 'ArrowLeft') nav(-1);
   else if (e.key === 'ArrowRight') nav(1);
+}
+
+/** Mantiene el foco del teclado dentro del visor (diálogo modal). */
+function trapTab(e: KeyboardEvent) {
+  const el = document.getElementById('eg-viewer'); if (!el) return;
+  const items = [...el.querySelectorAll<HTMLElement>('button, a[href]')].filter((x) => x.offsetParent !== null);
+  if (!items.length) return;
+  const first = items[0], last = items[items.length - 1];
+  const inside = el.contains(document.activeElement);
+  if (e.shiftKey && (document.activeElement === first || !inside)) { e.preventDefault(); last.focus(); }
+  else if (!e.shiftKey && (document.activeElement === last || !inside)) { e.preventDefault(); first.focus(); }
 }
 
 function onClick(e: Event) {
@@ -128,6 +148,8 @@ function render() {
     ? `<button data-vw="prev" title="${esc(u.prev)}" aria-label="${esc(u.prev)}" class="eg-vw-arrow" style="left:16px">‹</button>
        <button data-vw="next" title="${esc(u.next)}" aria-label="${esc(u.next)}" class="eg-vw-arrow" style="right:16px">›</button>` : '';
   const el = document.getElementById('eg-viewer')!;
+  // el botón enfocado se vuelve a crear: recordar cuál era para devolverle el foco
+  const focused = (document.activeElement as HTMLElement | null)?.closest<HTMLElement>('#eg-viewer [data-vw]')?.dataset.vw;
   el.innerHTML = `<div class="eg-vw-flex" role="dialog" aria-modal="true" aria-label="${esc(ph.title)}">
       <aside class="eg-vw-side" id="eg-vw-side"${state.sidebar ? '' : ' style="display:none"'}>${sidebar}</aside>
       <div class="eg-vw-area">
@@ -137,6 +159,7 @@ function render() {
         <div class="eg-vw-photo"><img id="eg-vw-img" src="${esc(ph.image)}" alt="${esc(ph.title)}"></div>
       </div></div>`;
   el.classList.add('open');
+  (el.querySelector<HTMLElement>(`[data-vw="${focused || 'close'}"]`) || el.querySelector<HTMLElement>('[data-vw="close"]'))?.focus();
   // precarga de la siguiente
   const nx = state.photos[(state.i + 1) % state.photos.length];
   if (nx && nx !== ph) { const im = new Image(); im.src = nx.image; }

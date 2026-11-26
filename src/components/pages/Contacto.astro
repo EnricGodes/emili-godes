@@ -30,7 +30,7 @@ const strings = { sending: t('contact.sending'), sent: t('contact.sent'), error:
         <label class="eg-form__consent"><input type="checkbox" name="consent" required /><span set:html={t('contact.consent')}></span></label>
         {TURNSTILE_SITE_KEY && <div class="cf-turnstile" data-sitekey={TURNSTILE_SITE_KEY} data-language={lang}></div>}
         <div><button class="eg-btn eg-btn--solid" type="submit">{t('contact.send')}</button></div>
-        <p class="eg-form__status" id="eg-contact-status" hidden></p>
+        <p class="eg-form__status" id="eg-contact-status" role="status" aria-live="polite" hidden></p>
       </form>
       <p class="eg-note" style="margin-top:22px">{t('contact.note')}</p>
       {CONTACT_FALLBACK_EMAIL && <p class="eg-note"><a href={`mailto:${CONTACT_FALLBACK_EMAIL}`}>{CONTACT_FALLBACK_EMAIL}</a></p>}

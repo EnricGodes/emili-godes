@@ -230,7 +230,7 @@ a { color: inherit; }
 .eg-table tr:last-child td { border-bottom: 0; }
 .eg-table td:first-child { font-family: var(--font-serif); color: var(--primary); font-weight: 600; white-space: nowrap; }
 .eg-filterbar { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 16px; }
-.eg-chip { background: var(--surface-container); border: 1px solid var(--outline-variant); border-radius: 999px;
+.eg-chip { font: inherit; font-size: .82rem; background: var(--surface-container); border: 1px solid var(--outline-variant); border-radius: 999px;
   padding: 5px 14px; font-size: .82rem; cursor: pointer; color: var(--on-surface-variant); transition: all .15s; }
 .eg-chip.is-active { background: var(--primary); color: #fff; border-color: var(--primary); }
 tr.is-hidden { display: none; }

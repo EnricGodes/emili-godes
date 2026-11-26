@@ -37,8 +37,17 @@ const drawerExtra = PAGES.filter((p) => ['creditos', 'contacto'].includes(p.id))
   const drawer = document.getElementById('eg-drawer');
   const backdrop = document.getElementById('eg-drawer-backdrop');
   const burger = header?.querySelector<HTMLButtonElement>('.eg-burger');
-  function close() { drawer?.classList.remove('open'); backdrop?.classList.remove('open'); burger?.setAttribute('aria-expanded', 'false'); }
-  burger?.addEventListener('click', () => { drawer?.classList.add('open'); backdrop?.classList.add('open'); burger.setAttribute('aria-expanded', 'true'); });
+  function close() {
+    if (!drawer?.classList.contains('open')) return;
+    drawer.classList.remove('open'); backdrop?.classList.remove('open'); burger?.setAttribute('aria-expanded', 'false');
+    document.body.style.overflow = '';
+    burger?.focus();
+  }
+  burger?.addEventListener('click', () => {
+    drawer?.classList.add('open'); backdrop?.classList.add('open'); burger.setAttribute('aria-expanded', 'true');
+    document.body.style.overflow = 'hidden';
+    drawer?.querySelector<HTMLElement>('a[href]')?.focus();
+  });
   drawer?.querySelector('.eg-drawer__close')?.addEventListener('click', close);
   backdrop?.addEventListener('click', close);
   document.addEventListener('keydown', (e) => { if (e.key === 'Escape') close(); });
