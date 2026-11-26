@@ -29,9 +29,20 @@ Tras añadir variables: Deployments → Retry deployment.
 3. Volver a Cloudflare y pulsar *Check DNS*. Activo en minutos (hasta 24 h en el peor caso). Certificado TLS automático.
 4. Comprobar: `curl -I https://emili.godes.org/` → `301` a `/es/`; `curl -I -H "Accept-Language: fr" https://emili.godes.org/` → `/fr/`.
 
-## 4. Turnstile (opcional, recomendado)
+## 4. Turnstile y límite de envíos (recomendado en producción)
 Cloudflare → Turnstile → Add site → dominio `emili.godes.org` (+ `localhost` para pruebas) → widget *Managed*.
-Copiar Site key → `PUBLIC_TURNSTILE_SITE_KEY`, Secret key → `TURNSTILE_SECRET`.
+Copiar Site key → `PUBLIC_TURNSTILE_SITE_KEY`, Secret key → `TURNSTILE_SECRET`. El código lo trata como
+opcional, pero en producción conviene tener las dos: sin ellas el formulario solo tiene el honeypot.
+
+Límite de envíos: Cloudflare → dominio → **Security → WAF → Rate limiting rules** → regla para
+`URI Path equals /api/contact` y método `POST` (p. ej. 5 peticiones por IP cada 10 minutos → Block).
+No se programa en la Function: un contador en memoria del Worker no es fiable.
+
+Cabeceras (`public/_headers`): HSTS y las básicas de seguridad. Sin CSP a propósito: Astro emite scripts
+inline y GTM/Consent Mode inyectan otros; una CSP estricta rompería la analítica.
+
+Imagen OG de las fichas de proyecto: es la portada del proyecto tal cual (no se genera un 1200×630 por
+ficha; coste de build alto para poco beneficio).
 
 ## 5. Cloudflare Web Analytics (sin cookies)
 Pages → proyecto → Settings → **Web Analytics → Enable**. Gratis, sin banner, complementa a GA4.

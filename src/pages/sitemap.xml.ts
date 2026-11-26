@@ -7,30 +7,35 @@ import { LOCALES, DEFAULT_LANG, pagePath } from '../i18n';
 import { PAGES, SITE_URL } from '../lib/site';
 import { catalog, ambitoPath, projectPath, isProjectIndexable } from '../lib/catalog';
 
+/** lastmod: fecha del catálogo (importador) para temáticas y fichas; fecha del build para el resto. */
+const CATALOG_DATE = String(catalog.generated_at || '').slice(0, 10);
+
 type Alt = Record<string, string>; // lang → ruta absoluta
 
-function entry(alts: Alt, lang: string, priority: string, changefreq: string, langs: readonly string[] = LOCALES) {
+function entry(alts: Alt, lang: string, priority: string, changefreq: string, lastmod: string, langs: readonly string[] = LOCALES) {
   const links = langs.map((l) => `<xhtml:link rel="alternate" hreflang="${l}" href="${SITE_URL}${alts[l]}"/>`).join('');
   const xd = `<xhtml:link rel="alternate" hreflang="x-default" href="${SITE_URL}${alts[DEFAULT_LANG]}"/>`;
-  return `<url><loc>${SITE_URL}${alts[lang]}</loc>${links}${xd}<changefreq>${changefreq}</changefreq><priority>${priority}</priority></url>`;
+  return `<url><loc>${SITE_URL}${alts[lang]}</loc>${links}${xd}<lastmod>${lastmod}</lastmod><changefreq>${changefreq}</changefreq><priority>${priority}</priority></url>`;
 }
 
 export const GET: APIRoute = () => {
   const urls: string[] = [];
+  const buildDate = new Date().toISOString().slice(0, 10);
+  const catDate = CATALOG_DATE || buildDate;
   // páginas estáticas
   for (const page of PAGES) {
     if (page.id === 'legal' || page.id === 'privacy' || page.id === 'cookies') continue; // noindex
     const alts: Alt = Object.fromEntries(LOCALES.map((l) => [l, pagePath(l, page.id)]));
-    for (const l of LOCALES) urls.push(entry(alts, l, page.id === 'home' ? '1.0' : '0.8', 'monthly'));
+    for (const l of LOCALES) urls.push(entry(alts, l, page.id === 'home' ? '1.0' : '0.8', 'monthly', buildDate));
   }
   // temáticas y proyectos
   for (const amb of catalog.ambito_order) {
     const alts: Alt = Object.fromEntries(LOCALES.map((l) => [l, ambitoPath(l, amb)]));
-    for (const l of LOCALES) urls.push(entry(alts, l, '0.7', 'monthly'));
+    for (const l of LOCALES) urls.push(entry(alts, l, '0.7', 'monthly', catDate));
     for (const p of catalog.ambitos[amb].projects) {
       if (!isProjectIndexable(p, amb)) continue; // fichas con contenido escaso: noindex en todos los idiomas
       const palts: Alt = Object.fromEntries(LOCALES.map((l) => [l, projectPath(l, amb, p.slug)]));
-      for (const l of LOCALES) urls.push(entry(palts, l, '0.6', 'yearly'));
+      for (const l of LOCALES) urls.push(entry(palts, l, '0.6', 'yearly', catDate));
     }
   }
   const xml = `<?xml version="1.0" encoding="UTF-8"?>

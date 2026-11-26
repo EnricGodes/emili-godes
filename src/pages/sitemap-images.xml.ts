@@ -11,12 +11,13 @@ const esc = (s: string) => s.replace(/&/g, '&amp;').replace(/</g, '&lt;').replac
 export const GET: APIRoute = () => {
   const ct = useCatalogText('es');
   const urls: string[] = [];
+  const lastmod = String(catalog.generated_at || '').slice(0, 10) || new Date().toISOString().slice(0, 10);
   for (const [amb, a] of Object.entries(catalog.ambitos)) {
     for (const p of a.projects) {
       if (!isProjectIndexable(p, amb)) continue; // ficha noindex: sus fotos no se indexarían
       const imgs = p.photos.map((ph) =>
         `<image:image><image:loc>${SITE_URL}${photoUrl(ph.file)}</image:loc><image:title>${esc(ct.photoTitle(ph, p))}</image:title></image:image>`).join('');
-      urls.push(`<url><loc>${SITE_URL}${projectPath('es', amb, p.slug)}</loc>${imgs}</url>`);
+      urls.push(`<url><loc>${SITE_URL}${projectPath('es', amb, p.slug)}</loc><lastmod>${lastmod}</lastmod>${imgs}</url>`);
     }
   }
   const xml = `<?xml version="1.0" encoding="UTF-8"?>
