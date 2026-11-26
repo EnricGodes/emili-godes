@@ -149,11 +149,11 @@ export const projectAlternates = (ambito: string, slug: string) =>
   Object.fromEntries(LOCALES.map((l) => [l, projectPath(l, ambito, slug).slice(4)])) as Record<Lang, string>;
 /** Fichas con contenido escaso: noindex (y fuera del sitemap) en los 6 idiomas por igual, para no
  *  diluir la calidad del sitio ante Google (nov-2026: Google dejó de indexar ~1.000 fichas casi vacías).
- *  Una ficha es indexable si tiene al menos INDEX_MIN_PHOTOS fotos, o al menos INDEX_MIN_WORDS palabras
- *  de descripciones distintas (contadas en castellano, para que el criterio no dependa del idioma),
- *  o si alguna de sus fotos está entre las destacadas. Las fichas no indexables siguen publicadas y enlazadas. */
-export const INDEX_MIN_PHOTOS = 3;
-export const INDEX_MIN_WORDS = 50;
+ *  Una ficha es indexable si suma al menos INDEX_MIN_WORDS palabras de descripciones distintas (contadas
+ *  en castellano, para que el criterio no dependa del idioma; se muestran como texto en la ficha) o si
+ *  alguna de sus fotos está entre las destacadas. El número de fotos no cuenta: una galería sin texto no
+ *  aporta contenido a Google (nov-2026). Las fichas no indexables siguen publicadas y enlazadas. */
+export const INDEX_MIN_WORDS = 100;
 const destacadaProjects = new Set(destacadas.map((d) => `${d.ambito}/${d.project}`));
 const indexableCache = new Map<Project, boolean>();
 export function isProjectIndexable(p: Project, ambito: string): boolean {
@@ -161,7 +161,7 @@ export function isProjectIndexable(p: Project, ambito: string): boolean {
   if (v === undefined) {
     const descs = new Set(p.photos.map((ph) => ph.desc).filter(Boolean));
     const words = [...descs].reduce((n, h) => n + photoDesc('es', h).split(/\s+/).filter(Boolean).length, 0);
-    v = p.count >= INDEX_MIN_PHOTOS || words >= INDEX_MIN_WORDS || destacadaProjects.has(`${ambito}/${p.slug}`);
+    v = words >= INDEX_MIN_WORDS || destacadaProjects.has(`${ambito}/${p.slug}`);
     indexableCache.set(p, v);
   }
   return v;

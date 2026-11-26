@@ -108,6 +108,7 @@
  "project.allInTheme": "Todos los proyectos de {theme}",
  "project.open": "Ver fotografía",
  "project.untitled": "Sin título",
+ "project.photoList": "Las fotografías",
  "ambito.projects": "{n} proyectos y series",
  "ambito.lead": "{count} fotografías agrupadas en {projects} proyectos y series.",
  "ambito.others": "Otras temáticas",

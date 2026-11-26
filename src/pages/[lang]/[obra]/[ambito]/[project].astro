@@ -43,6 +43,25 @@ const photos = p.photos.map((ph, i) => {
     title: ct.photoTitle(ph, p),
   };
 });
+/** Descripciones visibles como texto (las fotos con la misma descripción se agrupan; los números
+ *  abren el visor). Es el contenido propio de la ficha para lectores y buscadores. */
+type DescGroup = { desc: string; idx: number[]; fecha: string };
+const descGroups: DescGroup[] = [];
+{
+  const byDesc = new Map<string, DescGroup>();
+  for (const { desc, i, ph } of photos) {
+    if (!desc) continue;
+    let g = byDesc.get(desc);
+    if (!g) { g = { desc, idx: [], fecha: ph.fecha !== p.fecha ? ph.fecha : '' }; byDesc.set(desc, g); descGroups.push(g); }
+    g.idx.push(i);
+  }
+}
+/** Índices consecutivos → tramos [inicio, fin] para no listar cientos de números. */
+const runs = (idx: number[]) => idx.reduce<[number, number][]>((acc, i) => {
+  const last = acc[acc.length - 1];
+  if (last && last[1] === i - 1) last[1] = i; else acc.push([i, i]);
+  return acc;
+}, []);
 const viewerPhotos = photos.map(({ ph, desc, i }) => ({
   image: photoUrl(ph.file), title: name, desc, fecha: ph.fecha, lugar: ct.placeLabel(ph.lugar),
   categoria: ct.ambitoLabel(ph.categoria), fondo: ct.fondoLabel(ph.fondo), decada: ph.decada !== 'sf' ? ph.decada + 's' : '',
@@ -112,6 +131,25 @@ const crumbs = breadcrumb([
       <p style="margin-top:22px"><a class="eg-btn eg-btn--outline eg-btn--sm" href={ambitoPath(lang, ambitoKey)}>{t('project.allInTheme', { theme })}</a></p>
     </div>
   </section>
+  {descGroups.length > 0 && (
+    <section class="eg-section" style="padding-top:2rem">
+      <div class="eg-container eg-container--narrow">
+        <h2 style="font-size:1.4rem">{t('project.photoList')}</h2>
+        <ul class="eg-desclist">
+          {descGroups.map((g) => (
+            <li>
+              <span class="eg-desclist__nums">
+                {runs(g.idx).map(([a, b], k) => (
+                  <>{k > 0 && ', '}<a href={`#foto-${a + 1}`} data-photo-index={a}>{a === b ? a + 1 : `${a + 1}–${b + 1}`}</a></>
+                ))}
+              </span>
+              <span class="eg-desclist__text">{g.desc}{g.fecha && <span class="eg-note"> · {g.fecha}</span>}</span>
+            </li>
+          ))}
+        </ul>
+      </div>
+    </section>
+  )}
   <UiJson lang={lang} />
   <script is:inline type="application/json" id="eg-photos" set:html={JSON.stringify(viewerPhotos)} />
   <script src="../../../../scripts/gallery.ts"></script>
