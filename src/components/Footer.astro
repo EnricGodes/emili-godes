@@ -5,7 +5,6 @@ import LangSwitch from './LangSwitch.astro';
 interface Props { lang: Lang; path: string; alternates?: Record<Lang, string> }
 const { lang, path, alternates } = Astro.props;
 const t = useT(lang);
-const base = `/${lang}/`;
 const links = PAGES.filter((p) => p.footer);
 ---
 <footer class="eg-footer">

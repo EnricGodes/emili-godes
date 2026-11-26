@@ -8,7 +8,6 @@ export const getStaticPaths = () => LOCALES.map((lang) => ({ params: { lang } })
 const lang = Astro.params.lang as Lang;
 const t = useT(lang);
 const ct = useCatalogText(lang);
-const base = `/${lang}/`;
 const description = t('seo.home.description');
 ---
 <Base lang={lang} title={t('seo.home.title')} description={description} path="" activeNav="home"

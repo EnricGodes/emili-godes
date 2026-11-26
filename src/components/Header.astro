@@ -3,7 +3,7 @@ import { useT, type Lang } from '../i18n';
 import { PAGES, pagePath } from '../lib/site';
 
 interface Props { lang: Lang; path: string; activeNav?: string }
-const { lang, path, activeNav } = Astro.props;
+const { lang, activeNav } = Astro.props;
 const t = useT(lang);
 const base = `/${lang}/`;
 const nav = PAGES.filter((p) => p.nav);

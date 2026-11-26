@@ -9,7 +9,6 @@ import { pagePath } from '../lib/site';
 interface Props { lang: Lang; enabled: boolean }
 const { lang, enabled } = Astro.props;
 const t = useT(lang);
-const base = `/${lang}/`;
 ---
 {enabled && (
   <div class="eg-cookie" id="eg-cookie" role="dialog" aria-live="polite" aria-label={t('cookies.title')} hidden>
