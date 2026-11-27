@@ -34,8 +34,13 @@ Cloudflare → Turnstile → Add site → dominio `emili.godes.org` (+ `localhos
 Copiar Site key → `PUBLIC_TURNSTILE_SITE_KEY`, Secret key → `TURNSTILE_SECRET`. El código lo trata como
 opcional, pero en producción conviene tener las dos: sin ellas el formulario solo tiene el honeypot.
 
-Límite de envíos: Cloudflare → dominio → **Security → WAF → Rate limiting rules** → regla para
-`URI Path equals /api/contact` y método `POST` (p. ej. 5 peticiones por IP cada 10 minutos → Block).
+**Estado (27-11-2026):** activo. Widget Turnstile «emili» (Managed, `emili.godes.org`) con las dos variables
+en Pages; un POST sin token devuelve `403 {"error":"turnstile"}`.
+
+Límite de envíos: Cloudflare → godes.org → **Security → Security rules → Rate limiting rules**. Regla activa
+«emili.godes.org formulario de contacto»: `http.host eq "emili.godes.org" and http.request.uri.path eq
+"/api/contact"`, por IP, **3 peticiones / 10 s → Block 10 s** (el plan Free solo permite periodos y bloqueos de
+10 s y una única regla). Probado: la 4.ª petición seguida devuelve 429.
 No se programa en la Function: un contador en memoria del Worker no es fiable.
 
 Cabeceras (`public/_headers`): HSTS y las básicas de seguridad. Sin CSP a propósito: Astro emite scripts
